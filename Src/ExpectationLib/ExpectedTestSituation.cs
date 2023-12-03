@@ -49,9 +49,9 @@ public class ExpectedTestSituation : ISituation
         // Expected behavior is an ordered set of specific circumstances:
 
         // party1 -> party2
-        // primary -> secondary
-        // secondary -> primary
-        // primary -> party1
+        // party3 -> party4
+        // party4 -> party3
+        // party3 -> party1
 
         var sharedResponseContext = TransactionId;
 
