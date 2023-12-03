@@ -1,12 +1,12 @@
 ﻿namespace ExpectationLib;
 
 /// <summary>
-/// A situation a list of expectations that observations must meet to in order to represent that situation
+/// A situation is a specific collection circumstances
 /// </summary>
 public interface ISituation
 {
     /// <summary>
-    /// Tests if the observations meet the expectations of a situation/flow
+    /// Tests if the observations represent the situation
     /// </summary>
     /// <param name="observations"></param>
     /// <returns></returns>

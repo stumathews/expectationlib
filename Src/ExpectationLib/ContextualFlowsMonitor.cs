@@ -15,11 +15,11 @@ public class ContextualFlowsMonitor
     public static ContextualFlowsMonitor Instance => instance ??= new ContextualFlowsMonitor();
     
     /// <summary>
-    /// Fetch a specific Overseer
+    /// Fetch a specific Observer
     /// </summary>
     /// <param name="context">The context that this overseer is pertinent to</param>
-    /// <returns>Overseer</returns>
-    public static Overseer GetOverseer(string context) => Instance.GetOverseerInternal(context);
+    /// <returns>Observer</returns>
+    public static Observer GetOverseer(string context) => Instance.GetOverseerInternal(context);
 
     /// <summary>
     /// Removes an overseer
@@ -29,19 +29,19 @@ public class ContextualFlowsMonitor
     public static bool RemoveOverseer(string context) =>
         Instance._contextualOverseer.TryRemove(context, out var removed);
 
-    private Overseer GetOverseerInternal(string context)
+    private Observer GetOverseerInternal(string context)
     {
         if (_contextualOverseer.TryGetValue(context, out var overseer))
         {
             return overseer;
         }
 
-        _contextualOverseer.TryAdd(context, new Overseer());
+        _contextualOverseer.TryAdd(context, new Observer());
         return GetOverseerInternal(context);
             
     }
 
     protected static ContextualFlowsMonitor instance = null;
 
-    private readonly ConcurrentDictionary<string, Overseer> _contextualOverseer = new();
+    private readonly ConcurrentDictionary<string, Observer> _contextualOverseer = new();
 }

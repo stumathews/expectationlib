@@ -2,7 +2,7 @@
 
 namespace ExpectationLib;
 
-public class Overseer: IOverseer
+public class Observer: IOverseer
 {
     private readonly object _lockObject = new();
     public List<Observation> Observations { get; } = new();

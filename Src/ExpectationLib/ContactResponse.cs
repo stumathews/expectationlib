@@ -9,7 +9,7 @@ public class ContactResponse: IResponse
     /// A response in response to a contact stimulus
     /// </summary>
     /// <param name="context">Response context/details</param>
-    /// <param name="from">Usualy the response is from the receiver of the stimulus, but this can be overriden here</param>
+    /// <param name="from">Usually the response is from the receiver of the stimulus, but this can be overriden here</param>
     public ContactResponse(string context, IParty from)
     {
         From = from;

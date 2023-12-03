@@ -1,7 +1,7 @@
 ﻿namespace ExpectationLib
 {
 
-    public class StimuliMatchesResponseExpectation : IExpectation, IHasId
+    public class StimuliProducesResponseExpectation : IExpectation, IHasId
     {
         /// <summary>
         /// Stimuli that is expected to cause the associated Response
@@ -23,10 +23,16 @@
         /// </summary>
         /// <param name="stimuli">Stimuli</param>
         /// <param name="response">Response</param>
-        public StimuliMatchesResponseExpectation(IStimulus stimuli, IResponse response)
+        public StimuliProducesResponseExpectation(IStimulus stimuli, IResponse response)
         {
             Stimuli = stimuli;
             Response = response;
+        }
+
+        public StimuliProducesResponseExpectation(ICircumstance circumstance)
+        {
+            Stimuli = circumstance.Stimulus;
+            Response = circumstance.Response;
         }
 
         /// <summary>
@@ -53,14 +59,14 @@
         }
        
         #region Comparison code
-        protected bool Equals(StimuliMatchesResponseExpectation other) => Equals(Stimuli, other.Stimuli) && Equals(Response, other.Response);
+        protected bool Equals(StimuliProducesResponseExpectation other) => Equals(Stimuli, other.Stimuli) && Equals(Response, other.Response);
 
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((StimuliMatchesResponseExpectation)obj);
+            return Equals((StimuliProducesResponseExpectation)obj);
         }
 
         public override int GetHashCode()
