@@ -1,32 +1,20 @@
 #pragma once
 #include <vector>
 
-#include "IExpectatedObservationsPattern.h"
+#include "IExpectedObservationsPattern.h"
 #include "Observation.h"
 #include "StimuliProducesResponseExpectation.h"
 
 namespace ExpectationLib
-{
-	
-class ExpectationExistsPatternMatcher : public IExpectatedObservationsPattern {
-public:
-    StimuliProducesResponseExpectation* stimuliProducesResponseExpectation;
-    std::vector<Observation> observations;
+{	
+	class ExpectationExistsPatternMatcher final : public IExpectedObservationsPattern
+	{
+	public:
+	    std::shared_ptr<StimuliProducesResponseExpectation> stimuliProducesResponseExpectation;
+	    std::vector<std::shared_ptr<Observation>> Observations;
 
-    ExpectationExistsPatternMatcher(StimuliProducesResponseExpectation* stimuliProducesResponseExpectation, std::vector<Observation> observations) {
-        this->stimuliProducesResponseExpectation = stimuliProducesResponseExpectation;
-        this->observations = observations;
-    }
+	    ExpectationExistsPatternMatcher(const std::shared_ptr<StimuliProducesResponseExpectation>& stimuliProducesResponseExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
 
-    bool Match() {
-        for (const auto& o : observations) {
-            if (o.stimulus->getSender()->getId() == stimuliProducesResponseExpectation->stimuli->getSender()->getId() &&
-                o.stimulus->getReceiver()->getId() == stimuliProducesResponseExpectation->stimuli->getReceiver()->getId() &&
-                o.response->getId() == stimuliProducesResponseExpectation->response->getId()) {
-                return true;
-            }
-        }
-        return false;
-    }
-};
+	    bool Match() override;
+	};
 }

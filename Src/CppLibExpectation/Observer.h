@@ -6,14 +6,10 @@
 
 namespace ExpectationLib
 {
-	class Observer : IObserver {
-public:
-    std::vector<ContactCircumstance*> Observations;
-    void Observe(ContactCircumstance* circumstance)
+	class Observer final : IObserver
 	{
-        Observations.push_back(circumstance);
-    }
-
-    Observation* Observe(IStimulus* stimulus, IResponse* response, std::string context) override;
+	public:
+		std::vector<std::shared_ptr<ContactCircumstance>> Observations;
+		void Observe(const std::shared_ptr<ContactCircumstance>& circumstance) override;
 	};
 }

@@ -4,30 +4,21 @@
 namespace ExpectationLib
 {
     // A particular response to a contact stimulus
-    class ContactCircumstance : public ICircumstance {
+    class ContactCircumstance final : public ICircumstance
+	{
     public:
-        // Constructor
-        ContactCircumstance(IStimulus* stimulus, std::string responseContext, IParty* overrideFrom = nullptr) {
-            Stimulus = stimulus;
-            From = overrideFrom ? overrideFrom : Stimulus->Receiver;
-            _responseContext = responseContext;
-        }
+        
+        ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus, const std::string& responseContext, const std::shared_ptr<IParty>& overrideFrom = nullptr);
 
-        // Getter for Stimulus
-        IStimulus* getStimulus() {
-            return Stimulus;
-        }
-
-        // Getter for Response
-        IResponse* getResponse() {
-            return new ContactResponse(_responseContext, From);
-        }
+        std::shared_ptr<IStimulus> GetStimulus() override;
+        std::shared_ptr<IResponse> GetResponse() override;
+        std::shared_ptr<IParty> GetFrom();
 
     private:
-        IStimulus* Stimulus;
-        IParty* From;
-        std::string _responseContext;
+        std::shared_ptr<IStimulus> stimulus;
+        std::shared_ptr<IParty> from;
+        std::string responseContext;
     };
-}
+
 }
 

@@ -1,24 +1,32 @@
 #pragma once
 #include <vector>
-
 #include "IExpectation.h"
 
 namespace ExpectationLib
 {
-	class SequentialExpectedObservationsPattern {
+	class SequentialExpectedObservationsPattern
+	{
 	public:
-	    std::vector<IExpectation*> Expectations;
-	    std::vector<ContactCircumstance*> Observations;
-	    SequentialExpectedObservationsPattern(std::vector<IExpectation*> expectations, std::vector<ContactCircumstance*> observations) {
+	    std::vector<std::shared_ptr<IExpectation>> Expectations;
+	    std::vector<std::shared_ptr<Observation>> Observations;
+
+	    SequentialExpectedObservationsPattern(const std::vector<std::shared_ptr<IExpectation>>& expectations, const std::vector<std::shared_ptr<Observation>>& observations)
+		{
 	        Expectations = expectations;
 	        Observations = observations;
 	    }
-	    bool Match() {
-	        if (Expectations.size() != Observations.size()) {
+
+	    bool Match() const
+	    {
+	        if (Expectations.size() != Observations.size()) 
+			{
 	            return false;
 	        }
-	        for (int i = 0; i < Expectations.size(); i++) {
-	            if (!Expectations[i]->Match(Observations[i])) {
+
+	        for (int i = 0; i < Expectations.size(); i++)
+			{
+	            if (!Expectations[i]->Match(Observations[i]))
+				{
 	                return false;
 	            }
 	        }

@@ -1,32 +1,16 @@
 #pragma once
+#include <map>
 #include <string>
-
 #include "Observer.h"
 
 namespace ExpectationLib
 {
-	class ContextualFlowsMonitor {
-public:
-    static std::vector<Observer*> overseers;
-    static Observer* GetOverseer(std::string transactionId) {
-        for (int i = 0; i < overseers.size(); i++) {
-            if (overseers[i]->TransactionId == transactionId) {
-                return overseers[i];
-            }
-        }
-        Observer* overseer = new Observer();
-        overseer->TransactionId = transactionId;
-        overseers.push_back(overseer);
-        return overseer;
-    }
-    static void RemoveOverseer(std::string transactionId) {
-        for (int i = 0; i < overseers.size(); i++) {
-            if (overseers[i]->TransactionId == transactionId) {
-                overseers.erase(overseers.begin() + i);
-                break;
-            }
-        }
-    }
-};
+	class ContextualFlowsMonitor
+	{
+	public:
+	    static std::map<std::string, std::shared_ptr<Observer>> Overseers;
+	    static std::shared_ptr<Observer> GetOverseer(const std::string& context);
+	    static void RemoveOverseer(const std::string& context);
+	};
 
 }

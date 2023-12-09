@@ -4,15 +4,16 @@
 #include "IHasId.h"
 #include "IParty.h"
 
-namespace ExpectationLib {
+namespace ExpectationLib
+{
     // A stimulus represents an action taken by a sender that is directed at a receiver
-    class IStimulus : public IHasId {
+    class IStimulus : public IHasId
+	{
     public:
-        // The initiator of the stimulus
-        virtual IParty* getSender() = 0;
-        // The recipient of the stimulus
-	    virtual IParty* getReceiver() = 0;
-        std::string getId() override;
+        virtual std::shared_ptr<IParty> GetSender() = 0;
+	    virtual std::shared_ptr<IParty> GetReceiver() = 0;
+        virtual std::string GetId() = 0;
+        virtual std::string ToString() = 0;
     };
 }
 

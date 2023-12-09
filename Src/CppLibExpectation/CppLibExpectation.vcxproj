@@ -139,7 +139,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Circumstance.h" />
     <ClInclude Include="ContactCircumstance.h" />
     <ClInclude Include="ContactCircumstanceBuilder.h" />
     <ClInclude Include="ContactResponse.h" />
@@ -149,7 +148,7 @@
     <ClInclude Include="ExpectedTestSituation.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ICircumstance.h" />
-    <ClInclude Include="IExpectatedObservationsPattern.h" />
+    <ClInclude Include="IExpectedObservationsPattern.h" />
     <ClInclude Include="IExpectation.h" />
     <ClInclude Include="IHasId.h" />
     <ClInclude Include="IObserver.h" />
@@ -165,7 +164,17 @@
     <ClInclude Include="StimuliProducesResponseExpectation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ContactCircumstance.cpp" />
+    <ClCompile Include="ContactResponse.cpp" />
+    <ClCompile Include="ContactStimulus.cpp" />
+    <ClCompile Include="ContextualFlowsMonitor.cpp" />
     <ClCompile Include="CppLibExpectation.cpp" />
+    <ClCompile Include="ExpectationExistsPatternMatcher.cpp" />
+    <ClCompile Include="ExpectedTestSituation.cpp" />
+    <ClCompile Include="Observation.cpp" />
+    <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="OrderedExpectedObservationsPattern.cpp" />
+    <ClCompile Include="Party.cpp" />
     <ClCompile Include="Party.h" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
@@ -173,6 +182,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="StimuliProducesResponseExpectation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

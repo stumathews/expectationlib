@@ -7,7 +7,8 @@ namespace ExpectationLib
 	class ICircumstance
 	{
 	public:
-	    virtual IStimulus* getStimulus() = 0;
-	    virtual IResponse* getResponse() = 0;
+		virtual ~ICircumstance() = default;
+		virtual std::shared_ptr<IStimulus> GetStimulus() = 0;
+	    virtual std::shared_ptr<IResponse>  GetResponse() = 0;
 	};
 }

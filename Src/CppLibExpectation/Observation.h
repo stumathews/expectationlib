@@ -1,50 +1,41 @@
 #pragma once
-
+#include <memory>
 #include <string>
+#include "ICircumstance.h"
+#include "IResponse.h"
+#include "IStimulus.h"
 
-namespace ExpectationLib {
+namespace ExpectationLib
+{
     /// <summary>
-    /// An Observation is an observed association between a Stimuli and a Response
+    /// An Observation is an observed association between a Stimuli and a Context
     /// </summary>
-    class Observation : IHasId {
-    private:
-        /// <summary>
-        /// The Stimulus
-        /// </summary>
-        IStimulus* Stimulus;
-        /// <summary>
-        /// The Response
-        /// </summary>
-        IResponse* Response;
-        /// <summary>
-        /// Observational Context
-        /// </summary>
-        std::string Context;
-
+    class Observation : IHasId
+	{
     public:
-        Observation(IStimulus* stimulus, IResponse* response, std::string context) {
-            Stimulus = stimulus;
-            Response = response;
-            Context = context;
-        }
+        Observation(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response, const std::string& context);
 
-        Observation(ICircumstance* circumstance, std::string context) : Observation(circumstance->getStimulus(), circumstance->getResponse(), context) {
-        }
+        Observation(const std::shared_ptr<ICircumstance>& circumstance, const std::string& context);
 
         /// <summary>
         /// Reconstruct an Observation Id from its constituent parts
         /// </summary>
         /// <param name="stimulus">Stimulus</param>
-        /// <param name="response">Response</param>
+        /// <param name="response">Context</param>
         /// <returns></returns>
-        static std::string CreateId(IStimulus* stimulus, IResponse* response) {
-            return stimulus->getSender()->getId() + stimulus->getReceiver()->getId() + response->getFrom()->getId() + response->getId();
-        }
+        static std::string CreateId(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response);
 
         /// <inheritdoc />
-        std::string Id() {
-            return CreateId(Stimulus, Response);
-        }
+        std::string Id() const;
+
+        std::shared_ptr<IStimulus> GetStimulus() { return stimulus; }
+        std::shared_ptr<IResponse> GetResponse() { return response; }
+
+    private:
+        std::shared_ptr<IStimulus> stimulus;
+        std::shared_ptr<IResponse> response;
+        std::string context;
+
     };
 }
 

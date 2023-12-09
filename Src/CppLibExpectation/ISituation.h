@@ -8,6 +8,7 @@ namespace ExpectationLib
 	class ISituation
 	{
 	public:
-	    virtual bool Match(std::vector<Observation*> observations) = 0;
+		virtual ~ISituation() = default;
+		virtual bool Match(std::vector<std::shared_ptr<Observation>> observations) = 0;
 	};
 }

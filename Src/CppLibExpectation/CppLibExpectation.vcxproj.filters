@@ -69,7 +69,7 @@
     <ClInclude Include="IObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IExpectatedObservationsPattern.h">
+    <ClInclude Include="IExpectedObservationsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ICircumstance.h">
@@ -79,9 +79,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpectationExistsPatternMatcher.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Circumstance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ContextualFlowsMonitor.h">
@@ -97,6 +94,39 @@
     </ClCompile>
     <ClCompile Include="Party.h">
       <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactCircumstance.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactStimulus.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContactResponse.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="OrderedExpectedObservationsPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExpectedTestSituation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Observation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Party.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="StimuliProducesResponseExpectation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ContextualFlowsMonitor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ExpectationExistsPatternMatcher.cpp">
+      <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

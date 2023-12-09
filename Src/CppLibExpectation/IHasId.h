@@ -3,8 +3,10 @@
 
 namespace ExpectationLib
 {
-	class IHasId {
+	class IHasId
+	{
 	public:
-	    virtual std::string getId() = 0;
+		virtual ~IHasId() = default;
+		virtual std::string GetId() = 0;
 	};
 }

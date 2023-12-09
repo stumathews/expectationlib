@@ -7,8 +7,10 @@
 
 namespace ExpectationLib
 {
-	class IObserver {
-public:
-    virtual Observation* Observe(IStimulus* stimulus, IResponse* response, std::string context = "") = 0;
-};
+	class IObserver
+	{
+	public:
+		virtual ~IObserver() = default;
+		virtual void Observe(const std::shared_ptr<ContactCircumstance>& circumstance) = 0;
+	};
 }
