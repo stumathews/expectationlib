@@ -1,7 +1,5 @@
 #pragma once
 #include <vector>
-
-#include "ContactCircumstance.h"
 #include "IObserver.h"
 
 namespace ExpectationLib
@@ -9,7 +7,8 @@ namespace ExpectationLib
 	class Observer final : IObserver
 	{
 	public:
-		std::vector<std::shared_ptr<ContactCircumstance>> Observations;
-		void Observe(const std::shared_ptr<ContactCircumstance>& circumstance) override;
+		std::vector<std::shared_ptr<Observation>> Observations;
+		std::shared_ptr<Observation> Observe(const std::shared_ptr<ICircumstance>& circumstance, std::string context) override;
+		std::shared_ptr<Observation> Observe(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response, const std::string& context) override;
 	};
 }

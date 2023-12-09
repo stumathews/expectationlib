@@ -4,11 +4,10 @@
 
 namespace ExpectationLib
 {
-    class IParty : public IHasId
+    class IParty : public virtual IHasId
 	{
     public:
         virtual std::string GetRole() = 0;
-        std::string GetId() override = 0;
     };
 }
 

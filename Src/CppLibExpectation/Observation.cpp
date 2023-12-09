@@ -21,7 +21,7 @@ namespace ExpectationLib
 		return stimulus->GetSender()->GetId() + stimulus->GetReceiver()->GetId() + response->GetFrom()->GetId() + response->GetId();
 	}
 
-	std::string Observation::Id() const
+	std::string Observation::GetId()
 	{
 		return CreateId(stimulus, response);
 	}

@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
@@ -168,7 +168,6 @@
     <ClCompile Include="ContactResponse.cpp" />
     <ClCompile Include="ContactStimulus.cpp" />
     <ClCompile Include="ContextualFlowsMonitor.cpp" />
-    <ClCompile Include="CppLibExpectation.cpp" />
     <ClCompile Include="ExpectationExistsPatternMatcher.cpp" />
     <ClCompile Include="ExpectedTestSituation.cpp" />
     <ClCompile Include="Observation.cpp" />

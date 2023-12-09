@@ -11,6 +11,7 @@ namespace ExpectationLib
 	{
 	public:
 		virtual ~IObserver() = default;
-		virtual void Observe(const std::shared_ptr<ContactCircumstance>& circumstance) = 0;
+		virtual std::shared_ptr<Observation> Observe(const std::shared_ptr<ICircumstance>& circumstance, std::string context) = 0;
+		virtual std::shared_ptr<Observation> Observe(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response, const std::string& context) = 0;
 	};
 }

@@ -32,9 +32,13 @@ namespace ExpectationLib
 
 	bool StimuliProducesResponseExpectation::Match(const std::shared_ptr<Observation> observation)
 	{
-		return observation->GetStimulus()->GetSender() == stimulus->GetSender() &&
-			observation->GetStimulus()->GetReceiver() == stimulus->GetReceiver() &&
-			observation->GetResponse() == response;
+		const auto sendersMatch = observation->GetStimulus()->GetSender()->GetRole() == stimulus->GetSender()->GetRole() &&
+			                           observation->GetStimulus()->GetSender()->GetId() == stimulus->GetSender()->GetId();
+		const auto receiversMatch = observation->GetStimulus()->GetReceiver()->GetRole() == stimulus->GetReceiver()->GetRole() &&
+			                             observation->GetStimulus()->GetReceiver()->GetId() == stimulus->GetReceiver()->GetId();
+		const auto responseMatches = observation->GetResponse()->GetContext() == response->GetContext();
+
+		return sendersMatch && receiversMatch && responseMatches;
 	}
 
 	std::string StimuliProducesResponseExpectation::GetId()

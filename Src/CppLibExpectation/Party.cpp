@@ -8,7 +8,7 @@ namespace ExpectationLib
 		this->id = id;
 		this->role = role;
 	}
-
+	
 	std::string Party::GetId()
 	{
 		return id;
@@ -18,9 +18,5 @@ namespace ExpectationLib
 	{
 		return role;
 	}
-
-	bool Party::operator==(const Party& other) const
-	{
-		return id == other.id && role == other.role;
-	}
+	
 }

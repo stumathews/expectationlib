@@ -8,11 +8,8 @@ namespace ExpectationLib
 	{
 	public:
 		Party(const std::string& id, const std::string& role = "");
-
 		std::string GetId() override;    
 	    std::string GetRole() override;
-	    
-	    bool operator==(const Party& other) const;
 
 	private:
 	    

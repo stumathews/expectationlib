@@ -18,7 +18,7 @@ namespace ExpectationLib
         Observation(const std::shared_ptr<ICircumstance>& circumstance, const std::string& context);
 
         /// <summary>
-        /// Reconstruct an Observation Id from its constituent parts
+        /// Reconstruct an Observation GetId from its constituent parts
         /// </summary>
         /// <param name="stimulus">Stimulus</param>
         /// <param name="response">Context</param>
@@ -26,7 +26,7 @@ namespace ExpectationLib
         static std::string CreateId(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response);
 
         /// <inheritdoc />
-        std::string Id() const;
+        std::string GetId() override;
 
         std::shared_ptr<IStimulus> GetStimulus() { return stimulus; }
         std::shared_ptr<IResponse> GetResponse() { return response; }

@@ -3,8 +3,18 @@
 
 namespace ExpectationLib
 {
-	void Observer::Observe(const std::shared_ptr<ContactCircumstance>& circumstance)
+	std::shared_ptr<Observation> Observer::Observe(const std::shared_ptr<ICircumstance>& circumstance,
+	                                               const std::string context = "")
 	{
-		Observations.push_back(circumstance);
+		return Observe(circumstance->GetStimulus(), circumstance->GetResponse(), context);
+	}
+
+	std::shared_ptr<Observation> Observer::Observe(const std::shared_ptr<IStimulus>& stimulus,
+	                                               const std::shared_ptr<IResponse>& response,
+	                                               const std::string& context = "")
+	{
+		auto observation = std::make_shared<Observation>(stimulus, response, context);
+		Observations.push_back(observation);
+		return observation;
 	}
 }
