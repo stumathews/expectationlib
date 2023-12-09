@@ -7,6 +7,8 @@ namespace ExpectationLib
 	{
 	public:
 		virtual ~IHasId() = default;
+
+		// Unique identifier
 		virtual std::string GetId() = 0;
 	};
 }

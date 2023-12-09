@@ -1,5 +1,7 @@
 #pragma once
 #include <memory>
+
+#include "ContactCircumstance.h"
 #include "ContactStimulus.h"
 #include "ICircumstance.h"
 

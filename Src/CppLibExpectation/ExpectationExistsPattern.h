@@ -7,13 +7,13 @@
 
 namespace ExpectationLib
 {	
-	class ExpectationExistsPatternMatcher final : public IExpectedObservationsPattern
+	class ExpectationExistsPattern final : public IExpectedObservationsPattern
 	{
 	public:
 	    std::shared_ptr<StimuliProducesResponseExpectation> stimuliProducesResponseExpectation;
 	    std::vector<std::shared_ptr<Observation>> Observations;
 
-	    ExpectationExistsPatternMatcher(const std::shared_ptr<StimuliProducesResponseExpectation>& stimuliProducesResponseExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
+	    ExpectationExistsPattern(const std::shared_ptr<StimuliProducesResponseExpectation>& stimuliProducesResponseExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
 
 	    bool Match() override;
 	};

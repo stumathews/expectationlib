@@ -4,7 +4,7 @@
 
 namespace ExpectationLib
 {    
-	class Party final : public IParty
+	class Party final : public virtual IParty
 	{
 	public:
 		Party(const std::string& id, const std::string& role = "");

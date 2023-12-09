@@ -1,5 +1,4 @@
 #pragma once
-#include "ContactResponse.h"
 #include "ICircumstance.h"
 #include "IExpectation.h"
 
@@ -10,8 +9,7 @@ namespace ExpectationLib
     public:
         StimuliProducesResponseExpectation(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response);
         StimuliProducesResponseExpectation(const std::shared_ptr<ICircumstance>& circumstance);
-
-        std::string Id() const;
+        
         std::string ToString() override;
         static std::string CreateId(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response);
         bool Match(std::shared_ptr<Observation> observation) override;

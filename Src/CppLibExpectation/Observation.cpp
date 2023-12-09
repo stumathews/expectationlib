@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "Observation.h"
 
 namespace ExpectationLib

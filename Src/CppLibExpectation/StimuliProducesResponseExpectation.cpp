@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "StimuliProducesResponseExpectation.h"
 
 namespace ExpectationLib
@@ -13,11 +12,6 @@ namespace ExpectationLib
 	{
 		stimulus = circumstance->GetStimulus();
 		response = circumstance->GetResponse();
-	}
-
-	std::string StimuliProducesResponseExpectation::Id() const
-	{
-		return CreateId(stimulus, response);
 	}
 
 	std::string StimuliProducesResponseExpectation::ToString()
@@ -43,7 +37,7 @@ namespace ExpectationLib
 
 	std::string StimuliProducesResponseExpectation::GetId()
 	{
-	    return Id();
+	    return CreateId(stimulus, response);
 	}
 
 	std::shared_ptr<IStimulus> StimuliProducesResponseExpectation::GetStimulus()

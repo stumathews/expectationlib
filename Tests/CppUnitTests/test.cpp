@@ -1,16 +1,15 @@
 #include "pch.h"
-
 #include "ContactCircumstance.h"
+#include "ContactCircumstanceBuilder.h"
 #include "ContactResponse.h"
 #include "ContactStimulus.h"
 #include "ContextualFlowsMonitor.h"
-#include "ExpectationExistsPatternMatcher.h"
+#include "ExpectationExistsPattern.h"
 #include "Observer.h"
 #include "OrderedExpectedObservationsPattern.h"
 #include "Party.h"
 #include "SequentialExpectedObservationsPattern.h"
 #include "StimuliProducesResponseExpectation.h"
-
 #include "ExpectedTestSituation.h"
 
 using namespace ExpectationLib;
@@ -20,7 +19,7 @@ TEST(ExpectationTests, Test_Sender)
     auto senderId = "senderId";
     const auto sender = std::make_shared<Party>(senderId);
 
-  EXPECT_EQ(sender->GetId(), senderId);
+	EXPECT_EQ(sender->GetId(), senderId);
 }
 
 TEST(ExpectationTests, Test_Receiver)
@@ -34,7 +33,9 @@ TEST(ExpectationTests, Test_CustomStimulus)
 {
     auto sender = std::make_shared<Party>("sender1");
     auto receiver = std::make_shared<Party>("receiver");
+
     const auto stimulus = std::make_shared<ContactsStimulus>(sender, receiver);
+
     EXPECT_EQ(stimulus->GetSender(), sender);
     EXPECT_EQ(stimulus->GetReceiver(), receiver);
     EXPECT_EQ(stimulus->GetId(), ContactsStimulus::CreateId(sender, receiver));
@@ -43,13 +44,16 @@ TEST(ExpectationTests, Test_CustomStimulus)
 TEST(ExpectationTests, Test_Overseer)
 {
 	const auto observer = std::make_shared<Observer>();
-    auto sender = std::make_shared<Party>("receiver1");
-    auto receiver = std::make_shared<Party>("receiver2");            
-    auto sender2 = std::make_shared<Party>("receiver2");
+    auto sender = std::make_shared<Party>("sender1");	        
+    auto sender2 = std::make_shared<Party>("sender2");
+    auto receiver = std::make_shared<Party>("receiver1");    
     auto receiver2 = std::make_shared<Party>("receiver2");
+
 	const std::shared_ptr<IStimulus> stimulus1 = std::make_shared<ContactsStimulus>(sender, receiver);
 	const std::shared_ptr<IStimulus> stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+
 	const std::shared_ptr<IResponse> response = std::make_shared<ContactResponse>("responseA", receiver);
+
 	const auto response2 = std::make_shared<ContactResponse>("responseB", receiver);
 
     EXPECT_EQ(observer->Observations.size(), 0);
@@ -65,7 +69,6 @@ TEST(ExpectationTests, Test_Overseer)
     EXPECT_EQ(observation2->GetResponse(), response2);
     EXPECT_EQ(observation2->GetStimulus(), stimulus2);
 }
-
 
 TEST(ExpectationTests, Test_Expectation)
 {
@@ -120,6 +123,7 @@ TEST(ExpectationTests, Test_ExpectationNegative)
 TEST(ExpectationTests, Test_ExpectationExistsPatternMatcher)
 {
 	const auto observer = std::make_shared<Observer>();
+
 	auto sender1 = std::make_shared<Party>("sender1");
 	auto sender2 = std::make_shared<Party>("sender1");
 	auto sender3 = std::make_shared<Party>("sender1");
@@ -128,11 +132,11 @@ TEST(ExpectationTests, Test_ExpectationExistsPatternMatcher)
 	auto receiver3 = std::make_shared<Party>("receiver3");
 
 	const auto stimulus1 = std::make_shared<ContactsStimulus>(sender1, receiver1);
-	auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+	const auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
 	const auto stimulus3 = std::make_shared<ContactsStimulus>(sender3, receiver3);
 
 	const auto response1 = std::make_shared<ContactResponse>("Response1", receiver1);
-	auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
+	const auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", receiver3);
 
 	// Multiple observations occur ...
@@ -142,28 +146,34 @@ TEST(ExpectationTests, Test_ExpectationExistsPatternMatcher)
 
 	// Make an observational expectation
 	auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus2, response2);
+	auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1, response2);
 
 	// Check if the expectation exists in observations
-	const auto matcher = std::make_shared<ExpectationExistsPatternMatcher>(myExpectation1, observer->Observations);
-	EXPECT_TRUE(matcher->Match());
+	const auto matcher1 = std::make_shared<ExpectationExistsPattern>(myExpectation1, observer->Observations);
+	EXPECT_TRUE(matcher1->Match());
+
+	const auto matcher2 = std::make_shared<ExpectationExistsPattern>(myExpectation2, observer->Observations);
+	EXPECT_FALSE(matcher2->Match());
 }
 
 TEST(ExpectationTests, Test_SequentialMatches)
 {
 	const auto observer = std::make_shared<Observer>();
+
 	auto sender1 = std::make_shared<Party>("sender1");
-	auto sender2 = std::make_shared<Party>("sender1");
-	auto sender3 = std::make_shared<Party>("sender1");
+	auto sender2 = std::make_shared<Party>("sender2");
+	auto sender3 = std::make_shared<Party>("sender3");
+
 	auto receiver1 = std::make_shared<Party>("receiver1");
 	auto receiver2 = std::make_shared<Party>("receiver2");
 	auto receiver3 = std::make_shared<Party>("receiver3");
             
 	const auto stimulus1 = std::make_shared<ContactsStimulus>(sender1, receiver1);
-	auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+	const auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
 	const auto stimulus3 = std::make_shared<ContactsStimulus>(sender3, receiver3);
 
 	const auto response1 = std::make_shared<ContactResponse>("Response1", receiver1);
-	auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
+	const auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", receiver3);
             
     // Make observations ob some behaviors between sender and receiver
@@ -199,13 +209,15 @@ bool SequenceEqual(std::vector<T> one, std::vector<T> two)
 TEST(ExpectationTests, Test_OrderedMatches)
 {
 	auto observer = std::make_shared<Observer>();
+
 	// The observer will consume or observe circumstances (circumstantial observations)
 	auto sender1 = std::make_shared<Party>("sender1");
-	auto sender2 = std::make_shared<Party>("sender1");
-	auto sender3 = std::make_shared<Party>("sender1");
-	auto sender4 = std::make_shared<Party>("sender1");
-	auto sender5 = std::make_shared<Party>("sender1");
-	auto sender6 = std::make_shared<Party>("sender1");
+	auto sender2 = std::make_shared<Party>("sender2");
+	auto sender3 = std::make_shared<Party>("sender3");
+	auto sender4 = std::make_shared<Party>("sender4");
+	auto sender5 = std::make_shared<Party>("sender5");
+	auto sender6 = std::make_shared<Party>("sender6");
+
 	auto receiver1 = std::make_shared<Party>("receiver1");
 	auto receiver2 = std::make_shared<Party>("receiver2");
 	auto receiver3 = std::make_shared<Party>("receiver3");
@@ -214,26 +226,26 @@ TEST(ExpectationTests, Test_OrderedMatches)
 	auto receiver6 = std::make_shared<Party>("receiver6");
             
 	const auto stimulus1 = std::make_shared<ContactsStimulus>(sender1, receiver1);
-	auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+	const auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
 	const auto stimulus3 = std::make_shared<ContactsStimulus>(sender3, receiver3);
 	const auto stimulus4 = std::make_shared<ContactsStimulus>(sender4, receiver4);
 	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
 	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
 
 	const auto response1 = std::make_shared<ContactResponse>("Response1", receiver1);
-	auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
+	const auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", receiver3);
 	const auto response4 = std::make_shared<ContactResponse>("Response4", receiver4);
 	const auto response5 = std::make_shared<ContactResponse>("Response5", receiver5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", receiver6);
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared< ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared< ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared< ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared< ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared< ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared< ContactCircumstance>(stimulus6, response6->GetContext());
+    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
             
 	// Simulate/Observe some circumstances (outcomes)...
 	observer->Observe(circumstance1,""); // 1) we expect 
@@ -254,17 +266,13 @@ TEST(ExpectationTests, Test_OrderedMatches)
 
 	// Test: ensure the each expected outcomes/prediction come sometime after the prior (doesn't have to be sequentially, but must come after the previous expected outcome)
 	auto matcher1 = std::make_shared< OrderedExpectedObservationsPattern>(orderOfExpectedOutcomes, observer->Observations);
-
-	EXPECT_TRUE(matcher1->Match());
-
-	orderOfExpectedOutcomes = { myExpectation1,  myExpectation3, myExpectation4 };
+	EXPECT_TRUE(matcher1->Match());	
 	EXPECT_TRUE(SequenceEqual(matcher1->MatchedExpectations, orderOfExpectedOutcomes));
 	EXPECT_EQ(matcher1->UnmatchedExpectations().size(), 0);
 
 	// negative case: Some expectations are not met
 
 	observer = std::make_shared<Observer>();
-
 
 	auto myExpectation5 = std::make_shared<StimuliProducesResponseExpectation>(circumstance5);
 	auto myExpectation6 = std::make_shared<StimuliProducesResponseExpectation>(circumstance6);
@@ -279,8 +287,7 @@ TEST(ExpectationTests, Test_OrderedMatches)
 	observer->Observe(stimulus4, response4,""); // we expect
 	// missing expectation 5
 	// missing expectation 6
-
-	
+		
 	matcher1 = std::make_shared< OrderedExpectedObservationsPattern>(orderOfExpectedOutcomes, observer->Observations);
 
 	// The expected observational behavior was not found
@@ -291,38 +298,38 @@ TEST(ExpectationTests, Test_OrderedMatches)
 	EXPECT_TRUE(SequenceEqual(matcher1->MatchedExpectations,  orderOfExpectedOutcomes));
 
 	// We did not match expectations 5 and 6
-	orderOfExpectedOutcomes = { myExpectation5, myExpectation6 };
-	EXPECT_TRUE(SequenceEqual(matcher1->UnmatchedExpectations(), orderOfExpectedOutcomes));
+	std::vector<std::shared_ptr<IExpectation>> orderOfUnmatchedExpectations = { myExpectation5, myExpectation6 };
+	EXPECT_TRUE(SequenceEqual(matcher1->UnmatchedExpectations(), orderOfUnmatchedExpectations));
 }
 
 TEST(ExpectationTests, Test_ExpectedTestSituationFlowPass)
 {
-	auto cloudRequester = std::make_shared<Party>("cloudRequesterId");
-    auto onPremComponent = std::make_shared<Party>( "onPremComponentId");
-    auto primaryNode = std::make_shared<Party>( "primaryNodeId");
-    auto secondaryNode = std::make_shared<Party>("secondaryNodeId");
+	auto party1 = std::make_shared<Party>("party1");
+    auto party2 = std::make_shared<Party>( "party2");
+    auto party3 = std::make_shared<Party>( "party3");
+    auto party4 = std::make_shared<Party>("party4");
 
-    std::string transactionId = "NewTxnId123";
+    std::string transactionId = "SharedContextString";
 
     // Model a specific hard-coded situation as the ordered expected behavior of 4 specific parties  
-	const auto flow = std::make_shared<ExpectedTestSituation>(transactionId, cloudRequester, onPremComponent, primaryNode, secondaryNode);
+	const auto situation = std::make_shared<ExpectedTestSituation>(transactionId, party1, party2, party3, party4);
 
-	const auto contactSituation1 = ContactCircumstanceBuilder::Build(cloudRequester, onPremComponent, transactionId, primaryNode);
-	const auto contactSituation2 = ContactCircumstanceBuilder::Build(primaryNode, secondaryNode, transactionId);
-	const auto contactSituation3 = ContactCircumstanceBuilder::Build(secondaryNode, primaryNode, transactionId);
-	const auto contactSituation4 = ContactCircumstanceBuilder::Build(primaryNode, cloudRequester, transactionId);
+	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2, transactionId, party3);
+	const auto contactSituation2 = ContactCircumstanceBuilder::Build(party3, party4, transactionId);
+	const auto contactSituation3 = ContactCircumstanceBuilder::Build(party4, party3, transactionId);
+	const auto contactSituation4 = ContactCircumstanceBuilder::Build(party3, party1, transactionId);
 
-	const auto overseer = new Observer();
+	const auto overseer = std::make_shared<Observer>();
 
-    overseer->Observe(contactSituation1,""); // cloudRequester -> onPremComponent
-    overseer->Observe(contactSituation2,""); // primary -> secondary
-    overseer->Observe(contactSituation3,""); // secondary -> primary
-    overseer->Observe(contactSituation4, ""); // primary -> cloudRequester
+    overseer->Observe(contactSituation1,""); // party1 -> party2
+    overseer->Observe(contactSituation2,""); // party3 -> party4
+    overseer->Observe(contactSituation3,""); // party4 -> party3
+    overseer->Observe(contactSituation4, ""); // party3 -> party1
 
-    EXPECT_TRUE(flow->Match(overseer->Observations));
-    EXPECT_EQ(flow->GetUnmatchedExpectations().size(), 0);
-    EXPECT_EQ(flow->GetMatchedExpectations().size(), 4);
-    EXPECT_GT(flow->ToString().length(), 0);
+    EXPECT_TRUE(situation->Match(overseer->Observations));
+    EXPECT_EQ(situation->GetUnmatchedExpectations().size(), 0);
+    EXPECT_EQ(situation->GetMatchedExpectations().size(), 4);
+    EXPECT_GT(situation->ToString().length(), 0);
 }
 
 
@@ -333,15 +340,15 @@ TEST(ExpectationTests, Test_ExpectedTestSituationFlowFail)
 	const auto party3 = std::make_shared<Party>( "party3");
 	const auto party4 = std::make_shared<Party>("party4");
 
-	std::string transactionId = "NewTxnId123";
-	const auto flow = new ExpectedTestSituation(transactionId, party1, party2, party3, party4);
+	std::string transactionId = "SharedContextString";
+	const auto flow = std::make_shared<ExpectedTestSituation>(transactionId, party1, party2, party3, party4);
 
 	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2, transactionId, party3);
 	// auto contactSituation2 = ContactCircumstanceBuilder.Build(party3, party4, transactionId);
 	// auto contactSituation3 = ContactCircumstanceBuilder.Build(party4, party3, transactionId);
 	const auto contactSituation4 = ContactCircumstanceBuilder::Build(party3, party1, transactionId);
 
-	const auto overseer = new Observer();
+	const auto overseer = std::make_shared<Observer>();
 
 	overseer->Observe(contactSituation1, ""); // party1 -> party2 (expectation order matched)
 	// overseer.Observe(contactSituation2); // party3 -> party4 (expectation not found, tf not met)
@@ -354,39 +361,41 @@ TEST(ExpectationTests, Test_ExpectedTestSituationFlowFail)
 	EXPECT_GT(flow->ToString().length(), 0);
 }
 
-std::shared_ptr<ContactCircumstance> MakeContactCircumstance(std::string senderId, std::string receiverId, std::string contextualResponseId)
-        {
-            auto testSender = std::make_shared<Party>(senderId);
-            auto testReceiver = std::make_shared<Party>(receiverId);
-            auto stimuli = std::make_shared<ContactsStimulus>(testSender, testReceiver);
-            return std::make_shared< ContactCircumstance>(stimuli, contextualResponseId, testReceiver);
-        }
+std::shared_ptr<ContactCircumstance> MakeContactCircumstance(const std::string& senderId, const std::string& receiverId, const std::string& contextualResponseId)
+{
+    auto testSender = std::make_shared<Party>(senderId);
+    auto testReceiver = std::make_shared<Party>(receiverId);
+    auto stimuli = std::make_shared<ContactsStimulus>(testSender, testReceiver);
+    return std::make_shared< ContactCircumstance>(stimuli, contextualResponseId, testReceiver);
+}
 
 TEST(ExpectationTests, Test_ContextualFlowsMonitor)
 {
-	const std::string transactionId = "NewTxnId123";
-    auto overseer = ContextualFlowsMonitor::Get()->GetOverseer(transactionId);
+	const std::string sharedContextString = "SharedContextString";
+    auto overseer = ContextualFlowsMonitor::Get()->GetOverseer(sharedContextString);
 
     const std::string testSenderId = "testSenderId";
     const std::string testReceiverId = "testReceiverId";
 
-	const auto circumstance1 = MakeContactCircumstance(testSenderId, testReceiverId, transactionId);
-	const auto circumstance2 = MakeContactCircumstance(testSenderId, testReceiverId, transactionId);
-	const auto circumstance3 = MakeContactCircumstance(testSenderId, testReceiverId, transactionId);
+	const auto circumstance1 = MakeContactCircumstance(testSenderId, testReceiverId, sharedContextString);
+	const auto circumstance2 = MakeContactCircumstance(testSenderId, testReceiverId, sharedContextString);
+	const auto circumstance3 = MakeContactCircumstance(testSenderId, testReceiverId, sharedContextString);
     
     overseer->Observe(circumstance1, "");
     overseer->Observe(circumstance2, "");
 
-    ContextualFlowsMonitor::Get()->RemoveOverseer(transactionId);
+    ContextualFlowsMonitor::Get()->RemoveOverseer(sharedContextString);
 
-    overseer = ContextualFlowsMonitor::Get()->GetOverseer(transactionId);
+	// Creates a new one as the previous one was removed
+    overseer = ContextualFlowsMonitor::Get()->GetOverseer(sharedContextString);
     EXPECT_EQ(overseer->Observations.size(), 0);
-    ContextualFlowsMonitor::Get()->RemoveOverseer(transactionId);
-    
-    overseer = ContextualFlowsMonitor::Get()->GetOverseer(transactionId);
+    ContextualFlowsMonitor::Get()->RemoveOverseer(sharedContextString);
+
+	// Creates a new one as the previous one was removed
+    overseer = ContextualFlowsMonitor::Get()->GetOverseer(sharedContextString);
     overseer->Observe(circumstance3, "");
     EXPECT_EQ(overseer->Observations.size(), 1);
     
-    ContextualFlowsMonitor::Get()->RemoveOverseer(transactionId);
+    ContextualFlowsMonitor::Get()->RemoveOverseer(sharedContextString);
 }
 

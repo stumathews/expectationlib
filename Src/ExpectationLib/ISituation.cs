@@ -1,7 +1,7 @@
 ﻿namespace ExpectationLib;
 
 /// <summary>
-/// A situation is a specific collection circumstances
+/// A situation is a specific coordinated collection circumstances
 /// </summary>
 public interface ISituation
 {

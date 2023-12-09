@@ -144,7 +144,7 @@
     <ClInclude Include="ContactResponse.h" />
     <ClInclude Include="ContactStimulus.h" />
     <ClInclude Include="ContextualFlowsMonitor.h" />
-    <ClInclude Include="ExpectationExistsPatternMatcher.h" />
+    <ClInclude Include="ExpectationExistsPattern.h" />
     <ClInclude Include="ExpectedTestSituation.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="ICircumstance.h" />
@@ -168,7 +168,7 @@
     <ClCompile Include="ContactResponse.cpp" />
     <ClCompile Include="ContactStimulus.cpp" />
     <ClCompile Include="ContextualFlowsMonitor.cpp" />
-    <ClCompile Include="ExpectationExistsPatternMatcher.cpp" />
+    <ClCompile Include="ExpectationExistsPattern.cpp" />
     <ClCompile Include="ExpectedTestSituation.cpp" />
     <ClCompile Include="Observation.cpp" />
     <ClCompile Include="Observer.cpp" />

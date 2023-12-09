@@ -1,9 +1,8 @@
-#include "pch.h"
-#include "ExpectationExistsPatternMatcher.h"
+#include "ExpectationExistsPattern.h"
 
 namespace ExpectationLib
 {
-	ExpectationExistsPatternMatcher::ExpectationExistsPatternMatcher(
+	ExpectationExistsPattern::ExpectationExistsPattern(
 		const std::shared_ptr<StimuliProducesResponseExpectation>& stimuliProducesResponseExpectation,
 		const std::vector<std::shared_ptr<Observation>>& observations)
 	{
@@ -11,7 +10,7 @@ namespace ExpectationLib
 		this->Observations = observations;
 	}
 
-	bool ExpectationExistsPatternMatcher::Match()
+	bool ExpectationExistsPattern::Match()
 	{
 		for (const auto& o : Observations) 
 		{

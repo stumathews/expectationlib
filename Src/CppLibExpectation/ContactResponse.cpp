@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ContactResponse.h"
 
 namespace ExpectationLib

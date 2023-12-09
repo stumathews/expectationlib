@@ -1,4 +1,3 @@
-#include "pch.h"
 #include "ContactCircumstance.h"
 
 #include "ContactResponse.h"
