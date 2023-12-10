@@ -1,8 +1,8 @@
-#include "OrderedExpectations.h"
+#include "OrderedExpectationsPattern.h"
 
 namespace ExpectationLib
 {
-	OrderedExpectations::OrderedExpectations(
+	OrderedExpectationsPattern::OrderedExpectationsPattern(
 		const std::vector<std::shared_ptr<IExpectation>>& expectations,
 		const std::vector<std::shared_ptr<Observation>> observations)
 	{
@@ -10,7 +10,7 @@ namespace ExpectationLib
 		Observations = observations;
 	}
 
-	std::vector<std::shared_ptr<IExpectation>> OrderedExpectations::UnmatchedExpectations()
+	std::vector<std::shared_ptr<IExpectation>> OrderedExpectationsPattern::UnmatchedExpectations()
 	{
 		std::vector<std::shared_ptr<IExpectation>> unmatched;
 		for (auto expectation : Expectations) 
@@ -23,7 +23,7 @@ namespace ExpectationLib
 		return unmatched;
 	}
 
-	bool OrderedExpectations::Match()
+	bool OrderedExpectationsPattern::Match()
 	{
 		int countMatches = 0;
 		int i = 0;

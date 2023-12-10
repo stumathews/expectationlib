@@ -1,13 +1,13 @@
-#include "ConsecutiveExpectations.h"
+#include "ConsecutiveExpectationsPattern.h"
 
-ExpectationLib::ConsecutiveExpectations::ConsecutiveExpectations(
+ExpectationLib::ConsecutiveExpectationsPattern::ConsecutiveExpectationsPattern(
 	const std::vector<std::shared_ptr<IExpectation>>& expectations,
 	const std::vector<std::shared_ptr<Observation>>& observations): expectations(expectations), observations(observations)
 {
 			
 }
 
-bool ExpectationLib::ConsecutiveExpectations::Match()
+bool ExpectationLib::ConsecutiveExpectationsPattern::Match()
 {
 	auto matches = 0;
 	for (auto o = 0; o < observations.size(); o++)

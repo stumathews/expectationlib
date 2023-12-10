@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
 
-#include "IExpectedObservationsPattern.h"
+#include "IExpectedPattern.h"
 #include "Observation.h"
 #include "StimuliProducesResponseExpectation.h"
 
 namespace ExpectationLib
 {	
-	class ExpectationExistsPattern final : public IExpectedObservationsPattern
+	class ExpectationExistsPattern final : public IExpectedPattern
 	{
 	public:
 	    std::shared_ptr<StimuliProducesResponseExpectation> stimuliProducesResponseExpectation;

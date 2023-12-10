@@ -1,6 +1,6 @@
 #include "pch.h"
 
-#include "ConsecutiveExpectations.h"
+#include "ConsecutiveExpectationsPattern.h"
 #include "ContactCircumstance.h"
 #include "ContactCircumstanceBuilder.h"
 #include "ContactResponse.h"
@@ -8,12 +8,12 @@
 #include "ContextualFlowsMonitor.h"
 #include "ExpectationExistsPattern.h"
 #include "Observer.h"
-#include "OrderedExpectations.h"
+#include "OrderedExpectationsPattern.h"
 #include "Party.h"
-#include "ExactExpectations.h"
+#include "ExactExpectationsPattern.h"
 #include "StimuliProducesResponseExpectation.h"
 #include "ExpectedTestSituation.h"
-#include "RepeatedExpectation.h"
+#include "RepeatsExpectationPattern.h"
 
 using namespace ExpectationLib;
 
@@ -192,8 +192,8 @@ TEST(ExpectationTests, Test_ExactExpectations)
 	std::vector<std::shared_ptr<IExpectation>> expectedOrder1 = { myExpectation1, myExpectation2, myExpectation3  };
 	std::vector<std::shared_ptr<IExpectation>> expectedOrder2 = { myExpectation1,  myExpectation3, myExpectation2 };
 
-	const auto matcher1 = std::make_shared<ExactExpectations>(expectedOrder1, observer->Observations);
-	const auto matcher2 = std::make_shared<ExactExpectations>(expectedOrder2, observer->Observations);
+	const auto matcher1 = std::make_shared<ExactExpectationsPattern>(expectedOrder1, observer->Observations);
+	const auto matcher2 = std::make_shared<ExactExpectationsPattern>(expectedOrder2, observer->Observations);
 
     EXPECT_TRUE(matcher1->Match());
     EXPECT_FALSE(matcher2->Match());
@@ -268,7 +268,7 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	std::vector<std::shared_ptr<IExpectation>> orderOfExpectedOutcomes = { myExpectation1, myExpectation3, myExpectation4  };
 
 	// Test: ensure the each expected outcomes/prediction come sometime after the prior (doesn't have to be sequentially, but must come after the previous expected outcome)
-	auto matcher1 = std::make_shared< OrderedExpectations>(orderOfExpectedOutcomes, observer->Observations);
+	auto matcher1 = std::make_shared< OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
 	EXPECT_TRUE(matcher1->Match());	
 	EXPECT_TRUE(SequenceEqual(matcher1->MatchedExpectations, orderOfExpectedOutcomes));
 	EXPECT_EQ(matcher1->UnmatchedExpectations().size(), 0);
@@ -291,7 +291,7 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	// missing expectation 5
 	// missing expectation 6
 		
-	matcher1 = std::make_shared< OrderedExpectations>(orderOfExpectedOutcomes, observer->Observations);
+	matcher1 = std::make_shared< OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
 
 	// The expected observational behavior was not found
 	EXPECT_FALSE(matcher1->Match());
@@ -440,21 +440,21 @@ TEST(ExpectationTests, Test_RepeatedExpectation)
 	auto repeatExpectation = std::make_shared<StimuliProducesResponseExpectation>(circumstance2);
 
 	// Expect the 2nd circumstance to repeat 3 times
-	const auto repeatedPattern = std::make_shared<RepeatedExpectation>(3, RepeatedExpectation::Pattern::Ordered, repeatExpectation, observer->Observations);
+	const auto repeatedPattern = std::make_shared<RepeatsExpectationPattern>(3, RepeatsExpectationPattern::Pattern::Ordered, repeatExpectation, observer->Observations);
 	EXPECT_TRUE(repeatedPattern->Match());
 
 	// Do not expect the 2nd circumstance to repeat 4 times
-	const auto repeatedPattern2 = std::make_shared<RepeatedExpectation>(4, RepeatedExpectation::Pattern::Ordered, repeatExpectation, observer->Observations);
+	const auto repeatedPattern2 = std::make_shared<RepeatsExpectationPattern>(4, RepeatsExpectationPattern::Pattern::Ordered, repeatExpectation, observer->Observations);
 	EXPECT_FALSE(repeatedPattern2->Match());
 
 	// Expect the 1st circumstance  to repeat 3 times
 	repeatExpectation = std::make_shared<StimuliProducesResponseExpectation>(circumstance1);
-	const auto repeatedPattern3 = std::make_shared<RepeatedExpectation>(3, RepeatedExpectation::Pattern::Ordered, repeatExpectation, observer->Observations);
+	const auto repeatedPattern3 = std::make_shared<RepeatsExpectationPattern>(3, RepeatsExpectationPattern::Pattern::Ordered, repeatExpectation, observer->Observations);
 	EXPECT_TRUE(repeatedPattern3->Match());
 
 	// Expect the 3rd circumstance  to repeat 5 times
 	repeatExpectation = std::make_shared<StimuliProducesResponseExpectation>(circumstance3);
-	const auto repeatedPattern4 = std::make_shared<RepeatedExpectation>(5, RepeatedExpectation::Pattern::Ordered, repeatExpectation, observer->Observations);
+	const auto repeatedPattern4 = std::make_shared<RepeatsExpectationPattern>(5, RepeatsExpectationPattern::Pattern::Ordered, repeatExpectation, observer->Observations);
 	EXPECT_TRUE(repeatedPattern4->Match());
 
 	// Expect the 2nd circumstance to repear sequentially 6 times
@@ -466,8 +466,9 @@ TEST(ExpectationTests, Test_RepeatedExpectation)
 	observer->Observe(circumstance3, "");
 	observer->Observe(circumstance3, "");
 	repeatExpectation = std::make_shared<StimuliProducesResponseExpectation>(circumstance3);
-	const auto repeatedPattern5 = std::make_shared<RepeatedExpectation>(6, RepeatedExpectation::Pattern::Exact, repeatExpectation, observer->Observations);
+	const auto repeatedPattern5 = std::make_shared<RepeatsExpectationPattern>(6, RepeatsExpectationPattern::Pattern::Exact, repeatExpectation, observer->Observations);
 	EXPECT_TRUE(repeatedPattern5->Match());
+
 }
 
 TEST(ExpectationTests, ConsecutiveExpectations)
@@ -501,28 +502,28 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	
 	std::vector<std::shared_ptr<IExpectation>> expectedOrder1 = { myExpectation1, myExpectation2, myExpectation3  };
 
-	const auto matcher1 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher1 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher1->Match());
 
 	observer = std::make_shared<Observer>();
 	observer->Observe(stimulus1, response1, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus3, response3, ""); // expect
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus3, response3, ""); // expect *
 
-	const auto matcher2 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher2 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher2->Match());
 
 	observer = std::make_shared<Observer>();
 	observer->Observe(stimulus1, response1, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus3, response3, ""); // expect
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus3, response3, ""); // expect *
 	observer->Observe(stimulus1, response1, ""); // ignore
 
-	const auto matcher3 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher3 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher3->Match());
 
@@ -531,12 +532,12 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	observer->Observe(stimulus2, response2, ""); // ignore
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus3, response3, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus3, response3, ""); // expect
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus3, response3, ""); // expect *
 	observer->Observe(stimulus1, response1, ""); // ignore
 
-	const auto matcher4 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher4 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher4->Match());
 
@@ -545,13 +546,13 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	observer->Observe(stimulus2, response2, ""); // ignore
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus2, response2, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus3, response3, ""); // expect
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus3, response3, ""); // expect *
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus2, response2, ""); // ignore
 
-	const auto matcher5 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher5 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher5->Match());
 
@@ -560,26 +561,26 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	observer->Observe(stimulus2, response2, ""); // ignore
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus2, response2, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus2, response2, ""); // ignore
 
-	const auto matcher6 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher6 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_FALSE(matcher6->Match());
 
 	observer = std::make_shared<Observer>();
 	observer->Observe(stimulus1, response1, ""); // ignore
-	observer->Observe(stimulus2, response2, ""); // ignore
 	observer->Observe(stimulus1, response1, ""); // ignore
 	observer->Observe(stimulus2, response2, ""); // ignore
-	observer->Observe(stimulus1, response1, ""); // expect
-	observer->Observe(stimulus2, response2, ""); // expect
-	observer->Observe(stimulus3, response3, ""); // expect
+	observer->Observe(stimulus2, response2, ""); // ignore
+	observer->Observe(stimulus1, response1, ""); // expect *
+	observer->Observe(stimulus2, response2, ""); // expect *
+	observer->Observe(stimulus3, response3, ""); // expect *
 
-	const auto matcher7 = std::make_shared<ConsecutiveExpectations>(expectedOrder1, observer->Observations);
+	const auto matcher7 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher7->Match());
 

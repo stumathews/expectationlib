@@ -2,12 +2,12 @@
 #include <vector>
 
 #include "IExpectation.h"
-#include "IExpectedObservationsPattern.h"
+#include "IExpectedPattern.h"
 #include "Observation.h"
 
 namespace ExpectationLib
 {
-	class RepeatedExpectation final :  public IExpectedObservationsPattern
+	class RepeatsExpectationPattern final :  public IExpectedPattern
 	{
 	public:
 
@@ -17,7 +17,7 @@ namespace ExpectationLib
 			Ordered
 		};
 
-		RepeatedExpectation(int minimumFrequencyRequirement, Pattern pattern, std::shared_ptr<IExpectation> repeatedExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
+		RepeatsExpectationPattern(int minimumFrequencyRequirement, Pattern pattern, std::shared_ptr<IExpectation> repeatedExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
 		bool Match() override;
 	private:
 		

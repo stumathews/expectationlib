@@ -4,13 +4,13 @@
 
 namespace ExpectationLib
 {
-	class ExactExpectations : public IExpectedObservationsPattern
+	class ExactExpectationsPattern : public IExpectedPattern
 	{
 	public:
 	    std::vector<std::shared_ptr<IExpectation>> Expectations;
 	    std::vector<std::shared_ptr<Observation>> Observations;
 
-	    ExactExpectations(const std::vector<std::shared_ptr<IExpectation>>& expectations, const std::vector<std::shared_ptr<Observation>>& observations)
+	    ExactExpectationsPattern(const std::vector<std::shared_ptr<IExpectation>>& expectations, const std::vector<std::shared_ptr<Observation>>& observations)
 		{
 	        Expectations = expectations;
 	        Observations = observations;

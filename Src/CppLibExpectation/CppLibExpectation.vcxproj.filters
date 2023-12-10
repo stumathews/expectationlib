@@ -39,10 +39,10 @@
     <ClInclude Include="StimuliProducesResponseExpectation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ExactExpectations.h">
+    <ClInclude Include="ExactExpectationsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderedExpectations.h">
+    <ClInclude Include="OrderedExpectationsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpectedTestSituation.h">
@@ -69,7 +69,7 @@
     <ClInclude Include="IObserver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="IExpectedObservationsPattern.h">
+    <ClInclude Include="IExpectedPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ICircumstance.h">
@@ -84,10 +84,10 @@
     <ClInclude Include="ContextualFlowsMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="RepeatedExpectation.h">
+    <ClInclude Include="RepeatsExpectationPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ConsecutiveExpectations.h">
+    <ClInclude Include="ConsecutiveExpectationsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -107,7 +107,7 @@
     <ClCompile Include="ContactResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrderedExpectations.cpp">
+    <ClCompile Include="OrderedExpectationsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExpectedTestSituation.cpp">
@@ -131,10 +131,10 @@
     <ClCompile Include="ExpectationExistsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="RepeatedExpectation.cpp">
+    <ClCompile Include="RepeatsExpectationPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ConsecutiveExpectations.cpp">
+    <ClCompile Include="ConsecutiveExpectationsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
