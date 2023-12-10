@@ -13,9 +13,9 @@ namespace ExpectationLib
     class Observation : IHasId
 	{
     public:
-        Observation(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response, const std::string& context);
+        Observation(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IResponse>& response, const std::string& observationContext);
 
-        Observation(const std::shared_ptr<ICircumstance>& circumstance, const std::string& context);
+        Observation(const std::shared_ptr<ICircumstance>& circumstance, const std::string& observationContext);
 
         /// <summary>
         /// Reconstruct an Observation GetId from its constituent parts

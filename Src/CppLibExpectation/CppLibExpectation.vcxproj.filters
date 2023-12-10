@@ -39,10 +39,10 @@
     <ClInclude Include="StimuliProducesResponseExpectation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="SequentialExpectedObservationsPattern.h">
+    <ClInclude Include="ExactExpectations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="OrderedExpectedObservationsPattern.h">
+    <ClInclude Include="OrderedExpectations.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ExpectedTestSituation.h">
@@ -84,6 +84,12 @@
     <ClInclude Include="ContextualFlowsMonitor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RepeatedExpectation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ConsecutiveExpectations.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -101,7 +107,7 @@
     <ClCompile Include="ContactResponse.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="OrderedExpectedObservationsPattern.cpp">
+    <ClCompile Include="OrderedExpectations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExpectedTestSituation.cpp">
@@ -123,6 +129,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ExpectationExistsPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RepeatedExpectation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ConsecutiveExpectations.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

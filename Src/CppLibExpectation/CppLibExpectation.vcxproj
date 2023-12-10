@@ -139,6 +139,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="ConsecutiveExpectations.h" />
     <ClInclude Include="ContactCircumstance.h" />
     <ClInclude Include="ContactCircumstanceBuilder.h" />
     <ClInclude Include="ContactResponse.h" />
@@ -158,12 +159,14 @@
     <ClInclude Include="IStimulus.h" />
     <ClInclude Include="Observation.h" />
     <ClInclude Include="Observer.h" />
-    <ClInclude Include="OrderedExpectedObservationsPattern.h" />
+    <ClInclude Include="OrderedExpectations.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="SequentialExpectedObservationsPattern.h" />
+    <ClInclude Include="RepeatedExpectation.h" />
+    <ClInclude Include="ExactExpectations.h" />
     <ClInclude Include="StimuliProducesResponseExpectation.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ConsecutiveExpectations.cpp" />
     <ClCompile Include="ContactCircumstance.cpp" />
     <ClCompile Include="ContactResponse.cpp" />
     <ClCompile Include="ContactStimulus.cpp" />
@@ -172,7 +175,7 @@
     <ClCompile Include="ExpectedTestSituation.cpp" />
     <ClCompile Include="Observation.cpp" />
     <ClCompile Include="Observer.cpp" />
-    <ClCompile Include="OrderedExpectedObservationsPattern.cpp" />
+    <ClCompile Include="OrderedExpectations.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Party.h" />
     <ClCompile Include="pch.cpp">
@@ -181,6 +184,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="RepeatedExpectation.cpp" />
     <ClCompile Include="StimuliProducesResponseExpectation.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

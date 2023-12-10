@@ -4,20 +4,20 @@
 
 namespace ExpectationLib
 {
-	class SequentialExpectedObservationsPattern
+	class ExactExpectations : public IExpectedObservationsPattern
 	{
 	public:
 	    std::vector<std::shared_ptr<IExpectation>> Expectations;
 	    std::vector<std::shared_ptr<Observation>> Observations;
 
-	    SequentialExpectedObservationsPattern(const std::vector<std::shared_ptr<IExpectation>>& expectations, const std::vector<std::shared_ptr<Observation>>& observations)
+	    ExactExpectations(const std::vector<std::shared_ptr<IExpectation>>& expectations, const std::vector<std::shared_ptr<Observation>>& observations)
 		{
 	        Expectations = expectations;
 	        Observations = observations;
 	    }
 
-	    bool Match() const
-	    {
+	    bool Match() override
+		{
 	        if (Expectations.size() != Observations.size()) 
 			{
 	            return false;

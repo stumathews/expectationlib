@@ -9,13 +9,13 @@ namespace ExpectationLib
 {
 	 /// A pattern matcher that expects observations to meet a list expectation that must occur in order
     /// Other observations that do not meet expectation can occur in between
-    class OrderedExpectedObservationsPattern final : public IExpectedObservationsPattern
+    class OrderedExpectations final : public IExpectedObservationsPattern
 	{
     public:
         /// A matcher that expects observations to meet a list expectation that must occur in order
         /// \param expectations Expectations where each must not match before the prior expectation
         /// \param observations Observations that must match the list of ordered expectations
-        OrderedExpectedObservationsPattern(const std::vector<std::shared_ptr<IExpectation>>& expectations, std::vector<std::shared_ptr<Observation>> observations);
+        OrderedExpectations(const std::vector<std::shared_ptr<IExpectation>>& expectations, std::vector<std::shared_ptr<Observation>> observations);
 
         std::vector<std::shared_ptr<Observation>> Observations;
         std::vector<std::shared_ptr<IExpectation>> Expectations;

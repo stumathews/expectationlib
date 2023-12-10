@@ -1,7 +1,7 @@
 #include "ExpectedTestSituation.h"
 
 #include "ContactCircumstanceBuilder.h"
-#include "OrderedExpectedObservationsPattern.h"
+#include "OrderedExpectations.h"
 #include "StimuliProducesResponseExpectation.h"
 
 namespace ExpectationLib
@@ -58,7 +58,7 @@ namespace ExpectationLib
 		const auto expect4 = std::make_shared<StimuliProducesResponseExpectation>(contactCircumstance4);
 
 		const std::vector<std::shared_ptr<IExpectation>> orderedExpectations = { expect1, expect2, expect3, expect4 };
-		const auto matcher = std::make_shared< OrderedExpectedObservationsPattern>(orderedExpectations, observations);
+		const auto matcher = std::make_shared< OrderedExpectations>(orderedExpectations, observations);
 		const bool wasMatch = matcher->Match();
 
 		unmatchedExpectations = matcher->UnmatchedExpectations();
