@@ -6,5 +6,6 @@ namespace ExpectationLib
 	public:
 		virtual ~IExpectedPattern() = default;
 		virtual bool Match() = 0;
+		virtual int GetLastProcessedObservationIndex() = 0;
 	};
 }

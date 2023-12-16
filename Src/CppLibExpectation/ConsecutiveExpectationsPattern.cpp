@@ -22,9 +22,18 @@ bool ExpectationLib::ConsecutiveExpectationsPattern::Match()
 			}
 			
 			matches++;			
-			if(matches == expectations.size()) return true;
+			if(matches == expectations.size()) 
+			{
+				lastMatchedObservationIndex = o;
+				return true;
+			}
 			if(o+1 < observations.size()) o++; // move to next observation, if we still have observations
 		}
 	}
 	return false;
+}
+
+int ExpectationLib::ConsecutiveExpectationsPattern::GetLastProcessedObservationIndex()
+{
+	return lastMatchedObservationIndex;
 }

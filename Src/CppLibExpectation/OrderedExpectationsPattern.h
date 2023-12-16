@@ -22,5 +22,8 @@ namespace ExpectationLib
         std::vector<std::shared_ptr<IExpectation>> UnmatchedExpectations();
         std::vector<std::shared_ptr<IExpectation>> MatchedExpectations;
         bool Match() override;
+        int GetLastProcessedObservationIndex() override;
+    private:
+        int lastMatchedObservationIndex = -1;
 	};
 }

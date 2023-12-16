@@ -12,15 +12,21 @@ namespace ExpectationLib
 
 	bool ExpectationExistsPattern::Match()
 	{
-		for (const auto& o : Observations) 
+		for (auto o = 0; o < Observations.size(); o++) 
 		{
-			if (o->GetStimulus()->GetSender()->GetId() == stimuliProducesResponseExpectation->GetStimulus()->GetSender()->GetId() &&
-				o->GetStimulus()->GetReceiver()->GetId() == stimuliProducesResponseExpectation->GetStimulus()->GetReceiver()->GetId() &&
-				o->GetResponse()->GetId() == stimuliProducesResponseExpectation->GetResponse()->GetId())
+			if (Observations[o]->GetStimulus()->GetSender()->GetId() == stimuliProducesResponseExpectation->GetStimulus()->GetSender()->GetId() &&
+				Observations[o]->GetStimulus()->GetReceiver()->GetId() == stimuliProducesResponseExpectation->GetStimulus()->GetReceiver()->GetId() &&
+				Observations[o]->GetResponse()->GetId() == stimuliProducesResponseExpectation->GetResponse()->GetId())
 			{
+				lastMatchedObservationIndex = o;
 				return true;
 			}
 		}
 		return false;
+	}
+
+	int ExpectationExistsPattern::GetLastProcessedObservationIndex()
+	{
+		return lastMatchedObservationIndex;
 	}
 }

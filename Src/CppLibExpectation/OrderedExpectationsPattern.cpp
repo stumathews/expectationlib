@@ -26,15 +26,25 @@ namespace ExpectationLib
 	bool OrderedExpectationsPattern::Match()
 	{
 		int countMatches = 0;
-		int i = 0;
-		for (auto observation : Observations) 
+		int e = 0;
+		for (auto o = 0; o < Observations.size(); o++) 
 		{
-			if (i > Expectations.size() - 1) continue;
-			if (!Expectations[i]->Match(observation)) continue; // can have other unmatched observations in between
-			MatchedExpectations.push_back(Expectations[i]);
-			i++;
+			if (e > Expectations.size() - 1) continue;
+			if (!Expectations[e]->Match(Observations[o])) continue; // can have other unmatched observations in between
+			MatchedExpectations.push_back(Expectations[e]);
+			if(countMatches == Expectations.size())
+			{
+				lastMatchedObservationIndex = o;
+				return true;
+			}
+			e++;
 			countMatches++;
 		}
 		return countMatches == Expectations.size();
+	}
+
+	int OrderedExpectationsPattern::GetLastProcessedObservationIndex()
+	{
+		return lastMatchedObservationIndex;
 	}
 }

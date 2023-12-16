@@ -30,7 +30,17 @@ namespace ExpectationLib
 	                return false;
 	            }
 	        }
+
+			lastMatchedObservationIndex = Observations.size()-1;
 	        return true;
 	    }
+
+		int GetLastProcessedObservationIndex() override
+	    {
+		    return lastMatchedObservationIndex;
+	    }
+
+	private:
+		int lastMatchedObservationIndex = -1;
 	};
 }

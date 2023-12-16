@@ -18,8 +18,13 @@ bool ExpectationLib::RepeatsExpectationPattern::Match()
 	{
 		expectations.push_back(repeatedExpectation);
 	}
-	
+
 	if(pattern == Pattern::Ordered) return std::make_shared<OrderedExpectationsPattern>(expectations, observations)->Match();
 	if(pattern == Pattern::Exact) return std::make_shared<ExactExpectationsPattern>(expectations, observations)->Match();
 	return false;
+}
+
+int ExpectationLib::RepeatsExpectationPattern::GetLastProcessedObservationIndex()
+{
+	return lastObservationMatchedIndex;
 }
