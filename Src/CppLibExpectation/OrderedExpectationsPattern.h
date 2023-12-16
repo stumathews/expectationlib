@@ -9,7 +9,7 @@ namespace ExpectationLib
 {
 	 /// A pattern matcher that expects observations to meet a list expectation that must occur in order
     /// Other observations that do not meet expectation can occur in between
-    class OrderedExpectationsPattern final : public IExpectedPattern
+    class OrderedExpectationsPattern final : public BaseExpectedPattern
 	{
     public:
         /// A matcher that expects observations to meet a list expectation that must occur in order
@@ -22,8 +22,5 @@ namespace ExpectationLib
         std::vector<std::shared_ptr<IExpectation>> UnmatchedExpectations();
         std::vector<std::shared_ptr<IExpectation>> MatchedExpectations;
         bool Match() override;
-        int GetLastProcessedObservationIndex() override;
-    private:
-        int lastMatchedObservationIndex = -1;
 	};
 }

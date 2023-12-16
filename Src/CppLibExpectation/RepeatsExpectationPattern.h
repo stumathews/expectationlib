@@ -7,7 +7,7 @@
 
 namespace ExpectationLib
 {
-	class RepeatsExpectationPattern final :  public IExpectedPattern
+	class RepeatsExpectationPattern final :  public BaseExpectedPattern
 	{
 	public:
 
@@ -19,7 +19,6 @@ namespace ExpectationLib
 
 		RepeatsExpectationPattern(int minimumFrequencyRequirement, Pattern pattern, std::shared_ptr<IExpectation> repeatedExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
 		bool Match() override;
-		int GetLastProcessedObservationIndex() override;
 
 	private:
 		
@@ -27,7 +26,6 @@ namespace ExpectationLib
 		int minimumFrequencyRequirement;
 		std::shared_ptr<IExpectation> repeatedExpectation;
 		Pattern pattern;
-		int lastObservationMatchedIndex = -1;
 	};
 }
 

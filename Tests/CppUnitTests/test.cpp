@@ -13,6 +13,7 @@
 #include "ExactExpectationsPattern.h"
 #include "StimuliProducesResponseExpectation.h"
 #include "ExpectedTestSituation.h"
+#include "RepeatsExpectationsPattern.h"
 #include "RepeatsExpectationPattern.h"
 
 using namespace ExpectationLib;
@@ -584,4 +585,161 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 
     EXPECT_TRUE(matcher7->Match());
 
+}
+
+TEST(ExpectationTests, RepeatedConsecutiveExpectationsPattern)
+{
+	auto sender1 = std::make_shared<Party>("sender1");
+	auto sender2 = std::make_shared<Party>("sender2");
+	auto sender3 = std::make_shared<Party>("sender3");
+
+	auto receiver1 = std::make_shared<Party>("receiver1");
+	auto receiver2 = std::make_shared<Party>("receiver2");
+	auto receiver3 = std::make_shared<Party>("receiver3");
+            
+	const auto stimulus1 = std::make_shared<ContactsStimulus>(sender1, receiver1);
+	const auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+	const auto stimulus3 = std::make_shared<ContactsStimulus>(sender3, receiver3);
+
+	const auto response1 = std::make_shared<ContactResponse>("Response1", receiver1);
+	const auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
+	const auto response3 = std::make_shared<ContactResponse>("Response3", receiver3);
+	
+	const auto circumstance1 = ContactCircumstanceBuilder::Build(sender1, receiver1, response1->Context);
+	const auto circumstance2 = ContactCircumstanceBuilder::Build(sender2, receiver2, response1->Context);
+	const auto circumstance3 = ContactCircumstanceBuilder::Build(sender3, receiver3, response1->Context);
+		
+	const auto observer = std::make_shared<Observer>();
+
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // expect *
+	observer->Observe(stimulus2, response2); // expect *
+	observer->Observe(stimulus3, response3); // expect *
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // expect *
+	observer->Observe(stimulus2, response2); // expect *
+	observer->Observe(stimulus3, response3); // expect *
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // expect *
+	observer->Observe(stimulus2, response2); // expect *
+	observer->Observe(stimulus3, response3); // expect *
+
+	const auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1, response1);
+	const auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(stimulus2, response2);
+	const auto myExpectation3 = std::make_shared<StimuliProducesResponseExpectation>(stimulus3, response3);
+
+	const std::vector<std::shared_ptr<IExpectation>> expectedOrder1 = { myExpectation1, myExpectation2, myExpectation3  };
+
+	const auto matcher1 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
+
+	auto repeatMatcher1 = RepeatsExpectationsPattern(matcher1, 3);
+	EXPECT_TRUE(repeatMatcher1.Match());
+	EXPECT_EQ(repeatMatcher1.CountRepeats(), 3);
+
+	/* Singular-observation:
+	 * -------------------------
+	 * StimuliProducesResponse
+	 * Repeats Expectation
+	 *
+	 * Multiple observations:
+	 * -----------------------
+	 *
+	 * Consecutive Expectations  ..123..
+	 * Ordered Expectations      1..2...3
+	 * Exact Expectations        123
+	 *
+	 * Groups of Expectations
+	 * -----------------------
+	 *  ...123...123...123       (3 groups of consecutive expectations)
+	 *	...1..2...3...1...2.3   ( 2 groups of ordered expectations)
+	 */
+}
+
+
+TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
+{
+	auto observer = std::make_shared<Observer>();
+
+	// The observer will consume or observe circumstances (circumstantial observations)
+	auto sender1 = std::make_shared<Party>("sender1");
+	auto sender2 = std::make_shared<Party>("sender2");
+	auto sender3 = std::make_shared<Party>("sender3");
+	auto sender4 = std::make_shared<Party>("sender4");
+	auto sender5 = std::make_shared<Party>("sender5");
+	auto sender6 = std::make_shared<Party>("sender6");
+
+	auto receiver1 = std::make_shared<Party>("receiver1");
+	auto receiver2 = std::make_shared<Party>("receiver2");
+	auto receiver3 = std::make_shared<Party>("receiver3");
+	auto receiver4 = std::make_shared<Party>("receiver4");
+	auto receiver5 = std::make_shared<Party>("receiver5");
+	auto receiver6 = std::make_shared<Party>("receiver6");
+            
+	const auto stimulus1 = std::make_shared<ContactsStimulus>(sender1, receiver1);
+	const auto stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
+	const auto stimulus3 = std::make_shared<ContactsStimulus>(sender3, receiver3);
+	const auto stimulus4 = std::make_shared<ContactsStimulus>(sender4, receiver4);
+	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
+	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
+
+	const auto response1 = std::make_shared<ContactResponse>("Response1", receiver1);
+	const auto response2 = std::make_shared<ContactResponse>("Response2", receiver2);
+	const auto response3 = std::make_shared<ContactResponse>("Response3", receiver3);
+	const auto response4 = std::make_shared<ContactResponse>("Response4", receiver4);
+	const auto response5 = std::make_shared<ContactResponse>("Response5", receiver5);
+	const auto response6 = std::make_shared<ContactResponse>("Response6", receiver6);
+
+    // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
+    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
+            
+	// Simulate/Observe some circumstances (outcomes)...
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance4); // 4) we expect this to occur after 3)
+	observer->Observe(circumstance5); // we ignore
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance4); // 4) we expect this to occur after 3)
+	observer->Observe(circumstance5); // we ignore
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance4); // 4) we expect this to occur after 3)
+	observer->Observe(circumstance5); // we ignore
+
+	// Make some expectations/predictions about that circumstances should have occurred
+	auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(circumstance1);
+	auto myExpectation3 = std::make_shared<StimuliProducesResponseExpectation>(circumstance3);
+	auto myExpectation4 = std::make_shared<StimuliProducesResponseExpectation>(circumstance4);
+
+	// Define a situation where an order in which those predictions were expected to occur in
+	std::vector<std::shared_ptr<IExpectation>> orderOfExpectedOutcomes = { myExpectation1, myExpectation3, myExpectation4  };
+
+	// Test: ensure the each expected outcomes/prediction come sometime after the prior (doesn't have to be sequentially, but must come after the previous expected outcome)
+	auto matcher1 = std::make_shared<OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
+	auto matcher2 = std::make_shared<RepeatsExpectationsPattern>(matcher1, 3);
+	EXPECT_TRUE(matcher2->Match());
+	EXPECT_EQ(matcher2->CountRepeats(), 3);
 }

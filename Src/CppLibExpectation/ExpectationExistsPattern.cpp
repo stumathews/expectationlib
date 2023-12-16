@@ -18,15 +18,9 @@ namespace ExpectationLib
 				Observations[o]->GetStimulus()->GetReceiver()->GetId() == stimuliProducesResponseExpectation->GetStimulus()->GetReceiver()->GetId() &&
 				Observations[o]->GetResponse()->GetId() == stimuliProducesResponseExpectation->GetResponse()->GetId())
 			{
-				lastMatchedObservationIndex = o;
-				return true;
+				return FoundAt(o);
 			}
 		}
 		return false;
-	}
-
-	int ExpectationExistsPattern::GetLastProcessedObservationIndex()
-	{
-		return lastMatchedObservationIndex;
 	}
 }

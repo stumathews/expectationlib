@@ -7,7 +7,7 @@
 
 namespace ExpectationLib
 {	
-	class ExpectationExistsPattern final : public IExpectedPattern
+	class ExpectationExistsPattern final : public BaseExpectedPattern
 	{
 	public:
 	    std::shared_ptr<StimuliProducesResponseExpectation> stimuliProducesResponseExpectation;
@@ -16,8 +16,5 @@ namespace ExpectationLib
 	    ExpectationExistsPattern(const std::shared_ptr<StimuliProducesResponseExpectation>& stimuliProducesResponseExpectation, const std::vector<std::shared_ptr<Observation>>& observations);
 
 	    bool Match() override;
-	    int GetLastProcessedObservationIndex() override;
-	private:
-		int lastMatchedObservationIndex = -1;
 	};
 }

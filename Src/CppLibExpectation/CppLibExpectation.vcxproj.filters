@@ -90,6 +90,9 @@
     <ClInclude Include="ConsecutiveExpectationsPattern.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="RepeatsExpectationsPattern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -135,6 +138,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ConsecutiveExpectationsPattern.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="RepeatsExpectationsPattern.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

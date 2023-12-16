@@ -10,7 +10,7 @@ ExpectationLib::ConsecutiveExpectationsPattern::ConsecutiveExpectationsPattern(
 bool ExpectationLib::ConsecutiveExpectationsPattern::Match()
 {
 	auto matches = 0;
-	for (auto o = 0; o < observations.size(); o++)
+	for (auto o = startingObservationIndex; o < observations.size(); o++)
 	{
 		for(auto e = 0; e < expectations.size();e++)
 		{			
@@ -22,18 +22,9 @@ bool ExpectationLib::ConsecutiveExpectationsPattern::Match()
 			}
 			
 			matches++;			
-			if(matches == expectations.size()) 
-			{
-				lastMatchedObservationIndex = o;
-				return true;
-			}
+			if(matches == expectations.size()) { return FoundAt(o); }
 			if(o+1 < observations.size()) o++; // move to next observation, if we still have observations
 		}
 	}
 	return false;
-}
-
-int ExpectationLib::ConsecutiveExpectationsPattern::GetLastProcessedObservationIndex()
-{
-	return lastMatchedObservationIndex;
 }

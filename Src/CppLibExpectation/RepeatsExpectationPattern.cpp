@@ -23,8 +23,3 @@ bool ExpectationLib::RepeatsExpectationPattern::Match()
 	if(pattern == Pattern::Exact) return std::make_shared<ExactExpectationsPattern>(expectations, observations)->Match();
 	return false;
 }
-
-int ExpectationLib::RepeatsExpectationPattern::GetLastProcessedObservationIndex()
-{
-	return lastObservationMatchedIndex;
-}

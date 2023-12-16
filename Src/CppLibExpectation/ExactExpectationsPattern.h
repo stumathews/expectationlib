@@ -4,7 +4,7 @@
 
 namespace ExpectationLib
 {
-	class ExactExpectationsPattern : public IExpectedPattern
+	class ExactExpectationsPattern : public BaseExpectedPattern
 	{
 	public:
 	    std::vector<std::shared_ptr<IExpectation>> Expectations;
@@ -34,13 +34,5 @@ namespace ExpectationLib
 			lastMatchedObservationIndex = Observations.size()-1;
 	        return true;
 	    }
-
-		int GetLastProcessedObservationIndex() override
-	    {
-		    return lastMatchedObservationIndex;
-	    }
-
-	private:
-		int lastMatchedObservationIndex = -1;
 	};
 }
