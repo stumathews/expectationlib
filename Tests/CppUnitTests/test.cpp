@@ -585,6 +585,29 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 
     EXPECT_TRUE(matcher7->Match());
 
+	observer = std::make_shared<Observer>();
+	observer->Observe(stimulus1, response1); // expect *
+	observer->Observe(stimulus2, response2); // expect *
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(stimulus2, response2); // ignore
+
+	const auto matcher8 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
+
+    EXPECT_FALSE(matcher8->Match());
+
+	observer = std::make_shared<Observer>();
+	observer->Observe(stimulus3, response3);  // ignore
+	observer->Observe(stimulus3, response3);  // ignore
+	observer->Observe(stimulus3, response3);  // ignore
+	observer->Observe(stimulus3, response3);  //  ignore
+	observer->Observe(stimulus3, response3);  // ignore
+
+	const auto matcher9 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
+
+    EXPECT_FALSE(matcher9->Match());
+
 }
 
 TEST(ExpectationTests, RepeatedConsecutiveExpectationsPattern)
@@ -742,4 +765,24 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	auto matcher2 = std::make_shared<RepeatsExpectationsPattern>(matcher1, 3);
 	EXPECT_TRUE(matcher2->Match());
 	EXPECT_EQ(matcher2->CountRepeats(), 3);
+
+	observer = std::make_shared<Observer>();
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance1); // 1) we expect 
+	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance3); // ignore dup
+	observer->Observe(circumstance4); // 4) we expect this to occur after 3)
+	observer->Observe(circumstance5); // we ignore
+	auto matcher3 = std::make_shared<OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
+	auto matcher4 = std::make_shared<RepeatsExpectationsPattern>(matcher3, 1);
+
+	EXPECT_TRUE(matcher4->Match());
+	EXPECT_EQ(matcher4->CountRepeats(), 1);
 }
