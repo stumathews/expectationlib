@@ -7,11 +7,6 @@ namespace ExpectationLib
 {
 	}
 
-	int RepeatsExpectationsPattern::CountRepeats() const
-	{
-		return countRepeats;
-	}
-
 	bool RepeatsExpectationsPattern::Match()
 	{
 		countRepeats = 0;

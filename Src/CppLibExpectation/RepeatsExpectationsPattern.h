@@ -8,10 +8,6 @@ namespace ExpectationLib
 	{
 	public:
 		explicit RepeatsExpectationsPattern(std::shared_ptr<IExpectedPattern> pattern, int minimumFrequencyRequirement);
-
-		[[nodiscard]] int CountRepeats() const;
-
-
 		bool Match() override;
 		
 

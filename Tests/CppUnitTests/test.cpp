@@ -666,7 +666,6 @@ TEST(ExpectationTests, RepeatedConsecutiveExpectationsPattern)
 
 	auto repeatMatcher1 = RepeatsExpectationsPattern(matcher1, 3);
 	EXPECT_TRUE(repeatMatcher1.Match());
-	EXPECT_EQ(repeatMatcher1.CountRepeats(), 3);
 
 	/* Singular-observation:
 	 * -------------------------
@@ -764,7 +763,6 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	auto matcher1 = std::make_shared<OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
 	auto matcher2 = std::make_shared<RepeatsExpectationsPattern>(matcher1, 3);
 	EXPECT_TRUE(matcher2->Match());
-	EXPECT_EQ(matcher2->CountRepeats(), 3);
 
 	observer = std::make_shared<Observer>();
 	observer->Observe(circumstance1); // 1) we expect 
@@ -784,5 +782,4 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	auto matcher4 = std::make_shared<RepeatsExpectationsPattern>(matcher3, 1);
 
 	EXPECT_TRUE(matcher4->Match());
-	EXPECT_EQ(matcher4->CountRepeats(), 1);
 }
