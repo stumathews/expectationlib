@@ -35,7 +35,7 @@ namespace ExpectationLib
 		return sendersMatch && receiversMatch && responseMatches;
 	}
 
-	std::string StimuliProducesResponseExpectation::GetId()
+	const std::string StimuliProducesResponseExpectation::GetId()
 	{
 	    return CreateId(stimulus, response);
 	}

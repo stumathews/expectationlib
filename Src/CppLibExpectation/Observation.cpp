@@ -14,13 +14,18 @@ namespace ExpectationLib
 	{
 	}
 
+	bool Observation::operator==(Observation& other)
+	{
+		return this->GetId() == other.GetId();
+	}
+
 	std::string Observation::CreateId(const std::shared_ptr<IStimulus>& stimulus,
-		const std::shared_ptr<IResponse>& response)
+	                                  const std::shared_ptr<IResponse>& response)
 	{
 		return stimulus->GetSender()->GetId() + stimulus->GetReceiver()->GetId() + response->GetFrom()->GetId() + response->GetId();
 	}
 
-	std::string Observation::GetId()
+	const std::string Observation::GetId()
 	{
 		return CreateId(stimulus, response);
 	}

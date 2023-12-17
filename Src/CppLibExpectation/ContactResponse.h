@@ -15,7 +15,7 @@ namespace ExpectationLib
 	    ContactResponse(const std::string& context, const std::shared_ptr<IParty>& from);
 
 	    std::string ToString() override;
-	    std::string GetId() override;
+	    const std::string GetId() override;
 
 	    std::shared_ptr<IParty> GetFrom() override;
 	    void SetFrom(std::shared_ptr<IParty> from) override;

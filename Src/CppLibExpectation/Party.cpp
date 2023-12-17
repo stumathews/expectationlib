@@ -7,8 +7,8 @@ namespace ExpectationLib
 		this->id = id;
 		this->role = role;
 	}
-	
-	std::string Party::GetId()
+
+	const std::string Party::GetId()
 	{
 		return id;
 	}

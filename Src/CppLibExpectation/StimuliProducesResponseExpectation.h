@@ -4,7 +4,7 @@
 
 namespace ExpectationLib
 {
-    class StimuliProducesResponseExpectation : public IExpectation, public IHasId
+    class StimuliProducesResponseExpectation : public virtual IExpectation, public virtual IHasId
 	{
     public:
         StimuliProducesResponseExpectation(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response);
@@ -13,7 +13,7 @@ namespace ExpectationLib
         std::string ToString() override;
         static std::string CreateId(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response);
         bool Match(std::shared_ptr<Observation> observation) override;
-        std::string GetId() override;
+        const std::string GetId() override;
 
         std::shared_ptr<IStimulus> GetStimulus();
         std::shared_ptr<IResponse> GetResponse();

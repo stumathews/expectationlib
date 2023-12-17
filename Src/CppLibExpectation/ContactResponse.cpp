@@ -13,7 +13,7 @@ namespace ExpectationLib
 		return Context;
 	}
 
-	std::string ContactResponse::GetId()
+	const std::string ContactResponse::GetId()
 	{
 		return GetContext()+ GetFrom()->GetId();
 	}
