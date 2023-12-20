@@ -158,6 +158,7 @@
     <ClInclude Include="IResponse.h" />
     <ClInclude Include="ISituation.h" />
     <ClInclude Include="IStimulus.h" />
+    <ClInclude Include="Node.h" />
     <ClInclude Include="Observation.h" />
     <ClInclude Include="Observer.h" />
     <ClInclude Include="OrderedExpectationsPattern.h" />
@@ -166,6 +167,7 @@
     <ClInclude Include="RepeatsExpectationPattern.h" />
     <ClInclude Include="ExactExpectationsPattern.h" />
     <ClInclude Include="StimuliProducesResponseExpectation.h" />
+    <ClInclude Include="Tree.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="ConsecutiveExpectationsPattern.cpp" />

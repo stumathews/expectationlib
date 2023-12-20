@@ -1,9 +1,14 @@
 #include "OrderedExpectationsPattern.h"
 
 #include <map>
+#include "Node.h"
+#include "Tree.h"
 
 namespace ExpectationLib
 {
+
+	
+
 	OrderedExpectationsPattern::OrderedExpectationsPattern(
 		const std::vector<std::shared_ptr<IExpectation>>& expectations,
 		const std::vector<std::shared_ptr<Observation>>& observations)
@@ -43,7 +48,7 @@ namespace ExpectationLib
 		{
 			const auto outerObservation = Observations[oo];
 			int innerObservationIndex = oo+1;
-			while(innerObservationIndex < Observations.size()-1 && Observations[innerObservationIndex]->GetId() != outerObservation->GetId())
+			while(innerObservationIndex <= Observations.size()-1 && Observations[innerObservationIndex]->GetId() != outerObservation->GetId())
 			{
 				const auto innerObservation = Observations[innerObservationIndex];
 				// store [outerObservation, innerObservation]
@@ -59,32 +64,65 @@ namespace ExpectationLib
 			auto const& [key, value] = item;
 			return value != max;
 		});
+				
+		
+		auto unorderedTuples = std::vector<std::tuple<std::string, std::string>>();
+		auto unorderedPattern = std::vector<std::string>();
 
-		// assign numerical order to before -> after groups
-		auto orderedObservations = std::vector<std::string>();
-		int i = 0;
 		for(auto& item : orders)
 		{
 			auto const& [key, value] = item;
 			auto const& [before, after] = key;
 
-			if(i == 0)
-			{
-				orderedObservations.push_back(before);
-				orderedObservations.push_back(after);
-			}
-			else
-			{
-				if(std::ranges::find(orderedObservations, before) == orderedObservations.end())
-					orderedObservations.push_back(before);
-				if(std::ranges::find(orderedObservations, after) == orderedObservations.end())
-					orderedObservations.push_back(after);
-			}
-
-			i++;
+			unorderedTuples.push_back(key);
+			unorderedPattern.push_back(before);
+			unorderedPattern.push_back(after);
 		}
 
-		return orderedObservations;
+		//auto tree = std::vector<std::shared_ptr<Node<std::string>>>();
+		Tree<std::string> tree;
+		for (const auto& unorderedTuple : unorderedTuples)
+		{
+			auto tuple = unorderedTuple;
+			const auto & [before, after] = tuple;
+
+			if(tree.IsEmpty())
+			{				
+				const auto afterNode = std::make_shared<Node<std::string>>(after);
+				const auto beforeNode = std::make_shared<Node<std::string>>(before);
+				beforeNode->AddChild(afterNode);
+			
+				tree.AddRoot(beforeNode);
+				continue;
+			}
+
+			const auto afterNode = std::make_shared<Node<std::string>>(after);
+			const auto beforeNode = std::make_shared<Node<std::string>>(before);
+			
+			for (const std::shared_ptr<Node<std::string>>& currentTreeItem : tree.Root->Children)
+			{				
+				if(currentTreeItem->Item == beforeNode->Item)
+				{
+					// attach after current
+					currentTreeItem->AddChild(afterNode);
+					break;
+				}
+
+				if(currentTreeItem->Item == afterNode->Item)
+				{
+					// attach before current
+					afterNode->AddChild(currentTreeItem);
+					break;
+				}			
+				
+				// look through mu children to add to one of them
+				currentTreeItem->AttachToChildren(beforeNode, afterNode);
+				
+			}
+		}
+		
+
+		return unorderedPattern;
 	}
 
 	bool OrderedExpectationsPattern::Match()
