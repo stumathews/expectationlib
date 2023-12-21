@@ -252,13 +252,13 @@ TEST(ExpectationTests, Test_OrderedExpectations)
     auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
             
 	// Simulate/Observe some circumstances (outcomes)...
-	observer->Observe(circumstance1); // 1) we expect 
-	observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
-	observer->Observe(circumstance3); // 3) we expect this to occur after 1)
-	observer->Observe(circumstance3); // ignore dup
-	observer->Observe(circumstance3); // ignore dup
-	observer->Observe(circumstance4); // 4) we expect this to occur after 3)
-	observer->Observe(circumstance5); // we ignore
+	auto obs1 = observer->Observe(circumstance1); // 1) we expect 
+	auto obs2 = observer->Observe(circumstance2); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	auto obs3 = observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	auto obs4 = observer->Observe(circumstance3); // ignore dup
+	auto obs5 = observer->Observe(circumstance3); // ignore dup
+	auto obs6 = observer->Observe(circumstance4); // 4) we expect this to occur after 3)
+	auto obs7 = observer->Observe(circumstance5); // we ignore
 
 	// Make some expectations/predictions about that circumstances should have occurred
 	auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(circumstance1);
@@ -273,7 +273,7 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	EXPECT_TRUE(matcher1->Match());	
 	EXPECT_TRUE(SequenceEqual(matcher1->MatchedExpectations, orderOfExpectedOutcomes));
 	EXPECT_EQ(matcher1->UnmatchedExpectations().size(), 0);
-
+	
 	// negative case: Some expectations are not met
 
 	observer = std::make_shared<Observer>();

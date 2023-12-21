@@ -5,9 +5,24 @@
 #include "Tree.h"
 
 namespace ExpectationLib
-{
-
+{	
+	template<typename KeyType, typename ValueType> 
+	std::pair<KeyType,ValueType> get_max( const std::map<KeyType,ValueType>& x )
+	{
+	  using pairtype=std::pair<KeyType,ValueType>; 
+	  return *std::max_element(x.begin(), x.end(), [] (const pairtype & p1, const pairtype & p2) {
+	        return p1.second < p2.second;
+	  }); 
+	}
 	
+	template<typename T> 
+	std::shared_ptr<Node<T>> GetNodeWithMaxChildren( const std::shared_ptr<Node<T>>& x )
+	{
+	  using item=std::shared_ptr<Node<T>>;
+	  return *std::max_element(x->Children.begin(), x->Children.end(), [] (const item & p1, const item & p2) {
+	        return p1->Children.size() < p2->Children.size();
+	  }); 
+	}
 
 	OrderedExpectationsPattern::OrderedExpectationsPattern(
 		const std::vector<std::shared_ptr<IExpectation>>& expectations,
@@ -30,14 +45,6 @@ namespace ExpectationLib
 		return unmatched;
 	}
 
-	template<typename KeyType, typename ValueType> 
-	std::pair<KeyType,ValueType> get_max( const std::map<KeyType,ValueType>& x )
-	{
-	  using pairtype=std::pair<KeyType,ValueType>; 
-	  return *std::max_element(x.begin(), x.end(), [] (const pairtype & p1, const pairtype & p2) {
-	        return p1.second < p2.second;
-	  }); 
-	}
 
 	std::vector<std::string>
 	OrderedExpectationsPattern::DetectOrder() const
@@ -65,6 +72,7 @@ namespace ExpectationLib
 			return value != max;
 		});
 				
+		
 		
 		auto unorderedTuples = std::vector<std::tuple<std::string, std::string>>();
 		auto unorderedPattern = std::vector<std::string>();
@@ -98,6 +106,7 @@ namespace ExpectationLib
 
 			const auto afterNode = std::make_shared<Node<std::string>>(after);
 			const auto beforeNode = std::make_shared<Node<std::string>>(before);
+			beforeNode->AddChild(afterNode);
 			
 			for (const std::shared_ptr<Node<std::string>>& currentTreeItem : tree.Root->Children)
 			{				
@@ -111,18 +120,26 @@ namespace ExpectationLib
 				if(currentTreeItem->Item == afterNode->Item)
 				{
 					// attach before current
-					afterNode->AddChild(currentTreeItem);
+					currentTreeItem->Parent->AddChild(afterNode->Parent);
 					break;
 				}			
 				
 				// look through mu children to add to one of them
-				currentTreeItem->AttachToChildren(beforeNode, afterNode);
-				
-			}
+				currentTreeItem->AttachToChildren(beforeNode, afterNode);				
+			
+			}	
 		}
-		
 
-		return unorderedPattern;
+		auto orderedPattern = std::vector<std::string>();
+		auto node = tree.Root;
+		orderedPattern.push_back(node->Item);
+		while(!node->Children.empty())
+		{
+			node = GetNodeWithMaxChildren(node);			
+			orderedPattern.push_back(node->Item);
+		}				
+
+		return orderedPattern;
 	}
 
 	bool OrderedExpectationsPattern::Match()
