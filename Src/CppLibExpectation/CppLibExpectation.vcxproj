@@ -161,6 +161,7 @@
     <ClInclude Include="Node.h" />
     <ClInclude Include="Observation.h" />
     <ClInclude Include="Observer.h" />
+    <ClInclude Include="Ordering.h" />
     <ClInclude Include="OrderedExpectationsPattern.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="RepeatsExpectationsPattern.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ExpectedTestSituation.cpp" />
     <ClCompile Include="Observation.cpp" />
     <ClCompile Include="Observer.cpp" />
+    <ClCompile Include="Ordering.cpp" />
     <ClCompile Include="OrderedExpectationsPattern.cpp" />
     <ClCompile Include="Party.cpp" />
     <ClCompile Include="Party.h" />

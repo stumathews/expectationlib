@@ -22,7 +22,7 @@ namespace ExpectationLib
         std::vector<std::shared_ptr<Observation>> Observations;
         std::vector<std::shared_ptr<IExpectation>> Expectations;
         std::vector<std::shared_ptr<IExpectation>> UnmatchedExpectations();
-        std::vector<std::string> DetectOrder() const;
+        [[nodiscard]] std::vector<std::string> DetectOrder() const;
         std::vector<std::shared_ptr<IExpectation>> MatchedExpectations;
         bool Match() override;
 	};

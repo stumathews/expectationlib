@@ -335,21 +335,21 @@ TEST(DetectOrderTests, Test_DetectOrder5)
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance2); // 1) we expect 
 	auto obs2 = observer->Observe(circumstance1); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
-	auto obs3 = observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	auto obs3 = observer->Observe(circumstance4); // 3) we expect this to occur after 1)
 	auto obs4 = observer->Observe(circumstance2); // 3) we expect this to occur after 1)
 	auto obs5 = observer->Observe(circumstance1); // 1) we expect 
-	auto obs6 = observer->Observe(circumstance3); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
+	auto obs6 = observer->Observe(circumstance4); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender
 	auto obs7 = observer->Observe(circumstance2); // 3) we expect this to occur after 1)
 	auto obs8 = observer->Observe(circumstance1); // 3) we expect this to occur after 1)
-	auto obs9 = observer->Observe(circumstance3); // 3) we expect this to occur after 1)
+	auto obs9 = observer->Observe(circumstance4); // 3) we expect this to occur after 1)
 
 	// Make some expectations/predictions about that circumstances should have occurred
 	auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(circumstance2);
 	auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(circumstance1);
-	auto myExpectation3 = std::make_shared<StimuliProducesResponseExpectation>(circumstance3);
+	auto myExpectation4 = std::make_shared<StimuliProducesResponseExpectation>(circumstance4);
 
 	// Define a situation where an order in which those predictions were expected to occur in
-	std::vector<std::shared_ptr<IExpectation>> orderOfExpectedOutcomes = { myExpectation2, myExpectation1, myExpectation3 };
+	std::vector<std::shared_ptr<IExpectation>> orderOfExpectedOutcomes = { myExpectation2, myExpectation1, myExpectation4 };
 
 	// Test: ensure the each expected outcomes/prediction come sometime after the prior (doesn't have to be sequentially, but must come after the previous expected outcome)
 	auto matcher1 = std::make_shared< OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
