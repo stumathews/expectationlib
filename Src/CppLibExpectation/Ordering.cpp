@@ -32,7 +32,7 @@ namespace ExpectationLib
 	std::vector<std::string> Ordering::DetectOrder() const
 	{
 		// Get Collection of tuples that show which items are encountered before others
-		auto orders = GetOrderOccurances();
+		auto orders = GetMapOrderOccurences();
 
 		// Get the orders that occurred the most
 		const auto maxOccurredCount = GetMaxOccurancesCount(orders).second;
@@ -45,7 +45,7 @@ namespace ExpectationLib
 		});					
 
 		// add orders that occur the most together in one list
-		auto unorderedTuples = std::vector<std::tuple<std::string, std::string>>();
+		auto unorderedTuples = ListOfTuples();
 
 		for(auto& item : orders)
 		{
@@ -55,6 +55,64 @@ namespace ExpectationLib
 
 		// Order the tuples into an ordered list of items 
 		return ExtractOrderFromOrderTree(CreateOrderTree(unorderedTuples));			
+	}
+
+	/**
+	 Build an ordered before-after tree.
+	 
+	 
+	 [b]fore-[a]fter tree:	 
+	 
+	         [b]
+	        [b][a]
+	     [b][a][b][a]
+	 [b][a][b][a][a][a]
+	 
+   
+             [0]
+	       [0][1]
+	    [0][1][0][1]
+	 [0][1][0][1][0][1]
+
+	Index of tree:
+	
+	         [0]
+	       [2][1]
+	    [6][5][4][3]
+	[10[9][8][7][12][11]
+	
+	 */
+	Tree<std::string> Ordering::BuildOrderedTree() const
+	{
+		// Collect before-after pairings eg. for an observation like this: 3, 2, 1, 3, 2, 1 you get the following before-after pairings:
+		// (3-2), (3-1), (2-1), (2-3), (1-2), (1-2), (3-2), (3-1), (2-1)
+
+		std::vector<std::tuple<std::string, std::string>> beforeAfterPairings;
+		for(auto oo = 0; oo < observations.size();oo++)
+		{
+			const auto outerObservation = observations[oo];
+			int innerObservationIndex = oo+1;
+			while(innerObservationIndex <= observations.size()-1 && observations[innerObservationIndex]->GetId() != outerObservation->GetId())
+			{
+				const auto innerObservation = observations[innerObservationIndex];
+				// store [outerObservation, innerObservation]
+				beforeAfterPairings.emplace_back(outerObservation->GetId(),innerObservation->GetId());
+				innerObservationIndex++; // next inner observation
+			}			
+		}
+
+		// Build up an ordered tree of pairings:
+		auto orderTree = Tree<std::string>();
+		for(const auto& order : beforeAfterPairings)
+		{
+			const auto& [before, after] = order;
+			const auto beforeNode = std::make_shared<Node<std::string>>(before);
+			const auto afterNode = std::make_shared<Node<std::string>>(after);
+				
+			orderTree.AddNode(beforeNode);
+			orderTree.AddNode(afterNode);
+		}
+		return orderTree;
 	}
 
 	std::vector<std::string> Ordering::ExtractOrderFromOrderTree(const Tree<std::string>& orderedTree)
@@ -122,7 +180,7 @@ namespace ExpectationLib
 		return tree;
 	}
 
-	std::map<std::tuple<std::string, std::string>, int> Ordering::GetOrderOccurances() const
+	std::map<std::tuple<std::string, std::string>, int> Ordering::GetMapOrderOccurences() const
 	{
 		std::map<std::tuple<std::string, std::string>, int> orders;
 
