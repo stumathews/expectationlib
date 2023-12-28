@@ -10,8 +10,7 @@ namespace ExpectationLib
 		Party(const std::string& id, const std::string& role = "");
 
 	    std::string GetRole() override;
-		const std::string GetId() override;
-
+		const std::string GetId() override;		
 	private:
 	    
 	    std::string id;

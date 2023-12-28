@@ -7,7 +7,7 @@ namespace ExpectationLib
 	/// <summary>
     /// A contact stimulus is a relationship such that it occurs when a sender makes contact with a receiver
     /// </summary>
-    class ContactsStimulus final : public virtual IStimulus
+    class ContactsStimulus final : public virtual IStimulus, public std::enable_shared_from_this<ContactsStimulus>
 	{
     public:
         ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver);
@@ -19,6 +19,7 @@ namespace ExpectationLib
         
         std::shared_ptr<IParty> GetSender() override;
         std::shared_ptr<IParty> GetReceiver() override;
+        std::shared_ptr<IResponse> GetResponse() override;
 
     private:
         std::shared_ptr<IParty> sender;

@@ -1,4 +1,5 @@
 #include "ExpectationExistsPattern.h"
+#include "IParty.h"
 
 namespace ExpectationLib
 {

@@ -1,12 +1,12 @@
 #pragma once
 #include <iostream>
 
-#include "IHasId.h"
-#include "IParty.h"
-
 namespace ExpectationLib
 {
-    // A stimulus is the kind of relationship between a sender and a receiver
+	class IResponse;
+    class IParty;
+
+	// A stimulus is the kind of relationship between a sender and a receiver
     class IStimulus : public virtual IHasId
 	{
     public:
@@ -16,6 +16,9 @@ namespace ExpectationLib
 
         // Receiver is the party that subjected to the relationship
 	    virtual std::shared_ptr<IParty> GetReceiver() = 0;
+
+        // Get the response that results when this stimulus occurs
+        virtual std::shared_ptr<IResponse> GetResponse() = 0;
 
         // String representation of a party
         virtual std::string ToString() = 0;

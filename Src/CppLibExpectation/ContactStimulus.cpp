@@ -1,5 +1,7 @@
 #include "ContactStimulus.h"
 
+#include "ContactResponse.h"
+
 namespace ExpectationLib
 {
 	ContactsStimulus::ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
@@ -21,6 +23,12 @@ namespace ExpectationLib
 	std::shared_ptr<IParty> ContactsStimulus::GetReceiver()
 	{
 		return receiver;
+	}
+
+	std::shared_ptr<IResponse> ContactsStimulus::GetResponse()
+	{
+		std::shared_ptr<IResponse> expectedResponse = std::make_shared<ContactResponse>("aResponse", shared_from_this());
+		return expectedResponse;
 	}
 
 	std::string ContactsStimulus::CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)

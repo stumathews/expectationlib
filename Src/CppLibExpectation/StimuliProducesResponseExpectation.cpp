@@ -1,4 +1,5 @@
 #include "StimuliProducesResponseExpectation.h"
+#include "IParty.h"
 
 namespace ExpectationLib
 {
@@ -6,6 +7,12 @@ namespace ExpectationLib
 	{
 		this->stimulus = stimuli;
 		this->response = response;
+	}
+
+	StimuliProducesResponseExpectation::StimuliProducesResponseExpectation(const std::shared_ptr<IStimulus>& stimulus)
+	{
+		this->stimulus = stimulus;
+		this->response = stimulus->GetResponse();
 	}
 
 	StimuliProducesResponseExpectation::StimuliProducesResponseExpectation(const std::shared_ptr<ICircumstance>& circumstance)

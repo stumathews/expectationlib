@@ -2,6 +2,7 @@
 
 #include "ContactResponse.h"
 
+
 namespace ExpectationLib
 {
 	ContactCircumstance::ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus,
@@ -19,7 +20,7 @@ namespace ExpectationLib
 
 	std::shared_ptr<IResponse> ContactCircumstance::GetResponse()
 	{
-		return std::make_shared<ContactResponse>(responseContext, from);
+		return std::make_shared<ContactResponse>(responseContext, stimulus);
 	}
 
 	std::shared_ptr<IParty> ContactCircumstance::GetFrom()
