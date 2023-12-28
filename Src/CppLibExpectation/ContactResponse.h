@@ -22,8 +22,9 @@ namespace ExpectationLib
 
 	    std::string GetContext() override;
 	    void SetContext(std::string context) override;
-	private:
-		
+	    inline static std::string ContactRelationName = "contact";
+	private:		
 	    const std::shared_ptr<IStimulus> stimulus;
+
 	};
 }

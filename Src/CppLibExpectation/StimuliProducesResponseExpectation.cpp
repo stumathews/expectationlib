@@ -1,4 +1,6 @@
 #include "StimuliProducesResponseExpectation.h"
+
+#include "ContactResponse.h"
 #include "IParty.h"
 
 namespace ExpectationLib
@@ -33,13 +35,20 @@ namespace ExpectationLib
 
 	bool StimuliProducesResponseExpectation::Match(const std::shared_ptr<Observation> observation)
 	{
-		const auto sendersMatch = observation->GetStimulus()->GetSender()->GetRole() == stimulus->GetSender()->GetRole() &&
-			                           observation->GetStimulus()->GetSender()->GetId() == stimulus->GetSender()->GetId();
-		const auto receiversMatch = observation->GetStimulus()->GetReceiver()->GetRole() == stimulus->GetReceiver()->GetRole() &&
-			                             observation->GetStimulus()->GetReceiver()->GetId() == stimulus->GetReceiver()->GetId();
-		const auto responseMatches = observation->GetResponse()->GetContext() == response->GetContext();
+		const auto observationStimulus = observation->GetStimulus();
+		const auto observationStimulusSender =  observationStimulus->GetSender();
+		const auto observationStimulusReceiver =  observationStimulus->GetReceiver();
 
-		return sendersMatch && receiversMatch && responseMatches;
+		const auto sendersMatch =  observationStimulus->GetSender()->GetRole() == stimulus->GetSender()->GetRole() &&
+			                            observationStimulus->GetSender()->GetId() == stimulus->GetSender()->GetId();
+		const auto receiversMatch = observationStimulusReceiver->GetRole() == stimulus->GetReceiver()->GetRole() &&
+			                             observationStimulusReceiver->GetId() == stimulus->GetReceiver()->GetId();
+		const auto responseMatches = observation->GetResponse()->GetContext() == response->GetContext();
+		
+
+		return sendersMatch && receiversMatch && responseMatches
+		&& observationStimulusSender->HasRelationTo(observationStimulusReceiver, ContactResponse::ContactRelationName)
+		&& observationStimulusReceiver->HasRelationTo(observationStimulusSender, ContactResponse::ContactRelationName);
 	}
 
 	const std::string StimuliProducesResponseExpectation::GetId()

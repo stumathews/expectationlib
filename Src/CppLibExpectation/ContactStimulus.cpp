@@ -5,9 +5,10 @@
 namespace ExpectationLib
 {
 	ContactsStimulus::ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
-	{
+	{		
 		this->sender = sender;
 		this->receiver = receiver;
+		// NB: Can't used shared_from_this() here as the pointer, this, is not created yet.
 	}
 
 	std::string ContactsStimulus::ToString()

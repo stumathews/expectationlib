@@ -164,6 +164,7 @@
     <ClInclude Include="Ordering.h" />
     <ClInclude Include="OrderedExpectationsPattern.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Relation.h" />
     <ClInclude Include="RepeatsExpectationsPattern.h" />
     <ClInclude Include="RepeatsExpectationPattern.h" />
     <ClInclude Include="ExactExpectationsPattern.h" />
@@ -190,6 +191,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="Relation.cpp" />
     <ClCompile Include="RepeatsExpectationsPattern.cpp" />
     <ClCompile Include="RepeatsExpectationPattern.cpp" />
     <ClCompile Include="StimuliProducesResponseExpectation.cpp" />

@@ -21,6 +21,6 @@ namespace ExpectationLib
 		const std::string& observationContext)
 	{
 		const std::shared_ptr<IResponse> stimulusResponse = stimulus->GetResponse();
-		return Observe(stimulus, stimulusResponse,observationContext);
+		return Observe(stimulus, stimulusResponse, observationContext);
 	}
 }

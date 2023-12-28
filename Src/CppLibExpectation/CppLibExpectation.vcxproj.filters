@@ -102,6 +102,9 @@
     <ClInclude Include="Ordering.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Relation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -153,6 +156,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Ordering.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Relation.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

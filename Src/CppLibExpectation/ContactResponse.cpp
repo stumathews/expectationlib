@@ -7,8 +7,9 @@ namespace ExpectationLib
 		From = stimulus->GetReceiver();
 		Context = context;
 
-		// Now what we could do here is manipulate the relations in both sender and receiver such that
-		// this contact response results in changes/modifications to their state. 
+		// Modify the sender and receiver in response to stimulus
+		stimulus->GetSender()->AddRelation(ContactRelationName, stimulus->GetReceiver());
+		stimulus->GetReceiver()->AddRelation(ContactRelationName, stimulus->GetSender());
 	}
 
 	std::string ContactResponse::ToString()

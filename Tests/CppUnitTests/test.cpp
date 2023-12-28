@@ -114,18 +114,19 @@ TEST(ExpectationTests, Test_ExpectationWithoutOverridingResponse)
 	// Create an expectation
 	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(stimulus); // no overriding response - this is generated from the stimulus
 
-	// perform a stimulus .. sender contacts receiver and a contact response is produced
-
+	// Perform a stimulus .. sender contacts receiver and a contact response is produced
 	// make sure the observer observes it: Create a stimulus that produces a response when it is observed
-	observer->Observe(stimulus);
+	const auto obs1 = observer->Observe(stimulus);
 
 	// Ensure the expectation is met by observations
 
+	EXPECT_TRUE(myExpectation->Match(obs1));
 	EXPECT_EQ(myExpectation->GetStimulus(), stimulus);
 	EXPECT_EQ(myExpectation->GetStimulus()->GetSender(), stimulus->GetSender());
 	EXPECT_EQ(myExpectation->GetStimulus()->GetReceiver(), stimulus->GetReceiver());
 	const std::shared_ptr<IResponse> expectedResponse = stimulus->GetResponse();
 	EXPECT_EQ(myExpectation->GetId(), StimuliProducesResponseExpectation::CreateId(stimulus, expectedResponse));
+	
 }
 
 TEST(ExpectationTests, Test_ExpectationNegative)
