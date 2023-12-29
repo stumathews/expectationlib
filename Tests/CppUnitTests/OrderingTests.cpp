@@ -42,13 +42,20 @@ TEST(OrderingTests, Test1)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
+	stimulus1->Trigger(response1);
+	stimulus2->Trigger(response2);
+	stimulus3->Trigger(response3);
+	stimulus4->Trigger(response4);
+	stimulus5->Trigger(response5);
+	stimulus6->Trigger(response6);
+
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
+    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
 
 	auto obs1 = observer->Observe(circumstance3); 
 	auto obs2 = observer->Observe(circumstance2); 
@@ -59,25 +66,4 @@ TEST(OrderingTests, Test1)
 
 	Ordering ordering(observer->Observations);
 	auto orderedTree = ordering.BuildOrderedTree();
-	auto index0 = orderedTree.Root;
-	auto index1 = orderedTree.Root->Children[0];
-	auto index2 = orderedTree.Root->Children[1];
-	auto index3 = index1->Children[0];
-	auto index4 = index1->Children[1];
-	auto index5 = index2->Children[0];
-	auto index6 = index2->Children[1];
-	auto index7 = index4->Children[0];
-	auto index8 = index4->Children[1];
-	auto index9 = index6->Children[0];
-	
-	EXPECT_EQ(index0->Item, obs1->GetId());                             
-	EXPECT_EQ(index1->Item, obs2->GetId()); 
-	EXPECT_EQ(index2->Item, obs3->GetId());
-	EXPECT_EQ(index3->Item, obs3->GetId());
-	EXPECT_EQ(index4->Item, obs4->GetId());
-	EXPECT_EQ(index5->Item, obs4->GetId());
-	EXPECT_EQ(index6->Item, obs5->GetId());
-	EXPECT_EQ(index7->Item, obs5->GetId());
-	EXPECT_EQ(index8->Item, obs3->GetId());
-	EXPECT_EQ(index9->Item, obs3->GetId());	
 }

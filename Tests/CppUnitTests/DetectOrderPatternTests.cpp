@@ -45,13 +45,20 @@ TEST(DetectOrderTests, Test_DetectOrder1)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
+	stimulus1->Trigger(response1);
+	stimulus2->Trigger(response2);
+	stimulus3->Trigger(response3);
+	stimulus4->Trigger(response4);
+	stimulus5->Trigger(response5);
+	stimulus6->Trigger(response6);
+
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
+    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); // 1) we expect 
@@ -111,6 +118,7 @@ TEST(DetectOrderTests, Test_DetectOrder2)
 	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
 	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
 
+
 	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
@@ -118,13 +126,20 @@ TEST(DetectOrderTests, Test_DetectOrder2)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
+	stimulus1->Trigger(response1);
+	stimulus2->Trigger(response2);
+	stimulus3->Trigger(response3);
+	stimulus4->Trigger(response4);
+	stimulus5->Trigger(response5);
+	stimulus6->Trigger(response6);
+
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
+	 auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); 
@@ -187,13 +202,20 @@ TEST(DetectOrderTests, Test_DetectOrder3)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
+	stimulus1->Trigger(response1);
+	stimulus2->Trigger(response2);
+	stimulus3->Trigger(response3);
+	stimulus4->Trigger(response4);
+	stimulus5->Trigger(response5);
+	stimulus6->Trigger(response6);
+
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
+	auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); 
@@ -257,14 +279,21 @@ TEST(DetectOrderTests, Test_DetectOrder4)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
+	stimulus1->Trigger(response1);
+	stimulus2->Trigger(response2);
+	stimulus3->Trigger(response3);
+	stimulus4->Trigger(response4);
+	stimulus5->Trigger(response5);
+	stimulus6->Trigger(response6);
+
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1, response1->GetContext());
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2, response2->GetContext());
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3, response3->GetContext());
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4, response4->GetContext());
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5, response5->GetContext());
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6, response6->GetContext());
-            
+	auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
+    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
+    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
+    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
+    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
+	            
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance2); // 1) we expect 
 	auto obs2 = observer->Observe(circumstance1); // ignore other - note we can also use a circumstance to represent a specific response made by a receiver stimulated by a sender

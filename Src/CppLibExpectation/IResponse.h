@@ -11,7 +11,6 @@ namespace ExpectationLib
 		public:
 	    virtual std::shared_ptr<IStimulus> GetStimulus() = 0;
 	    virtual std::string GetContext() = 0;
-	    virtual void SetContext(std::string context) = 0;
 		virtual std::string ToString() = 0;
 	};
 }

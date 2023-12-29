@@ -20,7 +20,8 @@ TEST(RelationshipTests, RelationIsSet)
 
 	// create a certain kind of stimulus Mechanosensory (Contact) from sender -> receiver
 	const std::shared_ptr<IStimulus> stimulus = std::make_shared<ContactsStimulus>(sender, receiver); // should this modify the sender/receiver to manipulate the effect this had on its state?
-	
+	stimulus->Trigger();
+
 	// Perform a stimulus .. sender contacts receiver and a contact response is produced
 	// make sure the observer observes it: Create a stimulus that produces a response when it is observed
 	observer->Observe(stimulus);
@@ -28,12 +29,12 @@ TEST(RelationshipTests, RelationIsSet)
 	EXPECT_EQ(sender->GetRelations().size(), 1);
 	EXPECT_EQ(receiver->GetRelations().size(), 1);
 
-	EXPECT_EQ(receiver->GetRelations()[0].Name, ContactResponse::ContactRelationName);
+	EXPECT_EQ(receiver->GetRelations()[0].Name, ContactCircumstance::ContactRelationName);
 	EXPECT_EQ(receiver->GetRelations()[0].To, sender);
-	EXPECT_EQ(sender->GetRelations()[0].Name, ContactResponse::ContactRelationName);
+	EXPECT_EQ(sender->GetRelations()[0].Name, ContactCircumstance::ContactRelationName);
 	EXPECT_EQ(sender->GetRelations()[0].To, receiver);
 
-	EXPECT_TRUE(sender->HasRelationTo(receiver, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(receiver->HasRelationTo(sender, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(sender->HasRelationTo(receiver, ContactCircumstance::ContactRelationName));
+	EXPECT_TRUE(receiver->HasRelationTo(sender, ContactCircumstance::ContactRelationName));
 	
 }

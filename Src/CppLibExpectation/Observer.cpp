@@ -17,10 +17,8 @@ namespace ExpectationLib
 		return observation;
 	}
 
-	std::shared_ptr<Observation> Observer::Observe(const std::shared_ptr<IStimulus>& stimulus,
-		const std::string& observationContext)
+	std::shared_ptr<Observation> Observer::Observe(const std::shared_ptr<IStimulus>& stimulus, const std::string& observationContext)
 	{
-		const std::shared_ptr<IResponse> stimulusResponse = stimulus->GetResponse();
-		return Observe(stimulus, stimulusResponse, observationContext);
+		return Observe(stimulus->GetCircumstance());
 	}
 }

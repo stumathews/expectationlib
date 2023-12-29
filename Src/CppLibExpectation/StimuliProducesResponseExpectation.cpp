@@ -1,16 +1,11 @@
 #include "StimuliProducesResponseExpectation.h"
 
+#include "ContactCircumstance.h"
 #include "ContactResponse.h"
 #include "IParty.h"
 
 namespace ExpectationLib
 {
-	StimuliProducesResponseExpectation::StimuliProducesResponseExpectation(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response)
-	{
-		this->stimulus = stimuli;
-		this->response = response;
-	}
-
 	StimuliProducesResponseExpectation::StimuliProducesResponseExpectation(const std::shared_ptr<IStimulus>& stimulus)
 	{
 		this->stimulus = stimulus;
@@ -28,9 +23,9 @@ namespace ExpectationLib
 		return stimulus->ToString() + " (Context: " + response->ToString() + ")";
 	}
 
-	std::string StimuliProducesResponseExpectation::CreateId(const std::shared_ptr<IStimulus>& stimuli, const std::shared_ptr<IResponse>& response)
+	std::string StimuliProducesResponseExpectation::CreateId(const std::shared_ptr<IStimulus>& stimuli)
 	{
-		return stimuli->GetSender()->GetId() + stimuli->GetReceiver()->GetId() + response->GetId();
+		return stimuli->GetSender()->GetId() + stimuli->GetReceiver()->GetId() + stimuli->GetResponse()->GetId();
 	}
 
 	bool StimuliProducesResponseExpectation::Match(const std::shared_ptr<Observation> observation)
@@ -43,17 +38,19 @@ namespace ExpectationLib
 			                            observationStimulus->GetSender()->GetId() == stimulus->GetSender()->GetId();
 		const auto receiversMatch = observationStimulusReceiver->GetRole() == stimulus->GetReceiver()->GetRole() &&
 			                             observationStimulusReceiver->GetId() == stimulus->GetReceiver()->GetId();
-		const auto responseMatches = observation->GetResponse()->GetContext() == response->GetContext();
-		
+		const auto responseMatches = observation->GetResponse()->GetId() == response->GetId();
 
-		return sendersMatch && receiversMatch && responseMatches
-		&& observationStimulusSender->HasRelationTo(observationStimulusReceiver, ContactResponse::ContactRelationName)
-		&& observationStimulusReceiver->HasRelationTo(observationStimulusSender, ContactResponse::ContactRelationName);
+		const auto hasExpectedRelations = 
+			observationStimulusSender->HasRelationTo(observationStimulusReceiver, ContactCircumstance::ContactRelationName) &&
+			observationStimulusReceiver->HasRelationTo(observationStimulusSender, ContactCircumstance::ContactRelationName);
+
+		return sendersMatch && receiversMatch && responseMatches && hasExpectedRelations;
+		
 	}
 
 	const std::string StimuliProducesResponseExpectation::GetId()
 	{
-	    return CreateId(stimulus, response);
+	    return CreateId(stimulus);
 	}
 
 	std::shared_ptr<IStimulus> StimuliProducesResponseExpectation::GetStimulus()

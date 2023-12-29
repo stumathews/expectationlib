@@ -1,16 +1,23 @@
 #include "ContactCircumstance.h"
 
+#include <utility>
+
 #include "ContactResponse.h"
 
 
 namespace ExpectationLib
 {
-	ContactCircumstance::ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus,
-		const std::string& responseContext, const std::shared_ptr<IParty>& overrideFrom)
+	ContactCircumstance::ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IParty>& overrideFrom)
 	{
-		this->stimulus = stimulus;            
-		this-> responseContext = responseContext;
+		this->stimulus = stimulus ;
+		this->responseContext = stimulus->GetResponse()->GetContext();
 		from = overrideFrom ? overrideFrom : stimulus->GetReceiver();
+
+		// modify the relations of the sender and receiver
+		
+		// Cause relations to occur between the affected parties in response to the stimulus
+		stimulus->GetSender()->AddRelation(ContactRelationName, stimulus->GetReceiver());
+		stimulus->GetReceiver()->AddRelation(ContactRelationName, stimulus->GetSender());
 	}
 
 	std::shared_ptr<IStimulus> ContactCircumstance::GetStimulus()

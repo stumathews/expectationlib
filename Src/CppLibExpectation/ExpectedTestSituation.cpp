@@ -16,11 +16,10 @@ namespace ExpectationLib
 		return unmatchedExpectations;
 	}
 
-	ExpectedTestSituation::ExpectedTestSituation(const std::string& transactionId,
+	ExpectedTestSituation::ExpectedTestSituation(
 		const std::shared_ptr<IParty>& party1, const std::shared_ptr<IParty>& party2,
 		const std::shared_ptr<IParty>& party3, const std::shared_ptr<IParty>& party4)
 	{
-		CommonContext = transactionId;
 		Party1 = party1;
 		Party2 = party2;
 		Party3 = party3;
@@ -46,11 +45,10 @@ namespace ExpectationLib
 
 	bool ExpectedTestSituation::Match(std::vector<std::shared_ptr<Observation>> observations)
 	{
-		std::string sharedResponseContext = CommonContext;
-		auto contactCircumstance1 = ContactCircumstanceBuilder::Build(Party1, Party2, sharedResponseContext, Party3);
-		auto contactCircumstance2 = ContactCircumstanceBuilder::Build(Party3, Party4, sharedResponseContext);
-		auto contactCircumstance3 = ContactCircumstanceBuilder::Build(Party4, Party3, sharedResponseContext);
-		auto contactCircumstance4 = ContactCircumstanceBuilder::Build(Party3, Party1, sharedResponseContext);
+		auto contactCircumstance1 = ContactCircumstanceBuilder::Build(Party1, Party2, Party3);
+		auto contactCircumstance2 = ContactCircumstanceBuilder::Build(Party3, Party4);
+		auto contactCircumstance3 = ContactCircumstanceBuilder::Build(Party4, Party3);
+		auto contactCircumstance4 = ContactCircumstanceBuilder::Build(Party3, Party1);
 
 		const auto expect1 = std::make_shared<StimuliProducesResponseExpectation>(contactCircumstance1);
 		const auto expect2 = std::make_shared<StimuliProducesResponseExpectation>(contactCircumstance2);

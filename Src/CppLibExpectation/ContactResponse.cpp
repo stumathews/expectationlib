@@ -7,9 +7,9 @@ namespace ExpectationLib
 		From = stimulus->GetReceiver();
 		Context = context;
 
-		// Modify the sender and receiver in response to stimulus
-		stimulus->GetSender()->AddRelation(ContactRelationName, stimulus->GetReceiver());
-		stimulus->GetReceiver()->AddRelation(ContactRelationName, stimulus->GetSender());
+		// modify the state of the sender or receiver.
+			
+		// this could also be a point in which a user provided delegate is called
 	}
 
 	std::string ContactResponse::ToString()
@@ -19,7 +19,7 @@ namespace ExpectationLib
 
 	const std::string ContactResponse::GetId()
 	{
-		return GetContext()+ GetStimulus()->GetId();
+		return GetContext() + GetStimulus()->GetId();
 	}
 
 	std::shared_ptr<IStimulus> ContactResponse::GetStimulus()
@@ -30,10 +30,5 @@ namespace ExpectationLib
 	std::string ContactResponse::GetContext()
 	{
 		return Context;
-	}
-
-	void ContactResponse::SetContext(const std::string context)
-	{
-		this->Context = context;
 	}
 }

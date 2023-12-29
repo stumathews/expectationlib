@@ -8,16 +8,18 @@ namespace ExpectationLib
 	{
     public:
         
-        ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus, const std::string& responseContext, const std::shared_ptr<IParty>& overrideFrom = nullptr);
-
+        ContactCircumstance(const std::shared_ptr<IStimulus>& stimulus, const std::shared_ptr<IParty>& overrideFrom = nullptr);
+        
         std::shared_ptr<IStimulus> GetStimulus() override;
         std::shared_ptr<IResponse> GetResponse() override;
         std::shared_ptr<IParty> GetFrom();
-
+        
+	    inline static std::string ContactRelationName = "contacted";
     private:
         std::shared_ptr<IStimulus> stimulus;
         std::shared_ptr<IParty> from;
         std::string responseContext;
+        std::shared_ptr<IResponse> response;
     };
 
 }

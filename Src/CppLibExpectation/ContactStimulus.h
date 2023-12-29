@@ -1,4 +1,5 @@
 #pragma once
+#include "ICircumstance.h"
 #include "IParty.h"
 #include "IStimulus.h"
 
@@ -20,9 +21,13 @@ namespace ExpectationLib
         std::shared_ptr<IParty> GetSender() override;
         std::shared_ptr<IParty> GetReceiver() override;
         std::shared_ptr<IResponse> GetResponse() override;
+        std::shared_ptr<ICircumstance> Trigger(std::shared_ptr<IResponse> inResponse = nullptr) override;
+        std::shared_ptr<ICircumstance> GetCircumstance() override;
 
     private:
         std::shared_ptr<IParty> sender;
         std::shared_ptr<IParty> receiver;
+        std::shared_ptr<IResponse> response;
+        std::shared_ptr<ICircumstance> circumstance;
     };
 }

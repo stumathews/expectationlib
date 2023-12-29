@@ -1,5 +1,6 @@
 #include "ContactStimulus.h"
 
+#include "ContactCircumstance.h"
 #include "ContactResponse.h"
 
 namespace ExpectationLib
@@ -8,7 +9,7 @@ namespace ExpectationLib
 	{		
 		this->sender = sender;
 		this->receiver = receiver;
-		// NB: Can't used shared_from_this() here as the pointer, this, is not created yet.
+		// NB: Can't used shared_from_this() here as this object is not created yet.
 	}
 
 	std::string ContactsStimulus::ToString()
@@ -28,8 +29,23 @@ namespace ExpectationLib
 
 	std::shared_ptr<IResponse> ContactsStimulus::GetResponse()
 	{
-		std::shared_ptr<IResponse> expectedResponse = std::make_shared<ContactResponse>("aResponse", shared_from_this());
-		return expectedResponse;
+		return response;
+	}
+
+	std::shared_ptr<ICircumstance> ContactsStimulus::Trigger(std::shared_ptr<IResponse> inResponse)
+	{
+		// Create the response
+		this->response = inResponse ? inResponse : std::make_shared<ContactResponse>("NoResponseContext", shared_from_this());
+
+		// Create the circumstance
+		this->circumstance = std::make_shared<ContactCircumstance>(shared_from_this());
+
+		return circumstance;
+	}
+
+	std::shared_ptr<ICircumstance> ContactsStimulus::GetCircumstance()
+	{
+		return circumstance;
 	}
 
 	std::string ContactsStimulus::CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
