@@ -34,5 +34,7 @@ namespace ExpectationLib
 		// currently doesn't do anything but could  modify the state of the sender or receiver.
 			
 		// this could also be a point in which a user provided delegate is called
+
+		// This might drive the change of state of the receiver in some way
 	}
 }

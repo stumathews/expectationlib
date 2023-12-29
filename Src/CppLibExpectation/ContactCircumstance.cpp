@@ -1,7 +1,4 @@
 #include "ContactCircumstance.h"
-
-#include <utility>
-
 #include "ContactResponse.h"
 
 
@@ -13,9 +10,7 @@ namespace ExpectationLib
 		this->responseContext = stimulus->GetResponse()->GetContext();
 		from = overrideFrom ? overrideFrom : stimulus->GetReceiver();
 
-		// modify the relations of the sender and receiver
-		
-		// Cause relations to occur between the affected parties in response to the stimulus
+		// (Modify) Cause relations to occur between the affected parties in response to the stimulus
 		stimulus->GetSender()->AddRelation(ContactRelationName, stimulus->GetReceiver());
 		stimulus->GetReceiver()->AddRelation(ContactRelationName, stimulus->GetSender());
 	}

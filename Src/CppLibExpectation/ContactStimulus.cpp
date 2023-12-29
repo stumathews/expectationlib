@@ -34,11 +34,11 @@ namespace ExpectationLib
 
 	std::shared_ptr<ICircumstance> ContactsStimulus::Trigger(std::shared_ptr<IResponse> inResponse)
 	{
-		// Create the response
+		// Trigger a response
 		this->response = inResponse ? inResponse : std::make_shared<ContactResponse>("NoResponseContext", shared_from_this());
 		this->response->Trigger();
 
-		// Create the circumstance
+		// Create the circumstance/relation between sender and receiver
 		this->circumstance = std::make_shared<ContactCircumstance>(shared_from_this());
 
 		return circumstance;
