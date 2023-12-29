@@ -41,8 +41,8 @@ namespace ExpectationLib
 		const auto responseMatches = observation->GetResponse()->GetId() == response->GetId();
 
 		const auto hasExpectedRelations = 
-			observationStimulusSender->HasRelationTo(observationStimulusReceiver, ContactCircumstance::ContactRelationName) &&
-			observationStimulusReceiver->HasRelationTo(observationStimulusSender, ContactCircumstance::ContactRelationName);
+			observation->GetResponse()->GetSender()->HasRelationTo(observationStimulusReceiver, ContactResponse::ContactRelationName) &&
+			observation->GetResponse()->GetReceiver()->HasRelationTo(observationStimulusSender, ContactResponse::ContactRelationName);
 
 		return sendersMatch && receiversMatch && responseMatches && hasExpectedRelations;
 		

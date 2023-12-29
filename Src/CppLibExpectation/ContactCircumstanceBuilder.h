@@ -13,9 +13,9 @@ namespace ExpectationLib
 	    static std::shared_ptr<ICircumstance> Build(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver, const std::shared_ptr<IParty>&
 		                                                overrideFrom = nullptr)
 		{
-			auto stimulus = std::make_shared<ContactsStimulus>(sender, receiver);
+			const auto stimulus = std::make_shared<ContactsStimulus>(sender, receiver);
 			stimulus->Trigger();
-	        return std::make_shared<ContactCircumstance>(stimulus, overrideFrom);
+	        return std::make_shared<ContactCircumstance>(stimulus->GetResponse());
 	    }
 	};
 

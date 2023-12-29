@@ -1,12 +1,16 @@
 #include "ContactResponse.h"
 
+#include "ContactCircumstance.h"
+#include "ContactStimulus.h"
+#include "Party.h"
+
 namespace ExpectationLib
 {
-	ContactResponse::ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus): stimulus(stimulus)
+	ContactResponse::ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus)
+	: stimulus(stimulus)
 	{
 		From = stimulus->GetReceiver();
 		Context = context;
-
 	}
 
 	std::string ContactResponse::ToString()
@@ -16,25 +20,43 @@ namespace ExpectationLib
 
 	const std::string ContactResponse::GetId()
 	{
-		return GetContext() + GetStimulus()->GetId();
+		return GetReceiver()->GetId() + GetContext() + GetSender()->GetId();
 	}
 
-	std::shared_ptr<IStimulus> ContactResponse::GetStimulus()
-	{
-		return stimulus;
-	}
-	
+		
 	std::string ContactResponse::GetContext()
 	{
 		return Context;
 	}
 
-	void ContactResponse::Trigger()
+	std::shared_ptr<ICircumstance> ContactResponse::Trigger()
 	{
-		// currently doesn't do anything but could  modify the state of the sender or receiver.
-			
-		// this could also be a point in which a user provided delegate is called
+		// copy sender
+		sender = std::make_shared<Party>(*std::dynamic_pointer_cast<Party>(stimulus->GetSender()));
 
-		// This might drive the change of state of the receiver in some way
+		// copy receiver
+		receiver = std::make_shared<Party>(*std::dynamic_pointer_cast<Party>(stimulus->GetReceiver()));
+		
+		//Cause relations to occur between the affected parties in response to the stimulus
+		sender->AddRelation(ContactRelationName, stimulus->GetReceiver());
+		receiver->AddRelation(ContactRelationName, stimulus->GetSender());
+
+		auto circ = std::make_shared<ContactCircumstance>(shared_from_this());
+		return circ;
+	}
+
+	std::shared_ptr<IParty> ContactResponse::GetSender()
+	{
+		return sender;
+	}
+
+	std::shared_ptr<IParty> ContactResponse::GetReceiver()
+	{
+		return receiver;
+	}
+
+	std::shared_ptr<IStimulus> ContactResponse::GetStimulus()
+	{
+		return stimulus;
 	}
 }

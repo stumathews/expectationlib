@@ -42,20 +42,13 @@ TEST(OrderingTests, Test1)
 	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
-	stimulus1->Trigger(response1);
-	stimulus2->Trigger(response2);
-	stimulus3->Trigger(response3);
-	stimulus4->Trigger(response4);
-	stimulus5->Trigger(response5);
-	stimulus6->Trigger(response6);
-
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
+    auto circumstance1 = stimulus1->Trigger(response1);
+    auto circumstance2 = stimulus2->Trigger(response2);
+    auto circumstance3 = stimulus3->Trigger(response3);
+    auto circumstance4 = stimulus4->Trigger(response4);
+    auto circumstance5 = stimulus5->Trigger(response5);
+    auto circumstance6 = stimulus6->Trigger(response6);
 
 	auto obs1 = observer->Observe(circumstance3); 
 	auto obs2 = observer->Observe(circumstance2); 

@@ -29,5 +29,6 @@ namespace ExpectationLib
         std::shared_ptr<IParty> receiver;
         std::shared_ptr<IResponse> response;
         std::shared_ptr<ICircumstance> circumstance;
-    };
+        
+	};
 }

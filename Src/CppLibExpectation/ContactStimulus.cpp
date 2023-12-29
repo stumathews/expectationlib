@@ -36,10 +36,9 @@ namespace ExpectationLib
 	{
 		// Trigger a response
 		this->response = inResponse ? inResponse : std::make_shared<ContactResponse>("NoResponseContext", shared_from_this());
-		this->response->Trigger();
 
-		// Create the circumstance/relation between sender and receiver
-		this->circumstance = std::make_shared<ContactCircumstance>(shared_from_this());
+		// Establishes the contact relation between sender and receiver
+		this->circumstance = this->response->Trigger();
 
 		return circumstance;
 	}
@@ -48,7 +47,7 @@ namespace ExpectationLib
 	{
 		return circumstance;
 	}
-
+	
 	std::string ContactsStimulus::CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
 	{
 		return sender->GetId() + " -> " + receiver->GetId();

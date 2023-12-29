@@ -23,7 +23,7 @@ namespace ExpectationLib
 	std::string Observation::CreateId(const std::shared_ptr<IStimulus>& stimulus,
 	                                  const std::shared_ptr<IResponse>& response)
 	{
-		return stimulus->GetSender()->GetId() + stimulus->GetReceiver()->GetId() + response->GetStimulus()->GetResponse()->GetId() + response->GetId();
+		return stimulus->GetSender()->GetId() + stimulus->GetReceiver()->GetId() + response->GetId();
 	}
 
 	const std::string Observation::GetId()

@@ -85,7 +85,7 @@ TEST(ExpectationTests, Test_ExpectationWithOverridingResponse)
 	// Create a response
 	const std::shared_ptr<IResponse> expectedResponse = std::make_shared<ContactResponse>("aResponse", stimulus);
 
-	stimulus->Trigger(expectedResponse);
+	const auto circ = stimulus->Trigger(expectedResponse);
 
 	// Create an expectation
 	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(stimulus);
@@ -93,7 +93,7 @@ TEST(ExpectationTests, Test_ExpectationWithOverridingResponse)
 	// perform a stimulus .. sender contacts receiver and a contact response is produced
 
 	// make sure the observer observes it: Create a stimulus that produces the provided expectedResponse
-	observer->Observe(stimulus, expectedResponse);
+	observer->Observe(circ);
 
 	// Ensure the expectation is met by observations
 
@@ -143,15 +143,16 @@ TEST(ExpectationTests, Test_ExpectationNegative)
 
 	const auto expectedResponse = std::make_shared<ContactResponse>("aResponse", stimulus);
 	
-	stimulus->Trigger(expectedResponse);
+	const auto circ1 = stimulus->Trigger(expectedResponse);
 
 	const auto unexpectedResponse = std::make_shared<ContactResponse>("bResponse", stimulus);
+	const auto circ2 = stimulus->Trigger(unexpectedResponse);
 
 	// Create an expectation
-	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(stimulus);
+	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(circ1);
 
-	const auto observation = observer->Observe(stimulus, expectedResponse);
-	const auto observation2 = observer->Observe(stimulus, unexpectedResponse);
+	const auto observation = observer->Observe(circ1);
+	const auto observation2 = observer->Observe(circ2);
 
 	EXPECT_TRUE(myExpectation->Match(observation));
 	EXPECT_FALSE(myExpectation->Match(observation2));
@@ -177,13 +178,13 @@ TEST(ExpectationTests, Test_ExpectationExistsPatternMatcher)
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	stimulus1->Trigger(response1);
-	stimulus2->Trigger(response2);
-	stimulus3->Trigger(response3);
+	const auto circ1 = stimulus1->Trigger(response1);
+	const auto circ2 = stimulus2->Trigger(response2);
+	const auto circ3 = stimulus3->Trigger(response3);
 
 	// Multiple observations occur ...
-	observer->Observe(stimulus1, response1);
-	observer->Observe(stimulus3, response3);
+	observer->Observe(circ1);
+	observer->Observe(circ3);
 
 	// Make an observational expectation
 	auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1);
@@ -218,14 +219,14 @@ TEST(ExpectationTests, Test_ExactExpectations)
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	stimulus1->Trigger(response1);
-	stimulus2->Trigger(response2);
-	stimulus3->Trigger(response3);
+	const auto circ1 = stimulus1->Trigger(response1);
+	const auto circ2 = stimulus2->Trigger(response2);
+	const auto circ3 = stimulus3->Trigger(response3);
             
     // Make observations ob some behaviors between sender and receiver
-	observer->Observe(stimulus1, response1);
-	observer->Observe(stimulus2, response2);
-	observer->Observe(stimulus3, response3);
+	observer->Observe(circ1);
+	observer->Observe(circ2);
+	observer->Observe(circ3);
 
 	const auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1);
 	const auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(stimulus2);
@@ -278,13 +279,6 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
 	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
 
-	stimulus1->Trigger();
-	stimulus2->Trigger();
-	stimulus3->Trigger();
-	stimulus4->Trigger();
-	stimulus5->Trigger();
-	stimulus6->Trigger();
-
 	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
@@ -293,12 +287,12 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
+    auto circumstance1 = stimulus1->Trigger(response1);
+    auto circumstance2 = stimulus2->Trigger(response2);
+    auto circumstance3 = stimulus3->Trigger(response3);
+    auto circumstance4 = stimulus4->Trigger(response4);
+    auto circumstance5 = stimulus5->Trigger(response5);
+    auto circumstance6 = stimulus6->Trigger(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); // 1) we expect 
@@ -465,16 +459,12 @@ TEST(ExpectationTests, Test_RepeatedExpectation)
 	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
-
-	stimulus1->Trigger();
-	stimulus2->Trigger();
-	stimulus3->Trigger();
-
+	
 	auto observer = std::make_shared<Observer>();
 
-	const auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
-	const auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
-	const auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
+    auto circumstance1 = stimulus1->Trigger(response1);
+    auto circumstance2 = stimulus2->Trigger(response2);
+    auto circumstance3 = stimulus3->Trigger(response3);
 
 	observer->Observe(circumstance1);
 	observer->Observe(circumstance3);
@@ -542,18 +532,18 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	stimulus1->Trigger(response1);
-	stimulus2->Trigger(response2);
-	stimulus3->Trigger(response3);
+	auto circ1 = stimulus1->Trigger(response1);
+	auto circ2 = stimulus2->Trigger(response2);
+	auto circ3 = stimulus3->Trigger(response3);
             
     // Make observations ob some behaviors between sender and receiver
-	observer->Observe(stimulus1, response1); // expect
-	observer->Observe(stimulus2, response2); // expect
-	observer->Observe(stimulus3, response3); // expect
+	observer->Observe(circ1); // expect
+	observer->Observe(circ2); // expect
+	observer->Observe(circ3); // expect
 
-	const auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1);
-	const auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(stimulus2);
-	const auto myExpectation3 = std::make_shared<StimuliProducesResponseExpectation>(stimulus3);
+	const auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(circ1);
+	const auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(circ2);
+	const auto myExpectation3 = std::make_shared<StimuliProducesResponseExpectation>(circ3);
 	
 	std::vector<std::shared_ptr<IExpectation>> expectedOrder1 = { myExpectation1, myExpectation2, myExpectation3  };
 
@@ -562,101 +552,101 @@ TEST(ExpectationTests, ConsecutiveExpectations)
     EXPECT_TRUE(matcher1->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
 
 	const auto matcher2 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher2->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
-	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
+	observer->Observe(circ1); // ignore
 
 	const auto matcher3 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher3->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus3, response3); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
-	observer->Observe(stimulus1, response1); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ3); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
+	observer->Observe(circ1); // ignore
 
 	const auto matcher4 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher4->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
 
 	const auto matcher5 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher5->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
 
 	const auto matcher6 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_FALSE(matcher6->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
 
 	const auto matcher7 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_TRUE(matcher7->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
 
 	const auto matcher8 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
     EXPECT_FALSE(matcher8->Match());
 
 	observer = std::make_shared<Observer>();
-	observer->Observe(stimulus3, response3);  // ignore
-	observer->Observe(stimulus3, response3);  // ignore
-	observer->Observe(stimulus3, response3);  // ignore
-	observer->Observe(stimulus3, response3);  //  ignore
-	observer->Observe(stimulus3, response3);  // ignore
+	observer->Observe(circ3);  // ignore
+	observer->Observe(circ3);  // ignore
+	observer->Observe(circ3);  // ignore
+	observer->Observe(circ3);  //  ignore
+	observer->Observe(circ3);  // ignore
 
 	const auto matcher9 = std::make_shared<ConsecutiveExpectationsPattern>(expectedOrder1, observer->Observations);
 
@@ -681,38 +671,34 @@ TEST(ExpectationTests, RepeatedConsecutiveExpectationsPattern)
 	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
-
-	stimulus1->Trigger(response1);
-	stimulus2->Trigger(response2);
-	stimulus3->Trigger(response3);
-	
-	const auto circumstance1 = ContactCircumstanceBuilder::Build(sender1, receiver1);
-	const auto circumstance2 = ContactCircumstanceBuilder::Build(sender2, receiver2);
-	const auto circumstance3 = ContactCircumstanceBuilder::Build(sender3, receiver3);
+		
+	const auto circ1 = stimulus1->Trigger(response1);// ContactCircumstanceBuilder::Build(sender1, receiver1);
+	const auto circ2 = stimulus2->Trigger(response2); //ContactCircumstanceBuilder::Build(sender2, receiver2);
+	const auto circ3 = stimulus3->Trigger(response3); //ContactCircumstanceBuilder::Build(sender3, receiver3);
 		
 	const auto observer = std::make_shared<Observer>();
 
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
-	observer->Observe(stimulus1, response1); // ignore
-	observer->Observe(stimulus2, response2); // ignore
-	observer->Observe(stimulus1, response1); // expect *
-	observer->Observe(stimulus2, response2); // expect *
-	observer->Observe(stimulus3, response3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
+	observer->Observe(circ1); // ignore
+	observer->Observe(circ2); // ignore
+	observer->Observe(circ1); // expect *
+	observer->Observe(circ2); // expect *
+	observer->Observe(circ3); // expect *
 
 	const auto myExpectation1 = std::make_shared<StimuliProducesResponseExpectation>(stimulus1);
 	const auto myExpectation2 = std::make_shared<StimuliProducesResponseExpectation>(stimulus2);
@@ -771,13 +757,6 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
 	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
 
-	stimulus1->Trigger();
-	stimulus2->Trigger();
-	stimulus3->Trigger();
-	stimulus4->Trigger();
-	stimulus5->Trigger();
-	stimulus6->Trigger();
-
 	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
 	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
@@ -786,12 +765,12 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = std::make_shared<ContactCircumstance>(stimulus1);
-    auto circumstance2 = std::make_shared<ContactCircumstance>(stimulus2);
-    auto circumstance3 = std::make_shared<ContactCircumstance>(stimulus3);
-    auto circumstance4 = std::make_shared<ContactCircumstance>(stimulus4);
-    auto circumstance5 = std::make_shared<ContactCircumstance>(stimulus5);
-    auto circumstance6 = std::make_shared<ContactCircumstance>(stimulus6);
+    auto circumstance1 = stimulus1->Trigger(response1);
+    auto circumstance2 = stimulus2->Trigger(response2);
+    auto circumstance3 = stimulus3->Trigger(response3);
+    auto circumstance4 = stimulus4->Trigger(response4);
+    auto circumstance5 = stimulus5->Trigger(response5);
+    auto circumstance6 = stimulus6->Trigger(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	observer->Observe(circumstance1); // 1) we expect 

@@ -7,7 +7,7 @@
 
 namespace ExpectationLib
 {
-	class ContactResponse final : public IResponse
+	class ContactResponse final : public IResponse, public std::enable_shared_from_this<ContactResponse>
 	{
 	public:
 	    std::string Context;
@@ -18,13 +18,18 @@ namespace ExpectationLib
 	    std::string ToString() override;
 	    const std::string GetId() override;
 
+	    std::string GetContext() override;
+	    std::shared_ptr<ICircumstance> Trigger() override;
+	    std::shared_ptr<IParty> GetSender() override;
+	    std::shared_ptr<IParty> GetReceiver() override;
 	    std::shared_ptr<IStimulus> GetStimulus() override;
 
-	    std::string GetContext() override;
-	    void Trigger() override;
+	    inline static std::string ContactRelationName = "contacted";
 
     private:		
 	    const std::shared_ptr<IStimulus> stimulus;
+		std::shared_ptr<IParty> sender;
+		std::shared_ptr<IParty> receiver;
 
 	};
 }
