@@ -41,8 +41,7 @@ namespace ExpectationLib
 		sender->AddRelation(ContactRelationName, stimulus->GetReceiver());
 		receiver->AddRelation(ContactRelationName, stimulus->GetSender());
 
-		auto circ = std::make_shared<ContactCircumstance>(shared_from_this());
-		return circ;
+		return std::make_shared<ContactCircumstance>(shared_from_this());
 	}
 
 	std::shared_ptr<IParty> ContactResponse::GetSender()

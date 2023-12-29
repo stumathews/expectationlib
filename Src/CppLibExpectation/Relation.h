@@ -12,5 +12,6 @@ namespace ExpectationLib
 		Relation(std::string name, std::shared_ptr<IParty> to);
 		std::string Name;
 		std::shared_ptr<IParty> To;
+		std::string GetId() const;
 	};
 }

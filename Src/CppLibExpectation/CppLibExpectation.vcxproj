@@ -149,6 +149,7 @@
     <ClInclude Include="ExpectationExistsPattern.h" />
     <ClInclude Include="ExpectedTestSituation.h" />
     <ClInclude Include="framework.h" />
+    <ClInclude Include="GraphBuilder.h" />
     <ClInclude Include="ICircumstance.h" />
     <ClInclude Include="IExpectedPattern.h" />
     <ClInclude Include="IExpectation.h" />
@@ -179,6 +180,7 @@
     <ClCompile Include="ContextualFlowsMonitor.cpp" />
     <ClCompile Include="ExpectationExistsPattern.cpp" />
     <ClCompile Include="ExpectedTestSituation.cpp" />
+    <ClCompile Include="GraphBuilder.cpp" />
     <ClCompile Include="Observation.cpp" />
     <ClCompile Include="Observer.cpp" />
     <ClCompile Include="Ordering.cpp" />

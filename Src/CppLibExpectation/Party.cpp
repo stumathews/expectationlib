@@ -27,7 +27,7 @@ namespace ExpectationLib
 	{
 		const auto found = std::ranges::find_if (relations, [&](const Relation& relation)
 		{
-			return relation.Name == relationName && relation.To == to;
+			return relation.Name == relationName && relation.To->GetId() == to->GetId();
 		});
 		return found != relations.end();
 	}

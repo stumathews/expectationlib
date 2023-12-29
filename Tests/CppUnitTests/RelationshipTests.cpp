@@ -2,8 +2,10 @@
 #include "pch.h"
 
 #include "ContactCircumstance.h"
+#include "ContactCircumstanceBuilder.h"
 #include "ContactResponse.h"
 #include "ContactStimulus.h"
+#include "GraphBuilder.h"
 #include "Observer.h"
 #include "Ordering.h"
 #include "Party.h"
@@ -46,16 +48,49 @@ TEST(RelationshipTests, BuildRelationships)
 {
 	const auto observer = std::make_shared<Observer>();
 
-	auto party1 = std::make_shared<Party>("party1");
-	auto party2 = std::make_shared<Party>("party2");
+	std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
+	std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
+	std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
+	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
 
-	const auto stimulus = std::make_shared<ContactsStimulus>(party1, party2);
+	// party2 -> party2
+	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
+	party1 = circumstance1->GetResponse()->GetSender();
+	party2 = circumstance1->GetResponse()->GetReceiver();
 
-	// this modifies the party1 and party2 - is this a good thing?
-	stimulus->Trigger();
+	EXPECT_TRUE(party1->HasRelationTo(party2, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party2->HasRelationTo(party1, ContactResponse::ContactRelationName));
 
-	const auto circumstance = stimulus->GetCircumstance();
+	EXPECT_EQ(party1->GetRelations().size(), 1);
+	EXPECT_EQ(party2->GetRelations().size(), 1);
 
-	observer->Observe(circumstance);
+	// party2 -> party3
+
+	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2, party3);
+	party2 = circumstance2->GetResponse()->GetSender();
+	party1 = party2->GetRelations()[0].To;
+	party3 = circumstance2->GetResponse()->GetReceiver();
+
+
+	EXPECT_TRUE(party2->HasRelationTo(party3, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party3->HasRelationTo(party2, ContactResponse::ContactRelationName));
+
+	EXPECT_EQ(party1->GetRelations().size(), 1);
+	EXPECT_EQ(party2->GetRelations().size(), 2); // should have an extra relation to party 3
+	EXPECT_EQ(party3->GetRelations().size(), 1);
+
+	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party1, party4);
+	party1 = circumstance3->GetResponse()->GetSender();
+	party4 = circumstance3->GetResponse()->GetReceiver();
+
+	EXPECT_TRUE(party1->HasRelationTo(party4, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party4->HasRelationTo(party1, ContactResponse::ContactRelationName));
+
+	EXPECT_EQ(party1->GetRelations().size(), 2);
+
+	// changes to state over time:
+	// t1: circumstance1  ([party1]-[party2])
+	// t2: circumstance2 (party1-[party2]-[party3])
+	// t3: circumstance3 ([party4]-[party1]-party2-party3)
 
 }

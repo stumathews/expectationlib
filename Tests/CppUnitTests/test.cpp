@@ -359,7 +359,7 @@ TEST(ExpectationTests, Test_ExpectedTestSituationFlowPass)
     // Model a specific hard-coded situation as the ordered expected behavior of 4 specific parties  
 	const auto situation = std::make_shared<ExpectedTestSituation>(party1, party2, party3, party4);
 
-	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2, party3);
+	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2);
 	const auto contactSituation2 = ContactCircumstanceBuilder::Build(party3, party4);
 	const auto contactSituation3 = ContactCircumstanceBuilder::Build(party4, party3);
 	const auto contactSituation4 = ContactCircumstanceBuilder::Build(party3, party1);
@@ -387,7 +387,7 @@ TEST(ExpectationTests, Test_ExpectedTestSituationFlowFail)
 	
 	const auto flow = std::make_shared<ExpectedTestSituation>(party1, party2, party3, party4);
 
-	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2, party3);
+	const auto contactSituation1 = ContactCircumstanceBuilder::Build(party1, party2);
 	// auto contactSituation2 = ContactCircumstanceBuilder.Build(party3, party4, transactionId);
 	// auto contactSituation3 = ContactCircumstanceBuilder.Build(party4, party3, transactionId);
 	const auto contactSituation4 = ContactCircumstanceBuilder::Build(party3, party1);
