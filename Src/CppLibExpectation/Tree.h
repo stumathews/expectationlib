@@ -49,7 +49,7 @@ namespace ExpectationLib
 			else
 			{
 				// ignore item if its the same as the last parent node (3-2, 3-1)... only take 2 & 1 ignore leading 3s)
-				if(LastParentNode->Item == node->Item) return;
+				//if(LastParentNode->Item == node->Item) return;
 
 				// Add child to the last parent
 				LastParentNode->AddChild(node);
