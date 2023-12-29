@@ -36,6 +36,7 @@ namespace ExpectationLib
 	{
 		// Create the response
 		this->response = inResponse ? inResponse : std::make_shared<ContactResponse>("NoResponseContext", shared_from_this());
+		this->response->Trigger();
 
 		// Create the circumstance
 		this->circumstance = std::make_shared<ContactCircumstance>(shared_from_this());

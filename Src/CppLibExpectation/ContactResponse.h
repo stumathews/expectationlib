@@ -21,7 +21,9 @@ namespace ExpectationLib
 	    std::shared_ptr<IStimulus> GetStimulus() override;
 
 	    std::string GetContext() override;
-	private:		
+	    void Trigger() override;
+
+    private:		
 	    const std::shared_ptr<IStimulus> stimulus;
 
 	};

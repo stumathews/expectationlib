@@ -7,9 +7,6 @@ namespace ExpectationLib
 		From = stimulus->GetReceiver();
 		Context = context;
 
-		// modify the state of the sender or receiver.
-			
-		// this could also be a point in which a user provided delegate is called
 	}
 
 	std::string ContactResponse::ToString()
@@ -30,5 +27,12 @@ namespace ExpectationLib
 	std::string ContactResponse::GetContext()
 	{
 		return Context;
+	}
+
+	void ContactResponse::Trigger()
+	{
+		// currently doesn't do anything but could  modify the state of the sender or receiver.
+			
+		// this could also be a point in which a user provided delegate is called
 	}
 }
