@@ -4,13 +4,15 @@
 namespace ExpectationLib
 {
 
-	Tree<Party> GraphBuilder::Build(const std::shared_ptr<ICircumstance>& circumstance)
+	Tree<Party> GraphBuilder::BuildRelationGraph(const std::shared_ptr<ICircumstance>& circumstance, const bool startFromReceiver)
 	{		
 		std::vector<std::string> visitedPartyIds;
 		Tree<Party> tree;		
 
 		// Construct the root node as the the party that received the stimulus resulting in this circumstance
-		auto rootNode = std::make_shared<Node<Party>>(*std::dynamic_pointer_cast<Party>(circumstance->GetResponse()->GetReceiver()));
+		auto rootNode = std::make_shared<Node<Party>>(*std::dynamic_pointer_cast<Party>(startFromReceiver 
+			? circumstance->GetResponse()->GetReceiver()
+			: circumstance->GetResponse()->GetSender()));
 
 		// Work backwards through its relations to create a tree of parties eg: party4 -> party3 -> party2 -> party1
 		AddRelationsAsChildren(rootNode, visitedPartyIds);

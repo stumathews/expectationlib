@@ -119,9 +119,9 @@ TEST(RelationshipTests, GraphCircumstances)
 	EXPECT_TRUE(party3->HasRelationTo(party4, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party4->HasRelationTo(party3, ContactResponse::ContactRelationName));
 
-	Tree<Party> state1 = GraphBuilder::Build(circumstance1);	
-	auto state2 = GraphBuilder::Build(circumstance2);
-	auto state3 = GraphBuilder::Build(circumstance3);
+	Tree<Party> state1 = GraphBuilder::BuildRelationGraph(circumstance1);	
+	Tree<Party> state2 = GraphBuilder::BuildRelationGraph(circumstance2);
+	Tree<Party> state3 = GraphBuilder::BuildRelationGraph(circumstance3);
 
 	EXPECT_EQ(state1.GetDepth(), 1);
 	EXPECT_EQ(state2.GetDepth(), 2);
@@ -129,16 +129,16 @@ TEST(RelationshipTests, GraphCircumstances)
 
 	// States: State1 -> State2 -> state3
 
-	// State1: party2-party1
+	// State1: Party2-Party1
 	EXPECT_EQ(state1.Root->Item.GetId(), party2->GetId()); // depth 0
 	EXPECT_EQ(state1.Root->Children[0]->Item.GetId(), party1->GetId()); // depth 1
 
-	// State2: Party3-party2-party1
+	// State2: Party3-Party2-Party1
 	EXPECT_EQ(state2.Root->Item.GetId(), party3->GetId()); // depth 0
 	EXPECT_EQ(state2.Root->Children[0]->Item.GetId(), party2->GetId()); // depth 1
 	EXPECT_EQ(state2.Root->Children[0]->Children[0]->Item.GetId(), party1->GetId()); // depth 2
 
-	// State3: Party4-party3-party2-party1
+	// State3: Party4-Party3-Party2-Party1
 	EXPECT_EQ(state3.Root->Item.GetId(), party4->GetId()); //depth 0
 	EXPECT_EQ(state3.Root->Children[0]->Item.GetId(), party3->GetId()); // depth 1
 	EXPECT_EQ(state3.Root->Children[0]->Children[0]->Item.GetId(), party2->GetId()); //depth 2
