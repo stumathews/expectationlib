@@ -8,7 +8,7 @@
 namespace ExpectationLib
 {
 	template <typename T>
-	class BinaryTreeNodeStrategy: virtual public ITreeNodeStrategy<T>
+	class BinaryTreeNodeStrategy final : virtual public ITreeNodeStrategy<T>
 	{
 	public:
 		BinaryTreeNodeStrategy()

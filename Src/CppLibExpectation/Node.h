@@ -8,10 +8,9 @@ namespace ExpectationLib
 	class Node : public std::enable_shared_from_this<Node<T>>
 	{
 	public:
-		explicit Node(T item) : Item(item)
-		{
-		}
+		explicit Node(T item) : Item(item) { }
 		T Item;
+
 		std::shared_ptr<Node<T>> Parent = nullptr;
 		std::vector<std::shared_ptr<Node>> Children {};
 

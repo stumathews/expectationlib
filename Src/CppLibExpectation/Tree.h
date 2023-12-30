@@ -3,18 +3,27 @@
 #include "BinaryTreeStrategy.h"
 
 namespace ExpectationLib
-{	
+{
+	template<typename T> 
+		std::shared_ptr<Node<T>> GetNodeWithMaxChildren2( const std::shared_ptr<Node<T>>& x )
+		{
+		  using Item=std::shared_ptr<Node<T>>;
+		  return *std::max_element(x->Children.begin(), x->Children.end(), [] (const Item & p1, const Item & p2) {
+		        return p1->Children.size() < p2->Children.size();
+		  }); 
+		}
 
 	template <typename T>
 	class Tree
 	{
 	public:
+
+		
 		
 		enum class TreeType { Binary };
 
 		explicit Tree(TreeType treeType = TreeType::Binary)
 		{
-
 			if(treeType == TreeType::Binary)
 			{
 				treeStrategy = std::make_shared<BinaryTreeNodeStrategy<T>>();
@@ -24,6 +33,24 @@ namespace ExpectationLib
 				throw std::exception("Tree: Unsupported tree type.");
 			}
 		}
+
+		int GetDepth()
+		{
+			int depth = 0;
+
+			std::shared_ptr<Node<T>> node = Root;
+			while(node->Children.size() > 0)
+			{
+				std::shared_ptr<Node<T>> child = GetNodeWithMaxChildren2(node);		
+				
+				depth++;
+				node = child;
+								
+								
+			}
+			return depth;
+		}
+
 		void AddRoot(std::shared_ptr<Node<T>>& root)
 		{
 			Root = root;

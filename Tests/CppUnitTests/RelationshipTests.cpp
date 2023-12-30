@@ -93,29 +93,22 @@ TEST(RelationshipTests, BuildRelationships)
 
 }
 
-TEST(RelationshipTests, LinkCircumstances)
+TEST(RelationshipTests, GraphCircumstances)
 {
 	std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
 	std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
 	std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
 	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
-
-
+	
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
-	Tree<Party> graph1 = GraphBuilder::Build(circumstance1);
-
 	party1 = circumstance1->GetResponse()->GetSender();
 	party2 = circumstance1->GetResponse()->GetReceiver();
 		
 	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2, party3);
-	Tree<Party> graph2 = GraphBuilder::Build(circumstance2);
-
 	party2 = circumstance2->GetResponse()->GetSender();
 	party3 = circumstance2->GetResponse()->GetReceiver();
 	
 	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party3, party4);
-	Tree<Party> graph3 = GraphBuilder::Build(circumstance3);
-
 	party3 = circumstance3->GetResponse()->GetSender();
 	party4 = circumstance3->GetResponse()->GetReceiver();
 	
@@ -125,6 +118,31 @@ TEST(RelationshipTests, LinkCircumstances)
 	EXPECT_TRUE(party3->HasRelationTo(party2, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party3->HasRelationTo(party4, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party4->HasRelationTo(party3, ContactResponse::ContactRelationName));
+
+	Tree<Party> state1 = GraphBuilder::Build(circumstance1);	
+	auto state2 = GraphBuilder::Build(circumstance2);
+	auto state3 = GraphBuilder::Build(circumstance3);
+
+	EXPECT_EQ(state1.GetDepth(), 1);
+	EXPECT_EQ(state2.GetDepth(), 2);
+	EXPECT_EQ(state3.GetDepth(), 3);
+
+	// States: State1 -> State2 -> state3
+
+	// State1: party2-party1
+	EXPECT_EQ(state1.Root->Item.GetId(), party2->GetId()); // depth 0
+	EXPECT_EQ(state1.Root->Children[0]->Item.GetId(), party1->GetId()); // depth 1
+
+	// State2: Party3-party2-party1
+	EXPECT_EQ(state2.Root->Item.GetId(), party3->GetId()); // depth 0
+	EXPECT_EQ(state2.Root->Children[0]->Item.GetId(), party2->GetId()); // depth 1
+	EXPECT_EQ(state2.Root->Children[0]->Children[0]->Item.GetId(), party1->GetId()); // depth 2
+
+	// State3: Party4-party3-party2-party1
+	EXPECT_EQ(state3.Root->Item.GetId(), party4->GetId()); //depth 0
+	EXPECT_EQ(state3.Root->Children[0]->Item.GetId(), party3->GetId()); // depth 1
+	EXPECT_EQ(state3.Root->Children[0]->Children[0]->Item.GetId(), party2->GetId()); //depth 2
+	EXPECT_EQ(state3.Root->Children[0]->Children[0]->Children[0]->Item.GetId(), party1->GetId()); //depth 3
 	
 
 }
