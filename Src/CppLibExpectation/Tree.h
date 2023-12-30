@@ -1,21 +1,33 @@
 #pragma once
 #include "Node.h"
-#include <queue>
+#include "BinaryTreeStrategy.h"
 
 namespace ExpectationLib
-{
+{	
 
 	template <typename T>
 	class Tree
 	{
 	public:
-		void AddRoot(std::shared_ptr<Node<T>> root)
+		
+		enum class TreeType { Binary };
+
+		explicit Tree(TreeType treeType = TreeType::Binary)
+		{
+
+			if(treeType == TreeType::Binary)
+			{
+				treeStrategy = std::make_shared<BinaryTreeNodeStrategy<T>>();
+			}
+			else
+			{
+				throw std::exception("Tree: Unsupported tree type.");
+			}
+		}
+		void AddRoot(std::shared_ptr<Node<T>>& root)
 		{
 			Root = root;
 			empty = false;
-			index = 0;
-			LastParentNode = root;
-			SwingNode = nullptr;
 		}
 
 		[[nodiscard]] bool IsEmpty() const
@@ -40,50 +52,22 @@ namespace ExpectationLib
 			return nullptr;
 		}
 
-		void AddNode(const std::shared_ptr<Node<std::string>>& node)
+		void AddNode(std::shared_ptr<Node<T>>& node)
 		{
 			if(empty)
-			{
+			{				
 				AddRoot(node);
 			}
 			else
 			{
-				// ignore item if its the same as the last parent node (3-2, 3-1)... only take 2 & 1 ignore leading 3s)
-				//if(LastParentNode->Item == node->Item) return;
-
-				// Add child to the last parent
-				LastParentNode->AddChild(node);
-
-				index++; // Tree Index ( tree is can only have 2 children per node (child 0 & child 1 only).
-
-				// exception-case: add first node as swing node.
-				if(LastParentNode->Children.size() == 1 && index == 1)
-				{
-					swingQueue.push(node);
-				}
-
-				if(LastParentNode->Children.size() == 2)
-				{
-					// Swing to the other side.
-
-					// use last child as future swinging node
-					swingQueue.push(node);
-
-					// Set the next parent to be the swing node, effectively swing sides
-					LastParentNode = swingQueue.front();
-
-					// no need to swing from this node anymore
-					swingQueue.pop();
-				}				
+				treeStrategy->AddNode(node, Root);
 			}
 		}
 
-		std::shared_ptr<Node<T>> LastParentNode = nullptr;
-		std::shared_ptr<Node<std::string>> SwingNode = nullptr;
-		std::shared_ptr<Node<T>> Root {};
+		std::shared_ptr<Node<T>> Root;
 	private:
-		std::queue<std::shared_ptr<Node<std::string>>> swingQueue;
+		std::shared_ptr<ITreeNodeStrategy<T>> treeStrategy;
+		
 		bool empty = true;
-		short index = 0;
 	};
 }

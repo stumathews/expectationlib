@@ -14,6 +14,7 @@ namespace ExpectationLib
 		T Item;
 		std::shared_ptr<Node<T>> Parent = nullptr;
 		std::vector<std::shared_ptr<Node>> Children {};
+
 		std::shared_ptr<Node<T>> FindChildItem(T item)
 		{
 			for (std::shared_ptr<Node<T>> child : Children)
