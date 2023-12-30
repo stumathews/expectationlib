@@ -46,12 +46,10 @@ TEST(RelationshipTests, RelationIsSet)
 
 TEST(RelationshipTests, BuildRelationships)
 {
-	const auto observer = std::make_shared<Observer>();
-
-	std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
-	std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
-	std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
-	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
+	const std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
+	const std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
+	const std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
+	const std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
 
 	// party1 -> party2
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
@@ -84,7 +82,7 @@ TEST(RelationshipTests, BuildRelationships)
 	
 	EXPECT_TRUE(party1c3->HasRelationTo(party4c3, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party4c3->HasRelationTo(party1c3, ContactResponse::ContactRelationName));
-	EXPECT_FALSE(party1c3->HasRelationTo(party3c2,  ContactResponse::ContactRelationName));
+	EXPECT_FALSE(party1c3->HasRelationTo(party3c2,  ContactResponse::ContactRelationName)); // note!
 
 	EXPECT_EQ(party1c3->GetRelations().size(), 2);
 
@@ -93,6 +91,40 @@ TEST(RelationshipTests, BuildRelationships)
 	// t2: circumstance2  (party1c1-party2c1-party3)
 	// t3: circumstance3  (party1c1-party2c1-party4)
 
-	auto tree = GraphBuilder::Build(circumstance3);
+}
+
+TEST(RelationshipTests, LinkCircumstances)
+{
+	std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
+	std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
+	std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
+	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
+
+
+	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
+	Tree<Party> graph1 = GraphBuilder::Build(circumstance1);
+
+	party1 = circumstance1->GetResponse()->GetSender();
+	party2 = circumstance1->GetResponse()->GetReceiver();
+		
+	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2, party3);
+	Tree<Party> graph2 = GraphBuilder::Build(circumstance2);
+
+	party2 = circumstance2->GetResponse()->GetSender();
+	party3 = circumstance2->GetResponse()->GetReceiver();
+	
+	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party3, party4);
+	Tree<Party> graph3 = GraphBuilder::Build(circumstance3);
+
+	party3 = circumstance3->GetResponse()->GetSender();
+	party4 = circumstance3->GetResponse()->GetReceiver();
+	
+	EXPECT_TRUE(party1->HasRelationTo(party2, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party2->HasRelationTo(party1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party2->HasRelationTo(party3, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party3->HasRelationTo(party2, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party3->HasRelationTo(party4, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party4->HasRelationTo(party3, ContactResponse::ContactRelationName));
+	
 
 }

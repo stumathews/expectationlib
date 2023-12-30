@@ -140,6 +140,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="BinaryTreeStrategy.h" />
     <ClInclude Include="ConsecutiveExpectationsPattern.h" />
     <ClInclude Include="ContactCircumstance.h" />
     <ClInclude Include="ContactCircumstanceBuilder.h" />
@@ -159,6 +160,7 @@
     <ClInclude Include="IResponse.h" />
     <ClInclude Include="ISituation.h" />
     <ClInclude Include="IStimulus.h" />
+    <ClInclude Include="ITreeNodeStrategy.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="Observation.h" />
     <ClInclude Include="Observer.h" />

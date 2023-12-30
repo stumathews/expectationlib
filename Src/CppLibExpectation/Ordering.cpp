@@ -106,8 +106,8 @@ namespace ExpectationLib
 		for(const auto& order : beforeAfterPairings)
 		{
 			const auto& [before, after] = order;
-			const auto beforeNode = std::make_shared<Node<std::string>>(before);
-			const auto afterNode = std::make_shared<Node<std::string>>(after);
+			auto beforeNode = std::make_shared<Node<std::string>>(before);
+			auto afterNode = std::make_shared<Node<std::string>>(after);
 				
 			orderTree.AddNode(beforeNode);
 			orderTree.AddNode(afterNode);
@@ -145,7 +145,7 @@ namespace ExpectationLib
 			if(tree.IsEmpty())
 			{				
 				const auto afterNode = std::make_shared<Node<std::string>>(after);
-				const auto beforeNode = std::make_shared<Node<std::string>>(before);
+				auto beforeNode = std::make_shared<Node<std::string>>(before);
 				beforeNode->AddChild(afterNode);
 			
 				tree.AddRoot(beforeNode);

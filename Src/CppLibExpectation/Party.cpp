@@ -13,12 +13,14 @@ namespace ExpectationLib
 		return id;
 	}
 
-	std::shared_ptr<IParty>& Party::FindRelatedParty(const std::string& partyId, const std::string& relationName)
+	std::shared_ptr<IParty> Party::FindRelatedParty(const std::string& partyId, const std::string& relationName)
 	{
 		const auto found = std::ranges::find_if (relations, [&](const Relation& relation)
 		{
 			return relation.To->GetId() == partyId && relation.Name == relationName;
 		});
+
+		if(found == relations.end()) return nullptr;
 
 		return found->To;
 	}

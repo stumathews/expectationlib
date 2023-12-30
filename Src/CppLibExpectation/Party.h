@@ -15,7 +15,7 @@ namespace ExpectationLib
 		bool HasRelationTo(const std::shared_ptr<IParty> to, const std::string relationName) override;
 		[[nodiscard]] const std::string GetId() const override;
 		friend bool operator== (const Party& lhs, const Party& rhs);
-		std::shared_ptr<IParty>& FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
+		std::shared_ptr<IParty> FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
 
 	private:
 	    
