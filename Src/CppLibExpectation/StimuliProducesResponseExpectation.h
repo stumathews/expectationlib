@@ -13,7 +13,7 @@ namespace ExpectationLib
         std::string ToString() override;
         static std::string CreateId(const std::shared_ptr<IStimulus>& stimuli);
         bool Match(std::shared_ptr<Observation> observation) override;
-        const std::string GetId() override;
+        const std::string GetId() const override;
 
         std::shared_ptr<IStimulus> GetStimulus();
         std::shared_ptr<IResponse> GetResponse();

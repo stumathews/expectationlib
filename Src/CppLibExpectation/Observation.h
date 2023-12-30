@@ -17,7 +17,7 @@ namespace ExpectationLib
 
         Observation(const std::shared_ptr<ICircumstance>& circumstance, const std::string& observationContext);
 
-        bool operator==(Observation& other);
+        bool operator==(const Observation& other) const;
 
         /// <summary>
         /// Reconstruct an Observation GetId from its constituent parts
@@ -29,7 +29,7 @@ namespace ExpectationLib
                                     const std::shared_ptr<IResponse>& response);
 
         /// <inheritdoc />
-        const std::string GetId() override;
+        [[nodiscard]] const std::string GetId() const override;
 
         std::shared_ptr<IStimulus> GetStimulus() { return stimulus; }
         std::shared_ptr<IResponse> GetResponse() { return response; }

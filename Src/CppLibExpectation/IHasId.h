@@ -9,6 +9,6 @@ namespace ExpectationLib
 		virtual ~IHasId() = default;
 
 		// Unique identifier
-		virtual const std::string GetId() = 0;
+		virtual const std::string GetId() const = 0;
 	};
 }

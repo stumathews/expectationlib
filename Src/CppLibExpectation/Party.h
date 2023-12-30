@@ -7,13 +7,15 @@ namespace ExpectationLib
 	class Party final : public virtual IParty
 	{
 	public:
-		Party(const std::string& id, const std::string& role = "");
+		explicit Party(const std::string& id, const std::string& role = "");
 
 	    std::string GetRole() override;
-		const std::string GetId() override;
 		void AddRelation(std::string name, std::shared_ptr<IParty> to) override;
 		std::vector<Relation>& GetRelations() override;
 		bool HasRelationTo(const std::shared_ptr<IParty> to, const std::string relationName) override;
+		[[nodiscard]] const std::string GetId() const override;
+		friend bool operator== (const Party& lhs, const Party& rhs);
+		std::shared_ptr<IParty>& FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
 
 	private:
 	    

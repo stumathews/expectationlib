@@ -23,13 +23,17 @@ namespace ExpectationLib
 		return tree;
 	}
 
-	void GraphBuilder::AddRelationsAsChildren(const std::shared_ptr<Node<Party>>& parent)
+	void GraphBuilder::AddRelationsAsChildren(const std::shared_ptr<Node<Party>>& node)
+	{
+		for(const auto& relation : node->Item.GetRelations())
 		{
-			for(const auto& relation : parent->Item.GetRelations())
+			Party item = *std::dynamic_pointer_cast<Party>(relation.To);
+			const auto newChild = std::make_shared<Node<Party>>(item);
+			if(node->Parent != nullptr && !node->Parent->FindChildItem(newChild->Item))
 			{
-				auto newChild = std::make_shared<Node<Party>>(*std::dynamic_pointer_cast<Party>(relation.To));
-				parent->AddChild(newChild);
+				node->AddChild(newChild);
 				AddRelationsAsChildren(newChild);
-			}			
-		};
+			}
+		}			
+	};
 }

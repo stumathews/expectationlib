@@ -18,7 +18,7 @@ namespace ExpectationLib
 			SwingNode = nullptr;
 		}
 
-		bool IsEmpty() const
+		[[nodiscard]] bool IsEmpty() const
 		{
 			return empty;
 		}

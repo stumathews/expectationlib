@@ -15,7 +15,7 @@ namespace ExpectationLib
         
         static std::string CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver);
 
-        const std::string GetId() override;
+        const std::string GetId() const override;
         std::string ToString() override;
         
         std::shared_ptr<IParty> GetSender() override;

@@ -18,13 +18,13 @@ namespace ExpectationLib
 		return Context;
 	}
 
-	const std::string ContactResponse::GetId()
+	const std::string ContactResponse::GetId() const
 	{
 		return GetReceiver()->GetId() + GetContext() + GetSender()->GetId();
 	}
 
 		
-	std::string ContactResponse::GetContext()
+	std::string ContactResponse::GetContext() const
 	{
 		return Context;
 	}
@@ -38,18 +38,18 @@ namespace ExpectationLib
 		receiver = std::make_shared<Party>(*std::dynamic_pointer_cast<Party>(stimulus->GetReceiver()));
 		
 		//Cause relations to occur between the affected parties in response to the stimulus
-		sender->AddRelation(ContactRelationName, stimulus->GetReceiver());
-		receiver->AddRelation(ContactRelationName, stimulus->GetSender());
+		sender->AddRelation(ContactRelationName, receiver);
+		receiver->AddRelation(ContactRelationName, sender);
 
 		return std::make_shared<ContactCircumstance>(shared_from_this());
 	}
 
-	std::shared_ptr<IParty> ContactResponse::GetSender()
+	std::shared_ptr<IParty> ContactResponse::GetSender() const
 	{
 		return sender;
 	}
 
-	std::shared_ptr<IParty> ContactResponse::GetReceiver()
+	std::shared_ptr<IParty> ContactResponse::GetReceiver() const
 	{
 		return receiver;
 	}

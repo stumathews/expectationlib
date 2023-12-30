@@ -10,6 +10,6 @@ namespace ExpectationLib
 	{
 	public:
 		static Tree<Party> Build(const std::shared_ptr<ICircumstance>& circumstance);
-		static void AddRelationsAsChildren(const std::shared_ptr<Node<Party>>& parent);
+		static void AddRelationsAsChildren(const std::shared_ptr<Node<Party>>& node);
 	};
 }

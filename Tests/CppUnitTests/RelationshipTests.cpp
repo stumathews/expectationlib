@@ -35,9 +35,9 @@ TEST(RelationshipTests, RelationIsSet)
 	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations().size(), 1);
 
 	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
-	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations()[0].To, sender);
+	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations()[0].To->GetId(), sender->GetId());
 	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
-	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations()[0].To, receiver);
+	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations()[0].To->GetId(), receiver->GetId());
 
 	EXPECT_TRUE(circumstance->GetResponse()->GetSender()->HasRelationTo(receiver, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(circumstance->GetResponse()->GetReceiver()->HasRelationTo(sender, ContactResponse::ContactRelationName));
@@ -53,44 +53,46 @@ TEST(RelationshipTests, BuildRelationships)
 	std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
 	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
 
-	// party2 -> party2
+	// party1 -> party2
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
-	party1 = circumstance1->GetResponse()->GetSender();
-	party2 = circumstance1->GetResponse()->GetReceiver();
+	auto party1c1 = circumstance1->GetResponse()->GetSender();
+	auto party2c1 = circumstance1->GetResponse()->GetReceiver();
 
-	EXPECT_TRUE(party1->HasRelationTo(party2, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(party2->HasRelationTo(party1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party1c1->HasRelationTo(party2c1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party2c1->HasRelationTo(party1c1, ContactResponse::ContactRelationName));
 
-	EXPECT_EQ(party1->GetRelations().size(), 1);
-	EXPECT_EQ(party2->GetRelations().size(), 1);
+	EXPECT_EQ(party1c1->GetRelations().size(), 1);
+	EXPECT_EQ(party2c1->GetRelations().size(), 1);
 
 	// party2 -> party3
 
-	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2, party3);
-	party2 = circumstance2->GetResponse()->GetSender();
-	party1 = party2->GetRelations()[0].To;
-	party3 = circumstance2->GetResponse()->GetReceiver();
+	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2c1, party3);
+	auto party2c2 = circumstance2->GetResponse()->GetSender();
+	auto party3c2 = circumstance2->GetResponse()->GetReceiver();
+	
+	EXPECT_TRUE(party2c2->HasRelationTo(party3c2, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party3c2->HasRelationTo(party2c2, ContactResponse::ContactRelationName));		
+	
+	EXPECT_EQ(party2c2->GetRelations().size(), 2); // should have an extra relation to party 3
+	EXPECT_EQ(party3c2->GetRelations().size(), 1);
 
+	// party1 -> party4
 
-	EXPECT_TRUE(party2->HasRelationTo(party3, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(party3->HasRelationTo(party2, ContactResponse::ContactRelationName));
+	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party1c1, party4);
+	auto party1c3 = circumstance3->GetResponse()->GetSender();
+	auto party4c3 = circumstance3->GetResponse()->GetReceiver();
+	
+	EXPECT_TRUE(party1c3->HasRelationTo(party4c3, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(party4c3->HasRelationTo(party1c3, ContactResponse::ContactRelationName));
+	EXPECT_FALSE(party1c3->HasRelationTo(party3c2,  ContactResponse::ContactRelationName));
 
-	EXPECT_EQ(party1->GetRelations().size(), 1);
-	EXPECT_EQ(party2->GetRelations().size(), 2); // should have an extra relation to party 3
-	EXPECT_EQ(party3->GetRelations().size(), 1);
-
-	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party1, party4);
-	party1 = circumstance3->GetResponse()->GetSender();
-	party4 = circumstance3->GetResponse()->GetReceiver();
-
-	EXPECT_TRUE(party1->HasRelationTo(party4, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(party4->HasRelationTo(party1, ContactResponse::ContactRelationName));
-
-	EXPECT_EQ(party1->GetRelations().size(), 2);
+	EXPECT_EQ(party1c3->GetRelations().size(), 2);
 
 	// changes to state over time:
-	// t1: circumstance1  ([party1]-[party2])
-	// t2: circumstance2 (party1-[party2]-[party3])
-	// t3: circumstance3 ([party4]-[party1]-party2-party3)
+	// t1: circumstance1  (party1c1-party2c1)
+	// t2: circumstance2  (party1c1-party2c1-party3)
+	// t3: circumstance3  (party1c1-party2c1-party4)
+
+	auto tree = GraphBuilder::Build(circumstance3);
 
 }

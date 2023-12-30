@@ -53,7 +53,7 @@ namespace ExpectationLib
 		return sender->GetId() + " -> " + receiver->GetId();
 	}
 
-	const std::string ContactsStimulus::GetId()
+	const std::string ContactsStimulus::GetId() const
 	{
 		return CreateId(sender, receiver);
 	}

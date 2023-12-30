@@ -16,7 +16,8 @@ namespace ExpectationLib
         virtual void AddRelation(std::string name, std::shared_ptr<IParty> to) = 0;
         virtual std::vector<Relation>& GetRelations() = 0;
         virtual bool HasRelationTo(const std::shared_ptr<IParty> to, const std::string relationName) = 0;
-    };
+        virtual std::shared_ptr<IParty>& FindRelatedParty(const std::string& partyId, const std::string& relationName) = 0;
+	};
 }
 
 

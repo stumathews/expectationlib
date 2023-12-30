@@ -8,19 +8,19 @@ namespace ExpectationLib
 	class Node : public std::enable_shared_from_this<Node<T>>
 	{
 	public:
-		Node(T item) : Item(item)
+		explicit Node(T item) : Item(item)
 		{
 		}
 		T Item;
 		std::shared_ptr<Node<T>> Parent = nullptr;
 		std::vector<std::shared_ptr<Node>> Children {};
-		std::shared_ptr<Node> FindChildItem(T item)
+		std::shared_ptr<Node<T>> FindChildItem(T item)
 		{
-			for (auto child : Children)
+			for (std::shared_ptr<Node<T>> child : Children)
 			{
 				if(child->Item == item)
 				{
-					return item;
+					return child;
 				}
 				auto childItem = child->FindChildItem(item);
 				if(childItem != nullptr) {return childItem;}

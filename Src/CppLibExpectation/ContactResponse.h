@@ -16,12 +16,12 @@ namespace ExpectationLib
 	    ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus);
 
 	    std::string ToString() override;
-	    const std::string GetId() override;
+	    const std::string GetId() const override;
 
-	    std::string GetContext() override;
+	    std::string GetContext() const override;
 	    std::shared_ptr<ICircumstance> Trigger() override;
-	    std::shared_ptr<IParty> GetSender() override;
-	    std::shared_ptr<IParty> GetReceiver() override;
+	    std::shared_ptr<IParty> GetSender() const override;
+	    std::shared_ptr<IParty> GetReceiver() const override;
 	    std::shared_ptr<IStimulus> GetStimulus() override;
 
 	    inline static std::string ContactRelationName = "contacted";
