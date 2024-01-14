@@ -27,6 +27,8 @@ namespace ExpectationLib
         virtual std::string ToString() = 0;
 
         virtual std::shared_ptr<ICircumstance> Trigger(std::shared_ptr<IResponse> response = nullptr) = 0;
+
+        virtual std::string GetName() = 0;
         
     };
 }

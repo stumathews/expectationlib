@@ -50,7 +50,7 @@ namespace ExpectationLib
 	
 	std::string ContactsStimulus::CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
 	{
-		return sender->GetId() + " -> " + receiver->GetId();
+		return Name + "|" +sender->GetId() + " -> " + receiver->GetId();
 	}
 
 	const std::string ContactsStimulus::GetId() const

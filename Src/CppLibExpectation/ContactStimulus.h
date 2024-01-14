@@ -23,6 +23,8 @@ namespace ExpectationLib
         std::shared_ptr<IResponse> GetResponse() override;
         std::shared_ptr<ICircumstance> Trigger(std::shared_ptr<IResponse> inResponse = nullptr) override;
         std::shared_ptr<ICircumstance> GetCircumstance() override;
+        std::string GetName() override { return Name; }
+        inline static std::string Name = "ContactStimulus";
 
     private:
         std::shared_ptr<IParty> sender;

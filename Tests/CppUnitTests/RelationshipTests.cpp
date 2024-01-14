@@ -1,7 +1,5 @@
 ﻿#include "pch.h"
-#include "pch.h"
 
-#include "ContactCircumstance.h"
 #include "ContactCircumstanceBuilder.h"
 #include "ContactResponse.h"
 #include "ContactStimulus.h"
@@ -9,7 +7,7 @@
 #include "Observer.h"
 #include "Ordering.h"
 #include "Party.h"
-#include "StimuliProducesResponseExpectation.h"
+#include "Option.h"
 
 using namespace ExpectationLib;
 
@@ -53,8 +51,8 @@ TEST(RelationshipTests, BuildRelationships)
 
 	// party1 -> party2
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
-	auto party1c1 = circumstance1->GetResponse()->GetSender();
-	auto party2c1 = circumstance1->GetResponse()->GetReceiver();
+	const auto party1c1 = circumstance1->GetResponse()->GetSender();
+	const auto party2c1 = circumstance1->GetResponse()->GetReceiver();
 
 	EXPECT_TRUE(party1c1->HasRelationTo(party2c1, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party2c1->HasRelationTo(party1c1, ContactResponse::ContactRelationName));
@@ -65,8 +63,8 @@ TEST(RelationshipTests, BuildRelationships)
 	// party2 -> party3
 
 	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2c1, party3);
-	auto party2c2 = circumstance2->GetResponse()->GetSender();
-	auto party3c2 = circumstance2->GetResponse()->GetReceiver();
+	const auto party2c2 = circumstance2->GetResponse()->GetSender();
+	const auto party3c2 = circumstance2->GetResponse()->GetReceiver();
 	
 	EXPECT_TRUE(party2c2->HasRelationTo(party3c2, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party3c2->HasRelationTo(party2c2, ContactResponse::ContactRelationName));		
@@ -77,8 +75,8 @@ TEST(RelationshipTests, BuildRelationships)
 	// party1 -> party4
 
 	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party1c1, party4);
-	auto party1c3 = circumstance3->GetResponse()->GetSender();
-	auto party4c3 = circumstance3->GetResponse()->GetReceiver();
+	const auto party1c3 = circumstance3->GetResponse()->GetSender();
+	const auto party4c3 = circumstance3->GetResponse()->GetReceiver();
 	
 	EXPECT_TRUE(party1c3->HasRelationTo(party4c3, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party4c3->HasRelationTo(party1c3, ContactResponse::ContactRelationName));
@@ -92,6 +90,7 @@ TEST(RelationshipTests, BuildRelationships)
 	// t3: circumstance3  (party1c1-party2c1-party4)
 
 }
+
 
 TEST(RelationshipTests, GraphCircumstances)
 {
@@ -143,6 +142,45 @@ TEST(RelationshipTests, GraphCircumstances)
 	EXPECT_EQ(state3.Root->Children[0]->Item.GetId(), party3->GetId()); // depth 1
 	EXPECT_EQ(state3.Root->Children[0]->Children[0]->Item.GetId(), party2->GetId()); //depth 2
 	EXPECT_EQ(state3.Root->Children[0]->Children[0]->Children[0]->Item.GetId(), party1->GetId()); //depth 3
-	
+}
 
+TEST(RelationshipTests, FrequencyOfCircumstances)
+{
+	const std::shared_ptr<IParty> party1 = std::make_shared<Party>("party1");
+	const std::shared_ptr<IParty> party2 = std::make_shared<Party>("party2");
+	const std::shared_ptr<IParty> party3 = std::make_shared<Party>("party3");
+	const std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
+
+	// This circumstance represents an event really.
+	// party1 -> party2
+	auto tree = libmonad::ToOption(ContactCircumstanceBuilder::Build(party1, party2))
+	.Map<std::shared_ptr<ICircumstance>>([&](const std::shared_ptr<ICircumstance>& result)
+	{
+		// party2-> party3
+		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetReceiver(), party3);
+	}).Map<std::shared_ptr<ICircumstance>>([&](const std::shared_ptr<ICircumstance>& result)
+	{
+		// party3-> party4
+		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetReceiver(), party4);
+	}).Map<Tree<Party>>([&](const std::shared_ptr<ICircumstance>& result)
+	{
+		// result -> tree
+		return GraphBuilder::BuildRelationGraph(result);
+	});
+
+	tree.MatchVoid([&](libmonad::None none)
+	{
+		GTEST_FAIL();
+	}, [&](const Tree<Party>& lastState)
+	{
+		// Ensure the state has progressed over time
+		EXPECT_EQ(lastState.GetDepth(), 3);
+
+		// Ensure the original parties are not modified
+		EXPECT_TRUE(party1->GetRelations().empty());
+		EXPECT_TRUE(party2->GetRelations().empty());
+		EXPECT_TRUE(party3->GetRelations().empty());
+		EXPECT_TRUE(party4->GetRelations().empty());
+	});
+	
 }

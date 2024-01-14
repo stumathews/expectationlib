@@ -25,6 +25,7 @@
     <ConfigurationType>Application</ConfigurationType>
     <PlatformToolset>v143</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
+    <ProjectName>CppLibExpectationTests</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
@@ -33,7 +34,7 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <IncludePath>C:\repos\expectationlib\Src\CppLibExpectation;$(IncludePath)</IncludePath>
+    <IncludePath>C:\repos\expectationlib\Src\CppLibExpectation;C:\repos\libmonad\lib;$(IncludePath)</IncludePath>
     <LibraryPath>C:\repos\2DGameDev\$(platform)\$(configuration)\;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup />
@@ -120,6 +121,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\libmonad\lib\lib.vcxproj">
+      <Project>{a63d4542-48ca-4d12-acae-f35a729c40d0}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\..\Src\CppLibExpectation\CppLibExpectation.vcxproj">
       <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
     </ProjectReference>

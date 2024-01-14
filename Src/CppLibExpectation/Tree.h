@@ -34,7 +34,7 @@ namespace ExpectationLib
 			}
 		}
 
-		int GetDepth()
+		int GetDepth() const
 		{
 			int depth = 0;
 
