@@ -20,7 +20,7 @@ TEST(RelationshipTests, RelationIsSet)
 
 	// create a certain kind of stimulus Mechanosensory (Contact) from sender -> receiver
 	const std::shared_ptr<IStimulus> stimulus = std::make_shared<ContactsStimulus>(sender, receiver); // should this modify the sender/receiver to manipulate the effect this had on its state?
-	const auto circumstance = stimulus->Trigger();
+	const auto circumstance = stimulus->Trigger(libmonad::None());
 
 	// Perform a stimulus .. sender contacts receiver and a contact response is produced
 	// make sure the observer observes it: Create a stimulus that produces a response when it is observed
@@ -168,7 +168,7 @@ TEST(RelationshipTests, FrequencyOfCircumstances)
 		return GraphBuilder::BuildRelationGraph(result);
 	});
 
-	tree.MatchVoid([&](libmonad::None none)
+	tree.Match([&](libmonad::None none)
 	{
 		GTEST_FAIL();
 	}, [&](const Tree<Party>& lastState)

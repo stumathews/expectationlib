@@ -35,12 +35,13 @@ TEST(OrderingTests, Test1)
 	const auto stimulus5 = std::make_shared<ContactsStimulus>(sender5, receiver5);
 	const auto stimulus6 = std::make_shared<ContactsStimulus>(sender6, receiver6);
 
-	const auto response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
-	const auto response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
-	const auto response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
-	const auto response4 = std::make_shared<ContactResponse>("Response4", stimulus4);
-	const auto response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
-	const auto response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
+	const std::shared_ptr<IResponse> response1 = std::make_shared<ContactResponse>("Response1", stimulus1);
+	const std::shared_ptr<IResponse> response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
+	const std::shared_ptr<IResponse> response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
+	const std::shared_ptr<IResponse> response4 = std::make_shared<ContactResponse>("Response4", stimulus4);
+	const std::shared_ptr<IResponse> response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
+	const std::shared_ptr<IResponse> response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
+
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
     auto circumstance1 = stimulus1->Trigger(response1);

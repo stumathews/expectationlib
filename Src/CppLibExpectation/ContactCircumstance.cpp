@@ -1,4 +1,5 @@
 #include "ContactCircumstance.h"
+#include <sstream>
 #include "ContactResponse.h"
 #include "ContactStimulus.h"
 
@@ -9,6 +10,12 @@ namespace ExpectationLib
 	{
 		this->from = response->GetReceiver();
 		this->response = response;
+
+		std::stringstream circumstanceId;
+		circumstanceId << GetResponse()->GetSender()->GetId()
+					   << "-[" << GetResponse()->GetContext() << "]->"
+					   << GetResponse()->GetReceiver()->GetId();
+		this->id = circumstanceId.str();
 	}
 
 	std::shared_ptr<IStimulus> ContactCircumstance::GetStimulus()
@@ -24,5 +31,10 @@ namespace ExpectationLib
 	std::shared_ptr<IParty> ContactCircumstance::GetFrom()
 	{
 		return from;
+	}
+
+	const std::string ContactCircumstance::GetId()
+	{		
+		return id;
 	}
 }

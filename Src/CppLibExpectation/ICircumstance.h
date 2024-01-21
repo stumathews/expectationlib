@@ -4,10 +4,9 @@
 
 namespace ExpectationLib
 {
-	class ICircumstance
+	class ICircumstance : virtual public IHasId
 	{
 	public:
-		virtual ~ICircumstance() = default;
 		virtual std::shared_ptr<IStimulus> GetStimulus() = 0;
 	    virtual std::shared_ptr<IResponse> GetResponse() = 0;
 	};

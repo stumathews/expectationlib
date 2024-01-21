@@ -15,13 +15,13 @@ namespace ExpectationLib
         
         static std::string CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver);
 
-        const std::string GetId() const override;
+        const std::string GetId() override;
         std::string ToString() override;
-        
+
         std::shared_ptr<IParty> GetSender() override;
         std::shared_ptr<IParty> GetReceiver() override;
         std::shared_ptr<IResponse> GetResponse() override;
-        std::shared_ptr<ICircumstance> Trigger(std::shared_ptr<IResponse> inResponse = nullptr) override;
+        std::shared_ptr<ICircumstance> Trigger(libmonad::Option<std::shared_ptr<IResponse>> inResponse) override;
         std::shared_ptr<ICircumstance> GetCircumstance() override;
         std::string GetName() override { return Name; }
         inline static std::string Name = "ContactStimulus";

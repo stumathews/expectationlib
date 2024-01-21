@@ -10,12 +10,12 @@ namespace ExpectationLib
 		explicit Party(const std::string& id, const std::string& role = "");
 
 	    std::string GetRole() override;
-		void AddRelation(std::string name, std::shared_ptr<IParty> to) override;
+		void AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context) override;
 		std::vector<Relation>& GetRelations() override;
-		bool HasRelationTo(const std::shared_ptr<IParty> to, const std::string relationName) override;
-		[[nodiscard]] const std::string GetId() const override;
+		bool HasRelationTo(const std::shared_ptr<IParty>& to, const std::string& relationName) override;
+		[[nodiscard]] const std::string GetId() override;
 		friend bool operator== (const Party& lhs, const Party& rhs);
-		std::shared_ptr<IParty> FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
+		libmonad::Option<std::shared_ptr<IParty>> FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
 
 	private:
 	    

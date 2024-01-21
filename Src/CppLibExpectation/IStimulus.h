@@ -1,5 +1,6 @@
 #pragma once
 #include <iostream>
+#include "Option.h"
 
 namespace ExpectationLib
 {
@@ -26,7 +27,7 @@ namespace ExpectationLib
         // String representation of a party
         virtual std::string ToString() = 0;
 
-        virtual std::shared_ptr<ICircumstance> Trigger(std::shared_ptr<IResponse> response = nullptr) = 0;
+        virtual std::shared_ptr<ICircumstance> Trigger(libmonad::Option<std::shared_ptr<IResponse>> response) = 0;
 
         virtual std::string GetName() = 0;
         

@@ -15,7 +15,7 @@ namespace ExpectationLib
 	{
 	}
 
-	bool Observation::operator==(const Observation& other) const
+	bool Observation::operator==(Observation& other) 
 	{
 		return this->GetId() == other.GetId();
 	}
@@ -26,7 +26,7 @@ namespace ExpectationLib
 		return stimulus->GetSender()->GetId() + stimulus->GetReceiver()->GetId() + response->GetId();
 	}
 
-	const std::string Observation::GetId() const
+	const std::string Observation::GetId()
 	{
 		return CreateId(stimulus, response);
 	}

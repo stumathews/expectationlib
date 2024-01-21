@@ -9,9 +9,10 @@ namespace ExpectationLib
 	class Relation
 	{
 	public:
-		Relation(std::string name, std::shared_ptr<IParty> to);
+		Relation(std::string name, std::shared_ptr<IParty> to, std::string& context);
 		std::string Name;
+		std::string Context;
 		std::shared_ptr<IParty> To;
-		std::string GetId() const;
+		[[nodiscard]] std::string GetId() const;
 	};
 }

@@ -16,7 +16,7 @@ namespace ExpectationLib
 	    ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus);
 
 	    std::string ToString() override;
-	    const std::string GetId() const override;
+	    const std::string GetId() override;
 
 	    std::string GetContext() const override;
 	    std::shared_ptr<ICircumstance> Trigger() override;

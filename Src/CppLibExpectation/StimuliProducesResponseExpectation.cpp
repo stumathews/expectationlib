@@ -48,7 +48,7 @@ namespace ExpectationLib
 		
 	}
 
-	const std::string StimuliProducesResponseExpectation::GetId() const
+	const std::string StimuliProducesResponseExpectation::GetId()
 	{
 	    return CreateId(stimulus);
 	}

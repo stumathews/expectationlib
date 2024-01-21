@@ -3,6 +3,8 @@
 #include "ContactCircumstance.h"
 #include "ContactResponse.h"
 
+using namespace std;
+
 namespace ExpectationLib
 {
 	ContactsStimulus::ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
@@ -32,12 +34,14 @@ namespace ExpectationLib
 		return response;
 	}
 
-	std::shared_ptr<ICircumstance> ContactsStimulus::Trigger(std::shared_ptr<IResponse> inResponse)
+	std::shared_ptr<ICircumstance> ContactsStimulus::Trigger(libmonad::Option<std::shared_ptr<IResponse>> inResponse)
 	{
-		// Trigger a response
-		this->response = inResponse ? inResponse : std::make_shared<ContactResponse>("NoResponseContext", shared_from_this());
+		// Get or create a response
+		this->response = inResponse.WhenNone([this](){
+			return std::dynamic_pointer_cast<IResponse>(std::make_shared<ContactResponse>("NoResponseContext", shared_from_this()));
+		});
 
-		// Establishes the contact relation between sender and receiver
+		// Trigger response: establishes the contact relation between sender and receiver
 		this->circumstance = this->response->Trigger();
 
 		return circumstance;
@@ -53,7 +57,7 @@ namespace ExpectationLib
 		return Name + "|" +sender->GetId() + " -> " + receiver->GetId();
 	}
 
-	const std::string ContactsStimulus::GetId() const
+	const std::string ContactsStimulus::GetId()
 	{
 		return CreateId(sender, receiver);
 	}

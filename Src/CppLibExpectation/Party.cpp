@@ -8,26 +8,26 @@ namespace ExpectationLib
 		this->role = role;
 	}
 
-	const std::string Party::GetId() const
+	const std::string Party::GetId()
 	{
 		return id;
 	}
 
-	std::shared_ptr<IParty> Party::FindRelatedParty(const std::string& partyId, const std::string& relationName)
+	libmonad::Option<std::shared_ptr<IParty>> Party::FindRelatedParty(const std::string& partyId, const std::string& relationName)
 	{
 		const auto found = std::ranges::find_if (relations, [&](const Relation& relation)
 		{
 			return relation.To->GetId() == partyId && relation.Name == relationName;
 		});
 
-		if(found == relations.end()) return nullptr;
+		if(found == relations.end()) return libmonad::None();
 
 		return found->To;
 	}
 
-	void Party::AddRelation(std::string name, std::shared_ptr<IParty> to)
+	void Party::AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context)
 	{
-		relations.emplace_back(name, to);
+		relations.emplace_back(name, to, context);
 	}
 
 	std::vector<Relation>& Party::GetRelations()
@@ -35,7 +35,7 @@ namespace ExpectationLib
 		return relations;
 	}
 
-	bool Party::HasRelationTo(const std::shared_ptr<IParty> to, const std::string relationName)
+	bool Party::HasRelationTo(const std::shared_ptr<IParty>& to, const std::string& relationName)
 	{
 		const auto found = std::ranges::find_if (relations, [&](const Relation& relation)
 		{
@@ -50,7 +50,7 @@ namespace ExpectationLib
 		return role;
 	}
 
-	bool operator==(const Party& lhs, const Party& rhs)
+	bool operator==(Party& lhs, Party& rhs)
 	{
 		return lhs.GetId() == rhs.GetId();
 	}
