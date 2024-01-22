@@ -7,6 +7,7 @@
 
 namespace ExpectationLib
 {
+	// A response that adds contact relations between sender and receiver upon triggering
 	class ContactResponse final : public IResponse, public std::enable_shared_from_this<ContactResponse>
 	{
 	public:
