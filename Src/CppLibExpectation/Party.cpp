@@ -25,6 +25,11 @@ namespace ExpectationLib
 		return found->To;
 	}
 
+	int Party::GetHashCode()
+	{
+		return static_cast<int>(std::hash<std::string>{}(GetId()));
+	}
+
 	void Party::AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context, libmonad::Option<unsigned long> startTime, libmonad::Option<unsigned long> endTime)
 	{
 		relations.emplace_back(name, to, context, startTime, endTime);

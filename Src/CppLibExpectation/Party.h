@@ -16,6 +16,7 @@ namespace ExpectationLib
 		[[nodiscard]] const std::string GetId() override;
 		friend bool operator== (const Party& lhs, const Party& rhs);
 		libmonad::Option<std::shared_ptr<IParty>> FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
+		int GetHashCode() override;
 
 	private:
 	    

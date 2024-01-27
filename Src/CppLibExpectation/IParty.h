@@ -18,6 +18,7 @@ namespace ExpectationLib
         virtual std::vector<Relation>& GetRelations() = 0;
         virtual bool HasRelationTo(const std::shared_ptr<IParty>& to, const std::string& relationName) = 0;
         virtual libmonad::Option<std::shared_ptr<IParty>> FindRelatedParty(const std::string& partyId, const std::string& relationName) = 0;
+        virtual int GetHashCode() = 0;
 	};
 }
 
