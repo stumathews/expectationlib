@@ -4,8 +4,10 @@
 
 namespace ExpectationLib
 {
-	Relation::Relation(std::string name, std::shared_ptr<IParty> to, std::string& context): Name(std::move(name)), To(std::move(to)), Context(
-		std::move(context))
+	Relation::Relation(std::string name, std::shared_ptr<IParty> to, std::string& context,
+	                   const libmonad::Option<unsigned long> startTime,
+	                   const libmonad::Option<unsigned long> endTime) : Name(std::move(name)), Context(
+		                                                                    std::move(context)), To(std::move(to)), StartTime(startTime), EndTime(endTime)
 	{
 	}
 

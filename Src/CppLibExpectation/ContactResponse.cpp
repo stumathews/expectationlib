@@ -6,9 +6,9 @@
 
 namespace ExpectationLib
 {
-	ContactResponse::ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus)
-	: stimulus(stimulus)
-	{
+	ContactResponse::ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus, const libmonad::Option<unsigned long> time)
+	: Time(time), stimulus(stimulus)
+{
 		From = stimulus->GetReceiver();
 		Context = context;
 	}
@@ -28,8 +28,12 @@ namespace ExpectationLib
 		
 		// Cause relations to occur between the affected parties in response to the stimulus (copy of stimulus' parties are modified)
 		auto context = GetContext();
-		sender->AddRelation(ContactRelationName, receiver, context);
-		receiver->AddRelation(ContactRelationName, sender, context);
+
+		// If a response time is not provided, use the stimulus start to (this indicates the response occurred immediately as the stimulus was triggerd)
+		const auto endTime = Time.IsNone() ? stimulus->GetStartTime() : Time;
+
+		sender->AddRelation(ContactRelationName, receiver, context, stimulus->GetStartTime(), endTime);
+		receiver->AddRelation(ContactRelationName, sender, context, stimulus->GetStartTime(), endTime);
 
 		return std::make_shared<ContactCircumstance>(shared_from_this());
 	}

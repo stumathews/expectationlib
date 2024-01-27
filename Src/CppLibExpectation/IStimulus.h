@@ -30,6 +30,7 @@ namespace ExpectationLib
         virtual std::shared_ptr<ICircumstance> Trigger(libmonad::Option<std::shared_ptr<IResponse>> response) = 0;
 
         virtual std::string GetName() = 0;
+        virtual libmonad::Option<unsigned long> GetStartTime() = 0;
         
     };
 }

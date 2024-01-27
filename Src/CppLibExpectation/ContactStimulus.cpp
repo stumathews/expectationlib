@@ -7,8 +7,7 @@ using namespace std;
 
 namespace ExpectationLib
 {
-	ContactsStimulus::ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
-	{		
+	ContactsStimulus::ContactsStimulus(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver, const libmonad::Option<unsigned long> startTime): startTime(startTime) {		
 		this->sender = sender;
 		this->receiver = receiver;
 		// NB: Can't used shared_from_this() here as this object is not created yet.
@@ -51,7 +50,12 @@ namespace ExpectationLib
 	{
 		return circumstance;
 	}
-	
+
+	libmonad::Option<unsigned long> ContactsStimulus::GetStartTime()
+	{
+		return startTime;
+	}
+
 	std::string ContactsStimulus::CreateId(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver)
 	{
 		return Name + "|" +sender->GetId() + " -> " + receiver->GetId();

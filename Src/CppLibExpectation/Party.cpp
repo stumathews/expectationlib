@@ -25,9 +25,9 @@ namespace ExpectationLib
 		return found->To;
 	}
 
-	void Party::AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context)
+	void Party::AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context, libmonad::Option<unsigned long> startTime, libmonad::Option<unsigned long> endTime)
 	{
-		relations.emplace_back(name, to, context);
+		relations.emplace_back(name, to, context, startTime, endTime);
 	}
 
 	std::vector<Relation>& Party::GetRelations()

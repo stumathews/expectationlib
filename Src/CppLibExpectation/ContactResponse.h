@@ -13,8 +13,9 @@ namespace ExpectationLib
 	public:
 	    std::string Context;
 	    std::shared_ptr<IParty> From;
+	    libmonad::Option<unsigned long> Time;
 
-	    ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus);
+	    ContactResponse(const std::string& context, const std::shared_ptr<IStimulus>& stimulus, libmonad::Option<unsigned long> time  = 1);
 
 	    std::string ToString() override;
 	    const std::string GetId() override;

@@ -45,10 +45,10 @@ namespace ExpectationLib
 
 	bool ExpectedTestSituation::Match(std::vector<std::shared_ptr<Observation>> observations)
 	{
-		auto contactCircumstance1 = ContactCircumstanceBuilder::Build(Party1, Party2);
-		auto contactCircumstance2 = ContactCircumstanceBuilder::Build(Party3, Party4);
-		auto contactCircumstance3 = ContactCircumstanceBuilder::Build(Party4, Party3);
-		auto contactCircumstance4 = ContactCircumstanceBuilder::Build(Party3, Party1);
+		auto contactCircumstance1 = ContactCircumstanceBuilder::Build(Party1, Party2,1);
+		auto contactCircumstance2 = ContactCircumstanceBuilder::Build(Party3, Party4, 1);
+		auto contactCircumstance3 = ContactCircumstanceBuilder::Build(Party4, Party3, 1);
+		auto contactCircumstance4 = ContactCircumstanceBuilder::Build(Party3, Party1,1);
 
 		const auto expect1 = std::make_shared<StimuliProducesResponseExpectation>(contactCircumstance1);
 		const auto expect2 = std::make_shared<StimuliProducesResponseExpectation>(contactCircumstance2);
