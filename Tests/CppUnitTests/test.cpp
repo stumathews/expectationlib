@@ -1,5 +1,7 @@
 #include "pch.h"
 
+#include <gtest/gtest.h>
+
 #include "ConsecutiveExpectationsPattern.h"
 #include "ContactCircumstance.h"
 #include "ContactCircumstanceBuilder.h"

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-	<Import Project="$(SolutionDir)Build\common.targets" Condition="Exists('$(SolutionDir)Build\common.targets')" />
+	<Import Project="$(SolutionDir)Build\common.targets" />
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
       <Configuration>Debug</Configuration>
@@ -134,12 +134,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\libmonad\lib\lib.vcxproj">
-      <Project>{a63d4542-48ca-4d12-acae-f35a729c40d0}</Project>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Src\CppLibExpectation\CppLibExpectation.vcxproj">
-      <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
-    </ProjectReference>
+	  <ProjectReference Include="$(LibExpectation_SrcDir)\CppLibExpectation.vcxproj">
+		  <Project>{8521a984-c70c-47b2-b24a-451d8a747f64}</Project>
+	  </ProjectReference>
+	  <ProjectReference Include="$(LibMonad_RootDir)\lib\lib.vcxproj">
+		  <Project>{a63d4542-48ca-4d12-acae-f35a729c40d0}</Project>
+	  </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
