@@ -1,5 +1,7 @@
 ﻿#include "pch.h"
 
+#include <gtest/gtest.h>
+
 #include "ContactCircumstance.h"
 #include "ContactResponse.h"
 #include "ContactStimulus.h"
