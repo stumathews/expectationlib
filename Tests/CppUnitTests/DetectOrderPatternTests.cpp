@@ -46,21 +46,14 @@ TEST(DetectOrderTests, Test_DetectOrder1)
 	const std::shared_ptr<IResponse> response4 = std::make_shared<ContactResponse>("Response4", stimulus4);
 	const std::shared_ptr<IResponse> response5 = std::make_shared<ContactResponse>("Response5", stimulus5);
 	const std::shared_ptr<IResponse> response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
-
 	
-	
-	
-	
-	
-	
-
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); // 1) we expect 
@@ -82,7 +75,7 @@ TEST(DetectOrderTests, Test_DetectOrder1)
 	std::vector<std::shared_ptr<IExpectation>> orderOfExpectedOutcomes = { myExpectation1, myExpectation2, myExpectation3, myExpectation4  };
 
 	// Test: ensure the each expected outcomes/prediction come sometime after the prior (doesn't have to be sequentially, but must come after the previous expected outcome)
-	auto matcher1 = std::make_shared< OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
+	auto matcher1 = std::make_shared<OrderedExpectationsPattern>(orderOfExpectedOutcomes, observer->Observations);
 	EXPECT_TRUE(matcher1->Match());
 
 	auto orders = matcher1->DetectOrder();
@@ -130,12 +123,12 @@ TEST(DetectOrderTests, Test_DetectOrder2)
 
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); 
@@ -201,12 +194,12 @@ TEST(DetectOrderTests, Test_DetectOrder3)
 
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); 
@@ -273,12 +266,12 @@ TEST(DetectOrderTests, Test_DetectOrder4)
 
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
 	            
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance2); // 1) we expect 

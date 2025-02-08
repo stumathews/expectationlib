@@ -46,12 +46,12 @@ TEST(OrderingTests, Test1)
 
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
 
 	auto obs1 = observer->Observe(circumstance3); 
 	auto obs2 = observer->Observe(circumstance2); 

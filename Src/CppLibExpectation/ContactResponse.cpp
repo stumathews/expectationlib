@@ -1,5 +1,7 @@
 #include "ContactResponse.h"
 
+#include <sstream>
+
 #include "ContactCircumstance.h"
 #include "ContactStimulus.h"
 #include "Party.h"
@@ -18,7 +20,7 @@ namespace ExpectationLib
 		return GetReceiver()->GetId() + GetContext() + GetSender()->GetId();
 	}	
 
-	std::shared_ptr<ICircumstance> ContactResponse::Trigger() 
+	std::shared_ptr<ICircumstance> ContactResponse::Start() 
 	{
 		// copy sender
 		sender = std::make_shared<Party>(*std::dynamic_pointer_cast<Party>(stimulus->GetSender()));
@@ -43,4 +45,10 @@ namespace ExpectationLib
 	std::shared_ptr<IParty> ContactResponse::GetSender() const { return sender; }
 	std::shared_ptr<IParty> ContactResponse::GetReceiver() const { return receiver; }
 	std::shared_ptr<IStimulus> ContactResponse::GetStimulus() { return stimulus; }
+
+	std::shared_ptr<ContactResponse> ContactResponse::Create(const std::string& context,
+		const std::shared_ptr<ContactsStimulus> stimulus) 
+	{
+		return std::make_shared<ContactResponse>(context, stimulus);
+	}
 }

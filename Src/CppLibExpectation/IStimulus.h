@@ -27,7 +27,8 @@ namespace ExpectationLib
         // String representation of a party
         virtual std::string ToString() = 0;
 
-        virtual std::shared_ptr<ICircumstance> Trigger(libmonad::Option<std::shared_ptr<IResponse>> response) = 0;
+        // Cause a response to produce a resulting circumstance
+        virtual std::shared_ptr<ICircumstance> Cause(libmonad::Option<std::shared_ptr<IResponse>> response) = 0;
 
         virtual std::string GetName() = 0;
         virtual libmonad::Option<unsigned long> GetStartTime() = 0;

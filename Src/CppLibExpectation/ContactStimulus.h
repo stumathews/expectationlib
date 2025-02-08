@@ -5,6 +5,8 @@
 
 namespace ExpectationLib
 {
+	class ContactResponse;
+
 	/// <summary>
     /// A contact stimulus is a relationship such that it occurs when a sender makes contact with a receiver
     /// </summary>
@@ -21,10 +23,13 @@ namespace ExpectationLib
         std::shared_ptr<IParty> GetSender() override;
         std::shared_ptr<IParty> GetReceiver() override;
         std::shared_ptr<IResponse> GetResponse() override;
-        std::shared_ptr<ICircumstance> Trigger(libmonad::Option<std::shared_ptr<IResponse>> inResponse) override;
+        // Cause a response to produce a resulting circumstance
+        std::shared_ptr<ICircumstance> Cause(libmonad::Option<std::shared_ptr<IResponse>> inResponse) override;
+        std::shared_ptr<ICircumstance> Cause();
         std::shared_ptr<ICircumstance> GetCircumstance() override;
         std::string GetName() override { return Name; }
         libmonad::Option<unsigned long> GetStartTime() override;
+        static std::shared_ptr<ContactsStimulus> Create(std::shared_ptr<IParty> sender, std::shared_ptr<IParty> receiver);
         inline static std::string Name = "ContactStimulus";
 
     private:

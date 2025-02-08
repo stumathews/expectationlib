@@ -1,6 +1,8 @@
 #pragma once
 #include <memory>
 #include <string>
+
+#include "ContactStimulus.h"
 #include "IParty.h"
 #include "IResponse.h"
 #include "IStimulus.h"
@@ -21,10 +23,11 @@ namespace ExpectationLib
 	    const std::string GetId() override;
 
 	    std::string GetContext() const override;
-	    std::shared_ptr<ICircumstance> Trigger() override;
+	    std::shared_ptr<ICircumstance> Start() override;
 	    std::shared_ptr<IParty> GetSender() const override;
 	    std::shared_ptr<IParty> GetReceiver() const override;
 	    std::shared_ptr<IStimulus> GetStimulus() override;
+	    static std::shared_ptr<ContactResponse> Create(const std::string& context, const std::shared_ptr<ContactsStimulus> stimulus);
 
 	    inline static std::string ContactRelationName = "contacted";
 

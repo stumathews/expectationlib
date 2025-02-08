@@ -17,6 +17,7 @@ namespace ExpectationLib
 		friend bool operator== (const Party& lhs, const Party& rhs);
 		libmonad::Option<std::shared_ptr<IParty>> FindRelatedParty(const std::string& partyId, const std::string& relationName) override;
 		int GetHashCode() override;
+		static std::shared_ptr<Party> Create(const std::string& name);
 
 	private:
 	    

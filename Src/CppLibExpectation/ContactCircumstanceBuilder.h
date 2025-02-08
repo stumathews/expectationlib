@@ -13,7 +13,7 @@ namespace ExpectationLib
 	    static std::shared_ptr<ICircumstance> Build(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver, libmonad::Option<unsigned long> time = 1)
 		{
 			const auto stimulus = std::make_shared<ContactsStimulus>(sender, receiver, time);
-			return stimulus->Trigger(libmonad::None());
+			return stimulus->Cause(libmonad::None());
 	    }
 
 		static std::shared_ptr<ICircumstance> Build(const std::shared_ptr<IParty>& sender, const std::shared_ptr<IParty>& receiver, libmonad::Option<const std::string> type, libmonad::Option<unsigned long> time = 1)
@@ -26,7 +26,7 @@ namespace ExpectationLib
 					return std::dynamic_pointer_cast<IResponse>(std::make_shared<ContactResponse>(context, stimulus, time));
 				});
 
-			return stimulus->Trigger(response);
+			return stimulus->Cause(response);
 		}
 	};
 

@@ -30,6 +30,11 @@ namespace ExpectationLib
 		return static_cast<int>(std::hash<std::string>{}(GetId()));
 	}
 
+	std::shared_ptr<Party> Party::Create(const std::string& name)
+	{
+		return std::make_shared<Party>(name);
+	}
+
 	void Party::AddRelation(std::string& name, std::shared_ptr<IParty>& to, std::string& context, libmonad::Option<unsigned long> startTime, libmonad::Option<unsigned long> endTime)
 	{
 		relations.emplace_back(name, to, context, startTime, endTime);

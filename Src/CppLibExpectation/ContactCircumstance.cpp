@@ -10,6 +10,7 @@ namespace ExpectationLib
 	{
 		this->from = response->GetReceiver();
 		this->response = response;
+		this->stimulus = response->GetStimulus();
 
 		std::stringstream circumstanceId;
 		circumstanceId << GetResponse()->GetSender()->GetId()

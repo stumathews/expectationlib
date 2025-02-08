@@ -58,8 +58,8 @@ TEST(ExpectationTests, Test_Overseer)
 	const std::shared_ptr<IStimulus> stimulus1 = std::make_shared<ContactsStimulus>(sender, receiver);
 	const std::shared_ptr<IStimulus> stimulus2 = std::make_shared<ContactsStimulus>(sender2, receiver2);
 
-	stimulus1->Trigger(libmonad::None());
-	stimulus2->Trigger(libmonad::None());
+	stimulus1->Cause(libmonad::None());
+	stimulus2->Cause(libmonad::None());
 	
     EXPECT_EQ(observer->Observations.size(), 0);
 
@@ -87,7 +87,7 @@ TEST(ExpectationTests, Test_ExpectationWithOverridingResponse)
 	// Create a response
 	const std::shared_ptr<IResponse> expectedResponse = std::make_shared<ContactResponse>("aResponse", stimulus);
 
-	const auto circ = stimulus->Trigger(expectedResponse);
+	const auto circ = stimulus->Cause(expectedResponse);
 
 	// Create an expectation
 	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(stimulus);
@@ -113,7 +113,7 @@ TEST(ExpectationTests, Test_ExpectationWithoutOverridingResponse)
 
 	// create a certain kind of stimulus Mechanosensory (Contact) from sender -> receiver
 	std::shared_ptr<IStimulus> stimulus = std::make_shared<ContactsStimulus>(sender, receiver); // should this modify the sender/receiver to manipulate the effect this had on its state?
-	stimulus->Trigger(libmonad::None());
+	stimulus->Cause(libmonad::None());
 
 	// Create an expectation
 	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(stimulus); // no overriding response - this is generated from the stimulus
@@ -145,10 +145,10 @@ TEST(ExpectationTests, Test_ExpectationNegative)
 
 	const std::shared_ptr<IResponse> expectedResponse = std::make_shared<ContactResponse>("aResponse", stimulus);
 	
-	const auto circ1 = stimulus->Trigger(expectedResponse);
+	const auto circ1 = stimulus->Cause(expectedResponse);
 
 	const std::shared_ptr<IResponse> unexpectedResponse = std::make_shared<ContactResponse>("bResponse", stimulus);
-	const auto circ2 = stimulus->Trigger(unexpectedResponse);
+	const auto circ2 = stimulus->Cause(unexpectedResponse);
 
 	// Create an expectation
 	const auto myExpectation = std::make_shared<StimuliProducesResponseExpectation>(circ1);
@@ -180,9 +180,9 @@ TEST(ExpectationTests, Test_ExpectationExistsPatternMatcher)
 	const std::shared_ptr<IResponse> response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const std::shared_ptr<IResponse> response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	const auto circ1 = stimulus1->Trigger(response1);
-	const auto circ2 = stimulus2->Trigger(response2);
-	const auto circ3 = stimulus3->Trigger(response3);
+	const auto circ1 = stimulus1->Cause(response1);
+	const auto circ2 = stimulus2->Cause(response2);
+	const auto circ3 = stimulus3->Cause(response3);
 
 	// Multiple observations occur ...
 	observer->Observe(circ1);
@@ -221,9 +221,9 @@ TEST(ExpectationTests, Test_ExactExpectations)
 	const std::shared_ptr<IResponse> response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const std::shared_ptr<IResponse> response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	const auto circ1 = stimulus1->Trigger(response1);
-	const auto circ2 = stimulus2->Trigger(response2);
-	const auto circ3 = stimulus3->Trigger(response3);
+	const auto circ1 = stimulus1->Cause(response1);
+	const auto circ2 = stimulus2->Cause(response2);
+	const auto circ3 = stimulus3->Cause(response3);
             
     // Make observations ob some behaviors between sender and receiver
 	observer->Observe(circ1);
@@ -289,12 +289,12 @@ TEST(ExpectationTests, Test_OrderedExpectations)
 	const std::shared_ptr<IResponse> response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	auto obs1 = observer->Observe(circumstance1); // 1) we expect 
@@ -412,7 +412,7 @@ std::shared_ptr<ICircumstance> MakeContactCircumstance(const std::string& sender
     auto testSender = std::make_shared<Party>(senderId);
     auto testReceiver = std::make_shared<Party>(receiverId);
     const auto stimuli = std::make_shared<ContactsStimulus>(testSender, testReceiver);
-    return stimuli->Trigger(libmonad::None());
+    return stimuli->Cause(libmonad::None());
 }
 
 TEST(ExpectationTests, Test_ContextualFlowsMonitor)
@@ -464,9 +464,9 @@ TEST(ExpectationTests, Test_RepeatedExpectation)
 	
 	auto observer = std::make_shared<Observer>();
 
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
 
 	observer->Observe(circumstance1);
 	observer->Observe(circumstance3);
@@ -534,9 +534,9 @@ TEST(ExpectationTests, ConsecutiveExpectations)
 	const std::shared_ptr<IResponse>  response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const std::shared_ptr<IResponse>  response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 
-	auto circ1 = stimulus1->Trigger(response1);
-	auto circ2 = stimulus2->Trigger(response2);
-	auto circ3 = stimulus3->Trigger(response3);
+	auto circ1 = stimulus1->Cause(response1);
+	auto circ2 = stimulus2->Cause(response2);
+	auto circ3 = stimulus3->Cause(response3);
             
     // Make observations ob some behaviors between sender and receiver
 	observer->Observe(circ1); // expect
@@ -674,9 +674,9 @@ TEST(ExpectationTests, RepeatedConsecutiveExpectationsPattern)
 	const std::shared_ptr<IResponse> response2 = std::make_shared<ContactResponse>("Response2", stimulus2);
 	const std::shared_ptr<IResponse> response3 = std::make_shared<ContactResponse>("Response3", stimulus3);
 		
-	const auto circ1 = stimulus1->Trigger(response1);// ContactCircumstanceBuilder::Build(sender1, receiver1);
-	const auto circ2 = stimulus2->Trigger(response2); //ContactCircumstanceBuilder::Build(sender2, receiver2);
-	const auto circ3 = stimulus3->Trigger(response3); //ContactCircumstanceBuilder::Build(sender3, receiver3);
+	const auto circ1 = stimulus1->Cause(response1);// ContactCircumstanceBuilder::Build(sender1, receiver1);
+	const auto circ2 = stimulus2->Cause(response2); //ContactCircumstanceBuilder::Build(sender2, receiver2);
+	const auto circ3 = stimulus3->Cause(response3); //ContactCircumstanceBuilder::Build(sender3, receiver3);
 		
 	const auto observer = std::make_shared<Observer>();
 
@@ -767,12 +767,12 @@ TEST(ExpectationTests, RepeatedOrderedExpectationsPattern)
 	const std::shared_ptr<IResponse>  response6 = std::make_shared<ContactResponse>("Response6", stimulus6);
 
     // We represent circumstances as specific outcomes/responses that the receiver makes in response to the stimuli from the sender
-    auto circumstance1 = stimulus1->Trigger(response1);
-    auto circumstance2 = stimulus2->Trigger(response2);
-    auto circumstance3 = stimulus3->Trigger(response3);
-    auto circumstance4 = stimulus4->Trigger(response4);
-    auto circumstance5 = stimulus5->Trigger(response5);
-    auto circumstance6 = stimulus6->Trigger(response6);
+    auto circumstance1 = stimulus1->Cause(response1);
+    auto circumstance2 = stimulus2->Cause(response2);
+    auto circumstance3 = stimulus3->Cause(response3);
+    auto circumstance4 = stimulus4->Cause(response4);
+    auto circumstance5 = stimulus5->Cause(response5);
+    auto circumstance6 = stimulus6->Cause(response6);
             
 	// Simulate/Observe some circumstances (outcomes)...
 	observer->Observe(circumstance1); // 1) we expect 
