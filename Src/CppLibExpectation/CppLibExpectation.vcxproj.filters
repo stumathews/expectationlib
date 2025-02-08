@@ -117,6 +117,12 @@
     <ClInclude Include="SRLink.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="IResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ContactResult.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">

@@ -40,11 +40,19 @@ namespace ExpectationLib
 			                             observationStimulusReceiver->GetId() == stimulus->GetReceiver()->GetId();
 		const auto responseMatches = observation->GetResponse()->GetId() == response->GetId();
 
-		const auto hasExpectedRelations = 
-			observation->GetResponse()->GetSender()->HasRelationTo(observationStimulusReceiver, ContactResponse::ContactRelationName) &&
-			observation->GetResponse()->GetReceiver()->HasRelationTo(observationStimulusSender, ContactResponse::ContactRelationName);
+		bool matched = false;
+		observation->GetResponse()->GetResult().Match(
+			[&](libmonad::None none) { matched = false; },
+			[&](const std::shared_ptr<IResult>& result)
+			{
+				const auto hasExpectedRelations = 
+				result->GetSender()->HasRelationTo(observationStimulusReceiver, ContactResponse::ContactRelationName) &&
+				result->GetReceiver()->HasRelationTo(observationStimulusSender, ContactResponse::ContactRelationName);
 
-		return sendersMatch && receiversMatch && responseMatches && hasExpectedRelations;
+				matched = sendersMatch && receiversMatch && responseMatches && hasExpectedRelations;
+			});
+		return matched;
+		
 		
 	}
 

@@ -155,6 +155,7 @@
     <ClInclude Include="ContactCircumstance.h" />
     <ClInclude Include="ContactCircumstanceBuilder.h" />
     <ClInclude Include="ContactResponse.h" />
+    <ClInclude Include="ContactResult.h" />
     <ClInclude Include="ContactStimulus.h" />
     <ClInclude Include="ContextualFlowsMonitor.h" />
     <ClInclude Include="ExpectationExistsPattern.h" />
@@ -168,6 +169,7 @@
     <ClInclude Include="IObserver.h" />
     <ClInclude Include="IParty.h" />
     <ClInclude Include="IResponse.h" />
+    <ClInclude Include="IResult.h" />
     <ClInclude Include="ISituation.h" />
     <ClInclude Include="IStimulus.h" />
     <ClInclude Include="ITreeNodeStrategy.h" />

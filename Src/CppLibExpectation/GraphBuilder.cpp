@@ -10,9 +10,18 @@ namespace ExpectationLib
 		Tree<Party> tree;		
 
 		// Construct the root node as the the party that received the stimulus resulting in this circumstance
-		auto rootNode = std::make_shared<Node<Party>>(*std::dynamic_pointer_cast<Party>(startFromReceiver 
-			? circumstance->GetResponse()->GetReceiver()
-			: circumstance->GetResponse()->GetSender()));
+
+		std::shared_ptr<Node<Party>> rootNode;
+
+		circumstance->GetResponse()->GetResult().Match(			
+			[](libmonad::None none) { throw std::exception("BuildRelationGraph: No response result");  },
+			[&](const std::shared_ptr<IResult>& result)
+			{
+				rootNode = std::make_shared<Node<Party>>(*std::dynamic_pointer_cast<Party>(startFromReceiver 
+															? result->GetReceiver()
+															: result->GetSender()));
+			});
+
 
 		// Work backwards through its relations to create a tree of parties eg: party4 -> party3 -> party2 -> party1
 		AddRelationsAsChildren(rootNode, visitedPartyIds);
