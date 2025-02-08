@@ -31,16 +31,16 @@ TEST(RelationshipTests, RelationIsSet)
 	EXPECT_EQ(sender->GetRelations().size(), 0); // expect no changes to original stimulus
 	EXPECT_EQ(receiver->GetRelations().size(), 0); // expect no changes to original stimulus
 
-	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations().size(), 1);
-	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations().size(), 1);
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender()->GetRelations().size(), 1);
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->GetRelations().size(), 1);
 
-	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
-	EXPECT_EQ(circumstance->GetResponse()->GetReceiver()->GetRelations()[0].To->GetId(), sender->GetId());
-	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
-	EXPECT_EQ(circumstance->GetResponse()->GetSender()->GetRelations()[0].To->GetId(), receiver->GetId());
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->GetRelations()[0].To->GetId(), sender->GetId());
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender()->GetRelations()[0].Name, ContactResponse::ContactRelationName);
+	EXPECT_EQ(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender()->GetRelations()[0].To->GetId(), receiver->GetId());
 
-	EXPECT_TRUE(circumstance->GetResponse()->GetSender()->HasRelationTo(receiver, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(circumstance->GetResponse()->GetReceiver()->HasRelationTo(sender, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender()->HasRelationTo(receiver, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->HasRelationTo(sender, ContactResponse::ContactRelationName));
 	
 }
 
@@ -53,8 +53,8 @@ TEST(RelationshipTests, BuildRelationships)
 
 	// party1 -> party2
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
-	const auto party1c1 = circumstance1->GetResponse()->GetSender();
-	const auto party2c1 = circumstance1->GetResponse()->GetReceiver();
+	const auto party1c1 = circumstance1->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	const auto party2c1 = circumstance1->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 
 	EXPECT_TRUE(party1c1->HasRelationTo(party2c1, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party2c1->HasRelationTo(party1c1, ContactResponse::ContactRelationName));
@@ -65,8 +65,8 @@ TEST(RelationshipTests, BuildRelationships)
 	// party2 -> party3
 
 	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2c1, party3);
-	const auto party2c2 = circumstance2->GetResponse()->GetSender();
-	const auto party3c2 = circumstance2->GetResponse()->GetReceiver();
+	const auto party2c2 = circumstance2->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	const auto party3c2 = circumstance2->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 	
 	EXPECT_TRUE(party2c2->HasRelationTo(party3c2, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party3c2->HasRelationTo(party2c2, ContactResponse::ContactRelationName));		
@@ -77,8 +77,8 @@ TEST(RelationshipTests, BuildRelationships)
 	// party1 -> party4
 
 	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party1c1, party4);
-	const auto party1c3 = circumstance3->GetResponse()->GetSender();
-	const auto party4c3 = circumstance3->GetResponse()->GetReceiver();
+	const auto party1c3 = circumstance3->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	const auto party4c3 = circumstance3->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 	
 	EXPECT_TRUE(party1c3->HasRelationTo(party4c3, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party4c3->HasRelationTo(party1c3, ContactResponse::ContactRelationName));
@@ -102,16 +102,16 @@ TEST(RelationshipTests, GraphCircumstances)
 	std::shared_ptr<IParty> party4 = std::make_shared<Party>("party4");
 	
 	const auto circumstance1 = ContactCircumstanceBuilder::Build(party1, party2);
-	party1 = circumstance1->GetResponse()->GetSender();
-	party2 = circumstance1->GetResponse()->GetReceiver();
+	party1 = circumstance1->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	party2 = circumstance1->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 		
 	const auto circumstance2 = ContactCircumstanceBuilder::Build(party2, party3);
-	party2 = circumstance2->GetResponse()->GetSender();
-	party3 = circumstance2->GetResponse()->GetReceiver();
+	party2 = circumstance2->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	party3 = circumstance2->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 	
 	const auto circumstance3 =  ContactCircumstanceBuilder::Build(party3, party4);
-	party3 = circumstance3->GetResponse()->GetSender();
-	party4 = circumstance3->GetResponse()->GetReceiver();
+	party3 = circumstance3->GetResponse()->GetResult().ThrowIfNone()->GetSender();
+	party4 = circumstance3->GetResponse()->GetResult().ThrowIfNone()->GetReceiver();
 	
 	EXPECT_TRUE(party1->HasRelationTo(party2, ContactResponse::ContactRelationName));
 	EXPECT_TRUE(party2->HasRelationTo(party1, ContactResponse::ContactRelationName));
@@ -159,11 +159,11 @@ TEST(RelationshipTests, FrequencyOfCircumstances)
 	.Map<std::shared_ptr<ICircumstance>>([&](const std::shared_ptr<ICircumstance>& result)
 	{
 		// party2-> party3
-		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetReceiver(), party3);
+		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetResult().ThrowIfNone()->GetReceiver(), party3);
 	}).Map<std::shared_ptr<ICircumstance>>([&](const std::shared_ptr<ICircumstance>& result)
 	{
 		// party3-> party4
-		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetReceiver(), party4);
+		return ContactCircumstanceBuilder::Build(result->GetResponse()->GetResult().ThrowIfNone()->GetReceiver(), party4);
 	}).Map<Tree<Party>>([&](const std::shared_ptr<ICircumstance>& result)
 	{
 		// result -> tree

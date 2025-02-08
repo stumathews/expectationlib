@@ -34,8 +34,18 @@ TEST(Demos, CreateCircumstance)
 	// S-R link is an alias for a circumstance that was produced by an event that caused a particular response
 	auto& srLink = circumstance;
 
-	EXPECT_TRUE(srLink->GetResponse()->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(srLink->GetResponse()->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
+	srLink->GetResponse()->GetResult().Match(
+		[](libmonad::None none)
+		{
+			FAIL();
+		}, 
+		[&](const std::shared_ptr<IResult>& result)
+		{
+				EXPECT_TRUE(result->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
+				EXPECT_TRUE(result->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
+		});
+
+
 }
 
 TEST(Demos, CreateCircumstance2)
@@ -61,9 +71,9 @@ TEST(Demos, CreateCircumstance2)
 	const auto circumstance = stimulusEvent->Cause(abstractResponse);
 	
 	// S-R link is an alias for a circumstance that was produced by an event that caused a particular response
-	
-	EXPECT_TRUE(circumstance->GetResponse()->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(circumstance->GetResponse()->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
+			
+	EXPECT_TRUE(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(circumstance->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
 }
 
 TEST(Demos, Create_SRLink)
@@ -81,7 +91,8 @@ TEST(Demos, Create_SRLink)
 
 	// Test it
 		
-	EXPECT_TRUE(srLink.GetResponse()->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
-	EXPECT_TRUE(srLink.GetResponse()->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(srLink.GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(srLink.GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
+
 	EXPECT_STREQ(srLink.GetResponse()->GetContext().c_str(), response->GetContext().c_str());
 }
