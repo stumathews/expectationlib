@@ -30,8 +30,7 @@ namespace ExpectationLib
 	}	
 
 	std::shared_ptr<ICircumstance> ContactResponse::Start() 
-	{
-		
+	{		
 		// copy sender
 		std::shared_ptr<IParty> sender = std::make_shared<Party>(*std::dynamic_pointer_cast<Party>(stimulus->GetSender()));
 
@@ -47,7 +46,7 @@ namespace ExpectationLib
 		sender->AddRelation(ContactRelationName, receiver, context, stimulus->GetStartTime(), endTime);
 		receiver->AddRelation(ContactRelationName, sender, context, stimulus->GetStartTime(), endTime);
 
-		// Make the results from this response
+		// Create the response results
 		this->result = std::dynamic_pointer_cast<IResult>(std::make_shared<ContactResult>(sender, receiver));
 
 		// Create circumstance from this response

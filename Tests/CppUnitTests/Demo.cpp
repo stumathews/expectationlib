@@ -14,7 +14,6 @@
 
 using namespace ExpectationLib;
 
-
 TEST(Demos, CreateCircumstance)
 {
 	/* Represent as S-R link (i.e, a circumstance) */
@@ -33,19 +32,9 @@ TEST(Demos, CreateCircumstance)
 	
 	// S-R link is an alias for a circumstance that was produced by an event that caused a particular response
 	auto& srLink = circumstance;
-
-	srLink->GetResponse()->GetResult().Match(
-		[](libmonad::None none)
-		{
-			FAIL();
-		}, 
-		[&](const std::shared_ptr<IResult>& result)
-		{
-				EXPECT_TRUE(result->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
-				EXPECT_TRUE(result->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
-		});
-
-
+		
+	EXPECT_TRUE(srLink->GetResponse()->GetResult().ThrowIfNone()->GetSender()->HasRelationTo(receiver1, ContactResponse::ContactRelationName));
+	EXPECT_TRUE(srLink->GetResponse()->GetResult().ThrowIfNone()->GetReceiver()->HasRelationTo(sender1, ContactResponse::ContactRelationName));
 }
 
 TEST(Demos, CreateCircumstance2)
